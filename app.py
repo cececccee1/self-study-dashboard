@@ -9,6 +9,113 @@ from datetime import datetime
 st.set_page_config(page_title="我的自學歷程", layout="wide", page_icon="🌱")
 BASE = Path(__file__).parent / "data"
 
+# ============================================================
+# 設計代幣（Design Tokens）：深藍底 + 粉橘主色
+# ============================================================
+INK = "#0a1220"          # 頁面底色：深海軍藍黑
+PANEL = "#111d33"        # 卡片/面板底色
+PANEL_LIGHT = "#182a47"  # 卡片 hover 用的稍亮底色
+BORDER = "#24334f"       # 邊框/分隔線
+JADE = "#f4926b"         # 主色：粉橘（原變數名沿用，僅改色值）
+TEAL = "#6c8ebf"         # 次色：霧藍灰
+GOLD = "#d7ad66"         # 點綴色：暖金
+RUST = "#a78bd6"         # 點綴色：淡紫（與粉橘區隔，避免撞色）
+TEXT = "#eef2f8"         # 主要文字
+MUTED = "#7e93b5"        # 次要/說明文字
+PALETTE = [JADE, TEAL, GOLD, RUST, "#f2b591", "#8fb8e8"]  # 多分類圖表用色序列
+
+# ============================================================
+# 全域 CSS：字體、卡片、分頁、指標、側邊欄、按鈕
+# ============================================================
+CUSTOM_CSS = f"""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+html, body, [class*="css"] {{
+    font-family: "Noto Sans TC", sans-serif;
+}}
+h1, h2, h3 {{
+    font-family: "Noto Serif TC", serif !important;
+    letter-spacing: 0.01em;
+}}
+
+/* 分頁列 */
+.stTabs [data-baseweb="tab-list"] {{
+    gap: 4px;
+    border-bottom: 1px solid {BORDER};
+}}
+.stTabs [data-baseweb="tab"] {{
+    color: {MUTED};
+    font-weight: 500;
+    padding: 10px 16px;
+}}
+.stTabs [aria-selected="true"] {{
+    color: {JADE} !important;
+    font-weight: 700;
+    border-bottom: 2px solid {JADE} !important;
+}}
+
+/* 指標卡 st.metric */
+[data-testid="stMetricValue"] {{
+    color: {JADE};
+    font-family: "Noto Serif TC", serif;
+}}
+[data-testid="stMetricLabel"] {{
+    color: {MUTED};
+}}
+
+/* 側邊欄 */
+[data-testid="stSidebar"] {{
+    background-color: {PANEL};
+    border-right: 1px solid {BORDER};
+}}
+
+/* 表格 */
+[data-testid="stDataFrame"] {{
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+    overflow: hidden;
+}}
+
+/* expander（心得反思卡片） */
+[data-testid="stExpander"] {{
+    background-color: {PANEL};
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+}}
+
+/* 按鈕（下載報告、前往連結） */
+.stDownloadButton button, .stLinkButton a {{
+    background-color: {PANEL_LIGHT} !important;
+    color: {JADE} !important;
+    border: 1px solid {JADE} !important;
+    border-radius: 6px !important;
+}}
+.stDownloadButton button:hover, .stLinkButton a:hover {{
+    background-color: {JADE}22 !important;
+}}
+
+/* selectbox / radio 標籤 */
+label {{
+    color: {MUTED} !important;
+}}
+</style>
+"""
+st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+
+def style_fig(fig):
+    """統一套用深色透明背景，讓圖表跟頁面底色融合"""
+    fig.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font_color=TEXT,
+        margin=dict(t=48, b=32, l=8, r=8),
+    )
+    return fig
+
+
 st.markdown(
     "<h1 style='white-space: nowrap;'>🌱📚📝🎨 我的自學歷程：進度追蹤 × 學習日誌 × 作品集</h1>",
     unsafe_allow_html=True,
@@ -48,11 +155,12 @@ if data_ready:
 # ============================================================
 with tab0:
     st.markdown(
-        """
-        <div style="background: linear-gradient(135deg, #2e7d32 0%, #1b4332 100%);
+        f"""
+        <div style="background: linear-gradient(135deg, #1c3d6e 0%, {INK} 100%);
+                    border: 1px solid {BORDER};
                     padding: 40px 30px; border-radius: 12px; margin-bottom: 24px;">
-            <h2 style="color: white; margin: 0 0 8px 0;">我的自學歷程控制塔</h2>
-            <p style="color: #dfece1; margin: 0; font-size: 15px;">
+            <h2 style="color: {TEXT}; margin: 0 0 8px 0;">我的自學歷程控制塔</h2>
+            <p style="color: {MUTED}; margin: 0; font-size: 15px;">
                 記錄每一次投入的時間、每一則反思，以及每一項完成的作品
             </p>
         </div>
@@ -74,13 +182,13 @@ with tab0:
 
         card_data = [
             {"icon": "📚", "title": "學習進度追蹤", "desc": f"{total_subjects} 個科目",
-             "kpi": f"平均進度 {avg_progress:.0f}%", "color": "#2e7d32"},
+             "kpi": f"平均進度 {avg_progress:.0f}%", "color": JADE},
             {"icon": "📝", "title": "學習日誌與心得", "desc": f"{total_entries} 則紀錄",
-             "kpi": f"累計時數 {total_hours:.0f} 小時", "color": "#1f3a5f"},
+             "kpi": f"累計時數 {total_hours:.0f} 小時", "color": TEAL},
             {"icon": "🎨", "title": "作品集/成果展示", "desc": f"{total_works} 項成果",
-             "kpi": f"{df_portfolio['類型'].nunique()} 種類型", "color": "#7b2d8e"},
+             "kpi": f"{df_portfolio['類型'].nunique()} 種類型", "color": GOLD},
             {"icon": "📋", "title": "給未來自己的報告", "desc": "階段性總結",
-             "kpi": "可直接下載", "color": "#d62728"},
+             "kpi": "可直接下載", "color": RUST},
         ]
 
         cols = st.columns(4)
@@ -88,14 +196,15 @@ with tab0:
             with col:
                 st.markdown(
                     f"""
-                    <div style="border: 1px solid #e0e0e0; border-top: 4px solid {card['color']};
-                                border-radius: 8px; padding: 18px; height: 170px;
-                                box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                    <div style="background: {PANEL}; border: 1px solid {BORDER};
+                                border-top: 4px solid {card['color']};
+                                border-radius: 8px; padding: 18px; height: 170px;">
                         <div style="font-size: 28px;">{card['icon']}</div>
-                        <div style="font-weight: 700; font-size: 16px; margin: 4px 0;">{card['title']}</div>
-                        <div style="color: #666; font-size: 13px; margin-bottom: 12px;">{card['desc']}</div>
-                        <div style="background: {card['color']}15; color: {card['color']};
-                                    padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                        <div style="font-weight: 700; font-size: 16px; margin: 4px 0; color: {TEXT};">{card['title']}</div>
+                        <div style="color: {MUTED}; font-size: 13px; margin-bottom: 12px;">{card['desc']}</div>
+                        <div style="background: {card['color']}22; color: {card['color']};
+                                    padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
+                                    display: inline-block;">
                             {card['kpi']}
                         </div>
                     </div>
@@ -144,24 +253,25 @@ with tab1:
         with colA:
             st.markdown("**各科目平均進度**")
             fig_bar = px.bar(subj_summary, x="科目", y="平均進度", color="平均進度",
-                              color_continuous_scale="Greens", text="平均進度")
+                              color_continuous_scale=[PANEL_LIGHT, JADE], text="平均進度")
             fig_bar.update_traces(texttemplate="%{text:.0f}%", textposition="outside")
             fig_bar.update_layout(yaxis_range=[0, 110])
-            st.plotly_chart(fig_bar, width="stretch")
+            st.plotly_chart(style_fig(fig_bar), width="stretch")
         with colB:
             st.markdown("**投入時數 vs 完成進度**")
             st.caption("右下角＝時數已投入不少、但進度仍低，是需要加強關注的科目")
             fig_scatter = px.scatter(subj_summary, x="投入時數", y="平均進度", color="科目",
-                                      size="單元數", hover_data=["科目"])
-            fig_scatter.add_hline(y=50, line_dash="dash", line_color="gray")
-            st.plotly_chart(fig_scatter, width="stretch")
+                                      size="單元數", hover_data=["科目"],
+                                      color_discrete_sequence=PALETTE)
+            fig_scatter.add_hline(y=50, line_dash="dash", line_color=MUTED)
+            st.plotly_chart(style_fig(fig_scatter), width="stretch")
 
         st.divider()
         st.subheader("🗂 單元明細")
 
-        status_colors = {"已完成": "background-color: #2e7d32; color: white",
-                          "進行中": "background-color: #f2c94c",
-                          "未開始": "background-color: #bdbdbd"}
+        status_colors = {"已完成": f"background-color: {JADE}; color: #3a1608",
+                          "進行中": f"background-color: {GOLD}; color: #2b1d05",
+                          "未開始": f"background-color: {PANEL_LIGHT}; color: {MUTED}"}
 
         def color_status(val):
             return status_colors.get(val, "")
@@ -207,15 +317,16 @@ with tab2:
         with r1c1:
             st.markdown("**每日學習時數趨勢**")
             fig_trend = px.line(df_journal, x="日期", y="學習時數", markers=True,
-                                 color_discrete_sequence=["#2e7d32"])
-            fig_trend.add_hline(y=avg_hours, line_dash="dash", line_color="gray",
+                                 color_discrete_sequence=[JADE])
+            fig_trend.add_hline(y=avg_hours, line_dash="dash", line_color=MUTED,
                                  annotation_text="平均")
-            st.plotly_chart(fig_trend, width="stretch")
+            st.plotly_chart(style_fig(fig_trend), width="stretch")
         with r1c2:
             st.markdown("**各科目投入時數佔比**")
             subj_hours = df_journal.groupby("科目")["學習時數"].sum().reset_index()
-            fig_pie = px.pie(subj_hours, names="科目", values="學習時數", hole=0.45)
-            st.plotly_chart(fig_pie, width="stretch")
+            fig_pie = px.pie(subj_hours, names="科目", values="學習時數", hole=0.45,
+                              color_discrete_sequence=PALETTE)
+            st.plotly_chart(style_fig(fig_pie), width="stretch")
 
         st.divider()
         st.subheader("💬 心得反思紀錄")
@@ -268,13 +379,13 @@ with tab3:
                 with cols[i % 3]:
                     st.markdown(
                         f"""
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;
-                                    margin-bottom: 16px; min-height: 200px;
-                                    box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                        <div style="background: {PANEL}; border: 1px solid {BORDER};
+                                    border-radius: 8px; padding: 16px;
+                                    margin-bottom: 16px; min-height: 200px;">
                             <div style="font-size: 24px;">{icon}</div>
-                            <div style="font-weight: 700; font-size: 15px; margin: 6px 0;">{item['名稱']}</div>
-                            <div style="color: #888; font-size: 12px;">{item['科目']} · {item['日期'].strftime('%Y-%m-%d')}</div>
-                            <div style="color: #555; font-size: 13px; margin-top: 8px;">{item['說明']}</div>
+                            <div style="font-weight: 700; font-size: 15px; margin: 6px 0; color: {TEXT};">{item['名稱']}</div>
+                            <div style="color: {MUTED}; font-size: 12px;">{item['科目']} · {item['日期'].strftime('%Y-%m-%d')}</div>
+                            <div style="color: {TEXT}; opacity: 0.85; font-size: 13px; margin-top: 8px;">{item['說明']}</div>
                         </div>
                         """,
                         unsafe_allow_html=True,
