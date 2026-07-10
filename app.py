@@ -6,37 +6,44 @@ import streamlit as st
 from pathlib import Path
 from datetime import datetime
 
-st.set_page_config(page_title="我的自學歷程", layout="wide", page_icon="🌱")
+st.set_page_config(page_title="我的自學歷程", layout="wide", page_icon="🖌️")
 BASE = Path(__file__).parent / "data"
 
 # ============================================================
-# 設計代幣（Design Tokens）：深藍底 + 粉橘主色
+# 設計代幣（Design Tokens）：古風配色 —— 墨黑底 × 朱紅印璽 × 泥金
 # ============================================================
-INK = "#0a1220"          # 頁面底色：深海軍藍黑
-PANEL = "#111d33"        # 卡片/面板底色
-PANEL_LIGHT = "#182a47"  # 卡片 hover 用的稍亮底色
-BORDER = "#24334f"       # 邊框/分隔線
-JADE = "#f4926b"         # 主色：粉橘（原變數名沿用，僅改色值）
-TEAL = "#6c8ebf"         # 次色：霧藍灰
-GOLD = "#d7ad66"         # 點綴色：暖金
-RUST = "#a78bd6"         # 點綴色：淡紫（與粉橘區隔，避免撞色）
-TEXT = "#eef2f8"         # 主要文字
-MUTED = "#7e93b5"        # 次要/說明文字
-PALETTE = [JADE, TEAL, GOLD, RUST, "#f2b591", "#8fb8e8"]  # 多分類圖表用色序列
+INK = "#130f0b"          # 頁面底色：墨黑（帶暖調，似漆器底）
+PANEL = "#1d1710"         # 卡片/面板底色：深棕漆色
+PANEL_LIGHT = "#2a2116"   # 卡片 hover 用的稍亮底色
+BORDER = "#4a3b26"        # 邊框/分隔線：暗銅棕
+JADE = "#c23b2c"          # 主色：朱紅（印璽紅，原變數名沿用，僅改色值）
+TEAL = "#4a6b58"          # 次色：墨綠（松石入畫）
+GOLD = "#c9a15a"          # 點綴色：泥金
+RUST = "#8b6f47"          # 點綴色：赭石（古樸暖棕）
+TEXT = "#f1e9d6"          # 主要文字：宣紙米白
+MUTED = "#a08e6c"         # 次要/說明文字：舊金褪色調
+PALETTE = [JADE, GOLD, TEAL, RUST, "#b23a2f", "#8a9a7e"]  # 多分類圖表用色序列
 
 # ============================================================
 # 全域 CSS：字體、卡片、分頁、指標、側邊欄、按鈕
 # ============================================================
 CUSTOM_CSS = f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/earlyaccess/cwtexkai.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
-html, body, [class*="css"] {{
-    font-family: "Noto Sans TC", sans-serif;
+html, body, [class*="css"], table, th, td, input, textarea, button, div, span, p, label {{
+    font-family: "cwTeXKai", "Noto Sans TC", serif !important;
 }}
 h1, h2, h3 {{
-    font-family: "Noto Serif TC", serif !important;
-    letter-spacing: 0.01em;
+    font-family: "cwTeXKai", serif !important;
+    letter-spacing: 0.02em;
+}}
+
+/* 表格數字沿用楷體，但加寬字距讓數字更好辨識 */
+[data-testid="stDataFrame"] * {{
+    font-family: "cwTeXKai", serif !important;
+    letter-spacing: 0.02em;
 }}
 
 /* 分頁列 */
@@ -58,10 +65,52 @@ h1, h2, h3 {{
 /* 指標卡 st.metric */
 [data-testid="stMetricValue"] {{
     color: {JADE};
-    font-family: "Noto Serif TC", serif;
+    font-family: "cwTeXKai", serif;
 }}
 [data-testid="stMetricLabel"] {{
     color: {MUTED};
+}}
+
+/* 分隔線：加上居中雲紋裝飾，取代單調的橫線 */
+hr {{
+    border-color: {BORDER} !important;
+    position: relative;
+    margin: 20px 0 !important;
+}}
+hr::after {{
+    content: "❖";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: {INK};
+    color: {GOLD};
+    padding: 0 14px;
+    font-size: 13px;
+}}
+
+/* 印璽角標（用於首頁橫幅） */
+.seal-stamp {{
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background: {JADE};
+    border: 2px solid {GOLD};
+    border-radius: 4px;
+    transform: rotate(-6deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}}
+.seal-stamp span {{
+    color: {TEXT};
+    font-family: "cwTeXKai", serif;
+    font-size: 22px;
+    font-weight: 700;
+    writing-mode: vertical-rl;
 }}
 
 /* 側邊欄 */
@@ -73,7 +122,7 @@ h1, h2, h3 {{
 /* 表格 */
 [data-testid="stDataFrame"] {{
     border: 1px solid {BORDER};
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
 }}
 
@@ -81,7 +130,7 @@ h1, h2, h3 {{
 [data-testid="stExpander"] {{
     background-color: {PANEL};
     border: 1px solid {BORDER};
-    border-radius: 8px;
+    border-radius: 4px;
 }}
 
 /* 按鈕（下載報告、前往連結） */
@@ -99,25 +148,54 @@ h1, h2, h3 {{
 label {{
     color: {MUTED} !important;
 }}
+
+/* ============================================================
+   響應式：手機（寬度 < 640px）
+   - 楷體筆畫在小字號時辨識度下降，內文/表格自動切回黑體，標題保留楷體維持風格
+   - 標題字級縮小，避免長標題在窄螢幕擠壓換行過密
+   - 卡片高度改用最小高度，避免文字被裁切
+   ============================================================ */
+@media (max-width: 640px) {{
+    html, body, [class*="css"], table, th, td, input, textarea, button, p, span, label {{
+        font-family: "Noto Sans TC", sans-serif !important;
+    }}
+    [data-testid="stDataFrame"] * {{
+        font-family: "Noto Sans TC", sans-serif !important;
+        font-size: 13px !important;
+        letter-spacing: normal;
+    }}
+    h1 {{
+        font-size: 22px !important;
+        white-space: normal !important;
+        line-height: 1.4;
+    }}
+    h2 {{
+        font-size: 19px !important;
+    }}
+    [data-testid="stMetricValue"] {{
+        font-size: 22px !important;
+    }}
+}}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
 def style_fig(fig):
-    """統一套用深色透明背景，讓圖表跟頁面底色融合"""
+    """統一套用深色透明背景，讓圖表跟頁面底色融合，並套用楷體字型"""
     fig.update_layout(
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font_color=TEXT,
+        font_family="cwTeXKai, serif",
         margin=dict(t=48, b=32, l=8, r=8),
     )
     return fig
 
 
 st.markdown(
-    "<h1 style='white-space: nowrap;'>🌱📚📝🎨 我的自學歷程：進度追蹤 × 學習日誌 × 作品集</h1>",
+    "<h1 style='white-space: nowrap;'>🖌️📜🏮 我的自學歷程：進度追蹤 × 學習日誌 × 作品集</h1>",
     unsafe_allow_html=True,
 )
 
@@ -156,9 +234,11 @@ if data_ready:
 with tab0:
     st.markdown(
         f"""
-        <div style="background: linear-gradient(135deg, #1c3d6e 0%, {INK} 100%);
+        <div style="background: linear-gradient(135deg, #241a0f 0%, {INK} 100%);
                     border: 1px solid {BORDER};
-                    padding: 40px 30px; border-radius: 12px; margin-bottom: 24px;">
+                    padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
+                    position: relative; overflow: hidden;">
+            <div class="seal-stamp"><span>自學</span></div>
             <h2 style="color: {TEXT}; margin: 0 0 8px 0;">我的自學歷程控制塔</h2>
             <p style="color: {MUTED}; margin: 0; font-size: 15px;">
                 記錄每一次投入的時間、每一則反思，以及每一項完成的作品
@@ -198,7 +278,7 @@ with tab0:
                     f"""
                     <div style="background: {PANEL}; border: 1px solid {BORDER};
                                 border-top: 4px solid {card['color']};
-                                border-radius: 8px; padding: 18px; height: 170px;">
+                                border-radius: 4px; padding: 18px; min-height: 170px;">
                         <div style="font-size: 28px;">{card['icon']}</div>
                         <div style="font-weight: 700; font-size: 16px; margin: 4px 0; color: {TEXT};">{card['title']}</div>
                         <div style="color: {MUTED}; font-size: 13px; margin-bottom: 12px;">{card['desc']}</div>
@@ -380,7 +460,7 @@ with tab3:
                     st.markdown(
                         f"""
                         <div style="background: {PANEL}; border: 1px solid {BORDER};
-                                    border-radius: 8px; padding: 16px;
+                                    border-radius: 4px; padding: 16px;
                                     margin-bottom: 16px; min-height: 200px;">
                             <div style="font-size: 24px;">{icon}</div>
                             <div style="font-weight: 700; font-size: 15px; margin: 6px 0; color: {TEXT};">{item['名稱']}</div>
