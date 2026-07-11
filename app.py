@@ -3,6 +3,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 from pathlib import Path
 from datetime import datetime
 
@@ -172,6 +173,72 @@ label {{
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
+# ============================================================
+# 分頁導覽腳本：讓「回上一頁／返回首頁」按鈕真正切換 Streamlit 分頁
+# （而不是單純捲動頁面），透過操作 st.tabs 底層的 BaseWeb tab 按鈕實現
+# ============================================================
+components.html(
+    """
+    <script>
+    (function () {
+      function setup() {
+        try {
+          var doc = window.parent.document;
+          var tabs = doc.querySelectorAll('[data-baseweb="tab"]');
+          if (!tabs.length) { setTimeout(setup, 300); return; }
+
+          if (!window.parent.__tabNavSetup) {
+            window.parent.__tabHistory = [];
+            window.parent.__currentTab = null;
+
+            tabs.forEach(function (tab) {
+              tab.addEventListener('click', function () {
+                var label = tab.innerText.trim();
+                if (window.parent.__currentTab && window.parent.__currentTab !== label) {
+                  window.parent.__tabHistory.push(window.parent.__currentTab);
+                }
+                window.parent.__currentTab = label;
+              });
+            });
+
+            window.parent.goHomeTab = function () {
+              var t2 = window.parent.document.querySelectorAll('[data-baseweb="tab"]');
+              for (var i = 0; i < t2.length; i++) {
+                if (t2[i].innerText.indexOf('首頁') !== -1) {
+                  t2[i].click();
+                  break;
+                }
+              }
+            };
+
+            window.parent.goBackTab = function () {
+              var hist = window.parent.__tabHistory;
+              var target = (hist && hist.length) ? hist.pop() : null;
+              var t2 = window.parent.document.querySelectorAll('[data-baseweb="tab"]');
+              if (target) {
+                for (var i = 0; i < t2.length; i++) {
+                  if (t2[i].innerText.trim() === target) {
+                    t2[i].click();
+                    return;
+                  }
+                }
+              }
+              window.parent.goHomeTab();
+            };
+
+            window.parent.__tabNavSetup = true;
+          }
+        } catch (e) {
+          /* 靜默失敗，不影響其餘功能 */
+        }
+      }
+      setup();
+    })();
+    </script>
+    """,
+    height=0,
+)
+
 
 def style_fig(fig):
     fig.update_layout(
@@ -190,14 +257,16 @@ def back_to_home_button():
         f"""
         <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
                     margin-top: 40px; margin-bottom: 8px;">
-            <a href="#" onclick="window.history.back(); return false;"
+            <a href="#"
+               onclick="if (window.parent.goBackTab) {{ window.parent.goBackTab(); }} return false;"
                style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
                       border: 1px solid {GOLD}; border-radius: 6px; color: {GOLD};
                       text-decoration: none; font-weight: 700; font-size: 14px;
                       letter-spacing: 0.05em;">
                 ⬅ 回上一頁
             </a>
-            <a href="#" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}}); return false;"
+            <a href="#"
+               onclick="if (window.parent.goHomeTab) {{ window.parent.goHomeTab(); }} return false;"
                style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
                       border: 1px solid {JADE}; border-radius: 6px; color: {JADE};
                       text-decoration: none; font-weight: 700; font-size: 14px;
@@ -206,7 +275,7 @@ def back_to_home_button():
             </a>
         </div>
         <p style="text-align: center; color: {MUTED}; font-size: 12px; margin-top: 6px;">
-            「回上一頁」為瀏覽器上一頁；「返回首頁」將捲動至頁面最上方，再點選上方「🏠 首頁」分頁
+            點擊後會直接切換到對應分頁
         </p>
         """,
         unsafe_allow_html=True,
