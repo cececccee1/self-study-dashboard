@@ -339,7 +339,7 @@ if st.session_state.page == "home":
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
             <h2 style="color: {TEXT}; margin: 0 0 8px 0;">Clarice的學習歷程</h2>
             <p style="color: {MUTED}; margin: 0; font-size: 15px;">
-                以八週為單位，記錄每一週的任務與練習。
+                以八週為單位
             </p>
         </div>
         """,
