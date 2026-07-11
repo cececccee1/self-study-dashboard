@@ -337,7 +337,6 @@ if st.session_state.page == "home":
                     padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
                     position: relative; overflow: hidden;">
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
-            <h2 style="color: {TEXT}; margin: 0 0 8px 0;">Clarice的學習歷程</h2>
             <p style="color: {MUTED}; margin: 0; font-size: 15px;">
                 以八週為單位
             </p>
