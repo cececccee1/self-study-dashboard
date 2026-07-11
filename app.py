@@ -188,7 +188,15 @@ def style_fig(fig):
 def back_to_home_button():
     st.markdown(
         f"""
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 8px;">
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+                    margin-top: 40px; margin-bottom: 8px;">
+            <a href="#" onclick="window.history.back(); return false;"
+               style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
+                      border: 1px solid {GOLD}; border-radius: 6px; color: {GOLD};
+                      text-decoration: none; font-weight: 700; font-size: 14px;
+                      letter-spacing: 0.05em;">
+                ⬅ 回上一頁
+            </a>
             <a href="#" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}}); return false;"
                style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
                       border: 1px solid {JADE}; border-radius: 6px; color: {JADE};
@@ -198,7 +206,7 @@ def back_to_home_button():
             </a>
         </div>
         <p style="text-align: center; color: {MUTED}; font-size: 12px; margin-top: 6px;">
-            點擊後將捲動至頁面最上方，再點選上方「🏠 首頁」分頁
+            「回上一頁」為瀏覽器上一頁；「返回首頁」將捲動至頁面最上方，再點選上方「🏠 首頁」分頁
         </p>
         """,
         unsafe_allow_html=True,
