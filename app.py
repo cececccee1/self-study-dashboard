@@ -268,7 +268,7 @@ with tab_home:
     st.markdown(
         """
         - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
-        - **第一週** 目前已放入任務01、02、03、04
+        - **第一週** 目前已放入任務01、02、03、04、05
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -729,6 +729,201 @@ with tab_w1:
     st.markdown("- ☑ 瀏覽器自動開 http://localhost:8501")
     st.markdown("- ☑ 30秒內能看完（用碼表算）")
     st.markdown("- ☑ 紅字警示醒目")
+
+    # ---------- 任務05｜VIP篩選器 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>🎯 任務05｜VIP篩選器</h2>", unsafe_allow_html=True)
+    st.caption("RFM八分群＋業務行動書")
+    st.markdown("適用：Week1・Day4／2026起用　　預估填寫時間：100分鐘（含45分鐘分群辯論會）")
+
+    st.subheader("Section 1｜觀念回顧（填空，5 min）")
+    st.markdown("**1.1 RFM三維各代表什麼**")
+    rfm_def_data = {
+        "字": ["R", "F", "M"],
+        "完整字": ["Recency", "Frequency", "Monetary"],
+        "算法": ["今天日期－最後一次消費日期", "統計期間內的消費次數", "統計期間內的總消費金額"],
+        "物流意義": ["距離最近一次下單的時間", "一段期間內下單次數", "一段期間內累積訂單金額"],
+    }
+    st.table(pd.DataFrame(rfm_def_data).set_index("字"))
+
+    st.markdown("**1.2 反直覺三點（自寫）**")
+    counter_data = {
+        "問題": ["80/20不是鐵律——為什麼？", "At Risk比VIP更該投資資源——為什麼？", "Big Spenders≠VIP——為什麼？"],
+        "我的答案": [
+            "少數重要客戶通常會貢獻大部分的價值",
+            "以前是重要客戶，但最近很久沒下單，有流失風險",
+            "高消費客戶，不一定是VIP",
+        ],
+    }
+    st.table(pd.DataFrame(counter_data).set_index("問題"))
+
+    st.markdown("**1.3 八分群速查**")
+    seg_data = {
+        "分群": ["VIP(Champions)", "Loyal", "Big Spenders", "New／Promising",
+                "Potential Loyalists", "At Risk", "Hibernating", "Lost"],
+        "R": ["高", "中高", "高", "高", "高", "低", "低", "低"],
+        "F": ["高", "高", "低", "低", "中", "中高", "低", "低"],
+        "M": ["高", "中", "高", "低", "中", "高", "中", "低"],
+        "策略": [
+            "🔒鎖－指派專屬客服、優先排車、定期業務拜訪",
+            "🌱養－推薦升級方案、捆綁服務",
+            "⛏挖－從單次合作升到長期合約",
+            "🧲引－首購優惠、流程引導",
+            "🌱扶－主動詢問需求、客製化",
+            "🚨救－業務經理親自拜訪、客製化回流方案",
+            "⏰喚－針對節慶期主動聯絡",
+            "👋放－不主動投資資源，EDM即可",
+        ],
+    }
+    st.table(pd.DataFrame(seg_data).set_index("分群"))
+    st.caption("8個策略：鎖／養／挖／引／扶／救／喚／放")
+
+    st.subheader("Section 2｜資料準備＋觀察期決定（10 min）")
+    st.markdown("**2.1 資料來源**：從D2清洗後的 A_物流_訂單配送_CLEAN.csv 算RFM")
+
+    st.markdown("**2.2 觀察期切點（主觀但要可辯護）**")
+    period_data = {
+        "切點": ["觀察期起始日", "觀察期結束日（today）", "期長（月）"],
+        "我的選擇": ["2025-01-01", "2026-07-01", "181天≈5.9個月"],
+        "為什麼？": [
+            "因為這份CSV本身就是完整的訂單紀錄，資料涵蓋的範圍就是完整的觀察窗口",
+            "如果直接拿max(order_date)當today，最新訂單的客戶R值會被算成0，造成偏誤",
+            "以today=pd.Timestamp('2026-07-01')為基準日，計算所有客戶的R值",
+        ],
+    }
+    st.table(pd.DataFrame(period_data).set_index("切點"))
+    st.caption("提示：期太短（<3個月）R/F不穩；期太長（>12個月）會被舊行為主導。物流B2B常用6個月")
+    st.success("✅ 客戶數＝8位（預期8位）；訂單數＝793筆（在觀察期內）")
+
+    st.subheader("Section 3｜RFM計算（15 min・主交付物①）")
+    st.markdown("**3.1 三維計算邏輯**")
+    st.code(
+        'import pandas as pd\n'
+        'df = pd.read_csv("A_物流_訂單配送_CLEAN.csv", parse_dates=["order_date"])\n'
+        'today = pd.Timestamp("2026-07-01")\n'
+        'rfm = df.groupby("customer_id").agg(\n'
+        '    R=("order_date", lambda s: (today - s.max()).days),\n'
+        '    F=("order_id", "count"),\n'
+        '    M=("freight_twd", "sum"),\n'
+        ').reset_index()',
+        language="python",
+    )
+    rfm_result_data = {
+        "customer_id": ["C001", "C002", "C003", "C004", "C005", "C006", "C007", "C008"],
+        "customer_name": ["7-11零售連鎖", "momo購物網", "水產鮮活B2B", "家樂福全聯",
+                          "蝦皮購物", "全聯福利中心", "統一生鮮", "PChome 24h"],
+        "R": [1, 1, 1, 1, 1, 2, 1, 1],
+        "F": [88, 103, 108, 82, 95, 93, 115, 109],
+        "M": [199084.4, 232622.3, 245576.3, 171144.1, 199303.3, 215567.8, 270698.4, 222216.5],
+    }
+    st.table(pd.DataFrame(rfm_result_data).set_index("customer_id"))
+
+    st.markdown("**3.2 5等分＋RFM_score**")
+    st.code(
+        'rfm["R_score"] = pd.qcut(rfm["R"], 5, labels=[5, 4, 3, 2, 1]).astype(int)\n'
+        'rfm["F_score"] = pd.qcut(rfm["F"].rank(method="first"), 5, labels=[1, 2, 3, 4, 5]).astype(int)\n'
+        'rfm["M_score"] = pd.qcut(rfm["M"], 5, labels=[1, 2, 3, 4, 5]).astype(int)\n'
+        'rfm["RFM_score"] = rfm["R_score"].astype(str) + rfm["F_score"].astype(str) + rfm["M_score"].astype(str)',
+        language="python",
+    )
+    st.warning("⚠ F用rank(method='first')是因為F容易有重複值（qcut會崩），這個處理要寫進設計說明")
+
+    score_result_data = {
+        "customer_id": ["C001", "C002", "C003", "C004", "C005", "C006", "C007", "C008"],
+        "R_score": [5, 5, 4, 3, 3, 1, 2, 1],
+        "F_score": [1, 3, 4, 1, 3, 2, 5, 5],
+        "M_score": [1, 4, 5, 1, 2, 3, 5, 3],
+        "RFM_score": ["511", "534", "445", "311", "332", "123", "255", "153"],
+        "落到哪一群？": ["一般客戶", "重要價值客戶", "重要價值客戶", "需喚醒客戶",
+                     "一般客戶", "一般客戶", "重要價值客戶", "穩定客戶"],
+    }
+    st.table(pd.DataFrame(score_result_data).set_index("customer_id"))
+
+    st.subheader("Section 4｜分群覆蓋＋Excel名單（20 min・主交付物②）")
+    st.markdown("**4.1 分群統計（必含≥5群覆蓋）**")
+    coverage_data = {
+        "分群": ["VIP(Champions)", "Loyal", "Big Spenders", "New／Promising",
+                "Potential Loyalists", "At Risk", "Hibernating", "Lost"],
+        "客戶數": [1, 0, 1, 1, 1, 2, 1, 1],
+        "客戶ID": ["C003", "－", "C002", "C001", "C005", "C007、C008", "C004", "C006"],
+    }
+    st.table(pd.DataFrame(coverage_data).set_index("分群"))
+    st.success("✅ 自我檢核：≥5群覆蓋（<5會扣分）")
+
+    st.markdown("**4.2 Excel客戶分層名單（主交付物②）**")
+    st.markdown("將Section 3.2的內容，寫進 `客戶分層名單.xlsx`，欄位設計：customer_id／name／R／F／M／RFM_score／分群／建議行動")
+    st.markdown(
+        "加分項（Excel進階）：\n"
+        "- ✅ 條件格式：R/F/M用顏色梯度\n"
+        "- ✅ pivot：分群×平均M\n"
+        "- ✅ 行動優先級標色：🔴At Risk／🟢VIP"
+    )
+
+    st.subheader("Section 5｜業務行動書（20 min・主交付物③）")
+    st.caption("★ 每群≥1項具體行動；Top20%與At Risk各≥3項")
+
+    st.markdown("**5.1 Top20%（VIP／Big Spenders）—— 鎖**")
+    top20_data = {
+        "客戶": ["C003（水產鮮活B2B）", "C002（momo購物網）", "C003+C002（合併）"],
+        "具體行動（動詞+量化）": [
+            "簽訂6個月鎖價合約，目標M成長≥10%",
+            "推出滿額贈禮，拉高客單價15%",
+            "每月促成2項交叉銷售",
+        ],
+        "預期效益／月": ["月增NT$4,162（高）", "月增NT$5,914（高）", "月增NT$6,000~10,000（中）"],
+        "投入成本": ["低", "中", "低"],
+    }
+    st.table(pd.DataFrame(top20_data).set_index("客戶"))
+
+    st.markdown("**5.2 At Risk —— 救（★最該投資的群）**")
+    atrisk_data = {
+        "客戶": ["C007・統一生鮮", "C007・統一生鮮", "C007+C008（合併）"],
+        "具體行動": [
+            "48小時內致電了解原因，提供單筆訂單折扣",
+            "主動推送3款互補品項報價單",
+            "每週監控R值，連續14天無訂單自動觸發提醒",
+        ],
+        "預期效益／月": ["月增NT$3,670（中）", "月增NT$2,500（中）", "保住月均NT$83,545營收基礎（高）"],
+        "投入成本": ["低", "低", "低"],
+    }
+    st.table(pd.DataFrame(atrisk_data).set_index("客戶"))
+
+    st.markdown("**5.3 其他群（每群至少1行）**")
+    other_seg_data = {
+        "分群": ["Loyal", "Big Spenders", "New／Promising", "Potential Loyalists", "Hibernating", "Lost"],
+        "具體行動": [
+            "建立F值連續2個月≥4分自動觸發忠誠會員卡機制",
+            "提供季度採購報告，找出1項高毛利加購品項",
+            "7日內發送新客歡迎禮，第二筆訂單10%折扣",
+            "加入訂閱式自動補貨方案",
+            "每月1次EDM/簡訊喚醒活動",
+            "每季1次最低成本喚回簡訊",
+        ],
+    }
+    st.table(pd.DataFrame(other_seg_data).set_index("分群"))
+
+    st.subheader("Section 6｜反直覺洞察（10 min）")
+    st.caption("★ 評分Rubric「反直覺洞察」滿分需要3+個")
+    insight_data = {
+        "#": [1, 2, 3],
+        "反直覺發現": [
+            "訂單間隔約1天，R_score全靠rank()硬切排名撐出來，數值差異其實很小",
+            "C007（訂單115次、金額NT$270,698，兩項全場最高）卻只拿到RFM_score=255而非555",
+            "8大分群裡，理論上「Loyal（F_score高）」應該最多，但實際上分佈不均，甚至出現0人",
+        ],
+        "為什麼反直覺？": [
+            "直覺上「最近有沒有買」應該是最直接、最敏感的指標，但當客戶下單頻率都很高、間隔天數接近時，R值的鑑別力反而下降",
+            "一般人用「金額大＝重要客戶＝安全」的線性思維，忽略了R值（最近下單時間）同樣重要，C007其實R已經拉警報",
+            "直覺認為越「中庸」的標籤人數應該越多，但F分群受限於樣本數少（僅8位客戶），反而容易出現分佈極端",
+        ],
+        "對誰最有用？": [
+            "資料分析／報表設計人員——提醒未來若持續用同一套切分邏輯，需注意R值鑑別力的侷限",
+            "業務主管／客戶關係經理——只看金額排名會誤判為安全客戶",
+            "行銷企劃人員——不能直接套用「Loyal客戶要做會員經營」的通則，因為根本沒有Loyal客戶",
+        ],
+    }
+    st.table(pd.DataFrame(insight_data).set_index("#"))
+    st.info("範例：C003水產鮮活的M在Top3，但R已經90天沒下單……（高金額但即將流失，業務拜訪優先）")
 
 # ============================================================
 # 第二週～第八週：空白佔位
