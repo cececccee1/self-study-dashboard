@@ -338,7 +338,7 @@ if st.session_state.page == "home":
                     position: relative; overflow: hidden;">
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
             <p style="color: {MUTED}; margin: 0; font-size: 15px;">
-                以八週為單位
+                把每一週投入的時間，都變成看得見的成果
             </p>
         </div>
         """,
