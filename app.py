@@ -198,6 +198,35 @@ def week_placeholder(week_num):
     )
 
 
+def make_gauge(title, value, target, suffix="%"):
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=value,
+        number={"suffix": suffix, "font": {"color": TEXT, "size": 28}},
+        title={"text": title, "font": {"color": MUTED, "size": 14}},
+        gauge={
+            "axis": {"range": [0, 100], "tickcolor": MUTED},
+            "bar": {"color": JADE},
+            "bgcolor": PANEL_LIGHT,
+            "borderwidth": 1,
+            "bordercolor": BORDER,
+            "threshold": {
+                "line": {"color": GOLD, "width": 3},
+                "thickness": 0.85,
+                "value": target,
+            },
+        },
+    ))
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        font_color=TEXT,
+        font_family="cwTeXKai, serif",
+        height=220,
+        margin=dict(t=50, b=10, l=20, r=20),
+    )
+    return fig
+
+
 st.markdown(
     "<h1 style='white-space: nowrap;'>🖌️📜🏮 我的自學歷程：八週學習紀錄</h1>",
     unsafe_allow_html=True,
@@ -239,16 +268,17 @@ with tab_home:
     st.markdown(
         """
         - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
-        - **第一週** 目前已放入「任務01｜智慧戰略圖」
+        - **第一週** 目前已放入任務01、02、03
         - 其餘週次會隨課程進度陸續補上
         """
     )
     st.info("💡 點擊上方分頁按鈕切換各週內容。")
 
 # ============================================================
-# 第一週：任務01｜智慧戰略圖
+# 第一週：任務01 + 任務02 + 任務03
 # ============================================================
 with tab_w1:
+    # ---------- 任務01｜智慧戰略圖 ----------
     st.markdown("<h2 style='white-space: nowrap;'>🗺️ 第一週｜任務01：智慧戰略圖</h2>", unsafe_allow_html=True)
     st.caption("Smart Strategy Map・A物流公司（綜合型3PL）")
     st.markdown("**任務目標**：為A物流公司（綜合型3PL：貨運×冷鏈）畫一張A4的「智慧戰略圖」，展開「顧客→指標→手段」三層邏輯。")
@@ -311,6 +341,271 @@ with tab_w1:
         ],
     }
     st.table(pd.DataFrame(rubric_data).set_index("自評維度"))
+
+    # ---------- 任務02｜價值原型機 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>📊 任務02｜價值原型機</h2>", unsafe_allow_html=True)
+    st.caption("Data → Question → Decision")
+    st.markdown(
+        "**任務目標**：延續任務01的A物流公司情境，從「資料」推到「決策」，完成一頁《資料→問題→決策》反思。\n\n"
+        "**資料檔**：訂單配送_202501-202506.csv、冷鏈溫控_202501-202506.csv"
+    )
+
+    st.subheader("Step 1｜掃資料（5 min）")
+    scan_data = {
+        "檔案": ["訂單配送", "冷鏈溫控"],
+        "欄位數/筆數": ["10欄／815筆", "8欄／1,215筆"],
+        "明顯異常觀察": [
+            "order_id重複：15個重複ID，其中10列整列重複，刪除整列重複，ID撞號保留並可由note追蹤；"
+            "order_date格式不一：Excel序號+slash/dash兩式，共44筆Excel序號（如45749），統一為YYYY-MM-DD；"
+            "ship/delivery_datetime格式不一致，190筆slash式，統一為YYYY-MM-DD HH:MM:SS",
+            "record_id完全重複列：15列整列重複，已刪除重複保留首筆；"
+            "timestamp格式不一致：3種格式（YYYY-MM-DD/YYYY/MM/DD/DD-Mon-YYYY），統一為YYYY-MM-DD HH:MM:SS；"
+            "vehicle_id空值：32列去重後無車輛代號，標為UNKNOWN無法回填；"
+            "temp_zone標籤雜亂：同區有12種寫法（冷凍/冷凍/FROZEN/冷凍(-18°C)等），正規化為冷凍/冷藏/多溫層",
+        ],
+    }
+    st.table(pd.DataFrame(scan_data).set_index("檔案"))
+
+    st.subheader("Step 2a｜Meta-prompt")
+    st.markdown(
+        "> 你是一位資深3PL物流營運顧問。我是綜合型3PL（貨運常溫+冷鏈倉儲）的營運分析師見習生。"
+        "我手上有兩份資料：訂單配送（815筆，欄位：order_id、order_date、ship/delivery_datetime、"
+        "customer_id/name、region、temp_layer、qty、freight_twd）與冷鏈溫控（1,215筆，欄位：record_id、"
+        "timestamp、vehicle_id、temp_zone、target_temp_low/high_c、temp_c、pass_flag）。請：\n"
+        "> 1. 提出3個最有價值的「跨業務線（貨運×冷鏈）」管理問題，並說明為何重要。\n"
+        "> 2. 每題標明用到哪些欄位、來自訂單檔還是冷鏈檔。\n"
+        "> 3. 區分每題屬BI（描述/異常）還是AI（預測/最佳化），並說明理由。\n"
+        "> 4. 最後反問我一個你認為我忽略的關鍵問題。\n"
+        "> 請勿直接幫我算數字，重點在「問對問題」。"
+    )
+
+    st.subheader("Step 2b｜3個跨業務線管理問題")
+    q_data = {
+        "#": [1, 2, 3],
+        "管理問題": [
+            "冷鏈溫控異常是否影響配送效率與準時送達？",
+            "哪些地區或溫層的配送成本較高且冷鏈異常較多？",
+            "未來哪些配送最可能發生冷鏈異常或配送延誤？",
+        ],
+        "用到欄位（標檔）": [
+            "訂單配送：region、ship_datetime、delivery_datetime、temp_layer；冷鏈溫控：timestamp、temp_c、pass_flag",
+            "訂單配送：region、temp_layer、qty、freight_twd；冷鏈溫控：temp_zone、pass_flag",
+            "訂單配送：region、ship_datetime、delivery_datetime、temp_layer 等",
+        ],
+        "BI/AI": [
+            "BI／分析溫控異常是否與配送延誤有相關性",
+            "BI／比較不同區域、不同溫層的成本與異常率",
+            "AI／利用歷史配送與溫控資料建立預測模型",
+        ],
+    }
+    st.table(pd.DataFrame(q_data).set_index("#"))
+
+    st.subheader("Step 2c｜與講師版本對照")
+    compare_data = {
+        "對照題": ["哪裡一致", "哪裡不同", "哪個比較好"],
+        "你的觀察": [
+            "兩個版本的核心內容其實是一樣的：①冷鏈異常是否影響配送效率；②哪些區域/溫層成本高且異常多",
+            "1. 管理問題：講師版有說明背景，內容較完整；自己版問題簡潔，一句話就能看懂。"
+            "2. 用到欄位：自己版有分訂單檔、冷鏈檔",
+            "我選擇這三個管理問題，是因為它們同時涵蓋服務品質、成本控制與風險預防三個核心管理面向，"
+            "且都需要結合貨運與冷鏈資料分析，比單一業務線的問題更貼近綜合型3PL的實際營運需求",
+        ],
+    }
+    st.table(pd.DataFrame(compare_data).set_index("對照題"))
+
+    st.subheader("Step 3｜寫心得（資料→問題→決策）")
+    reflect_data = {
+        "項目": ["資料（Data）", "問題（Question）", "決策（Decision）"],
+        "內容": [
+            "蒐集並整理訂單配送（配送時間、配送區域、溫層、數量等）與冷鏈溫控資料",
+            "從資料中找出管理問題，例如：①冷鏈溫控異常是否影響配送效率",
+            "根據分析結果，制定改善措施，例如：優化配送路線、加強溫控監測",
+        ],
+    }
+    st.table(pd.DataFrame(reflect_data).set_index("項目"))
+
+    st.markdown("**我的判斷**：部分同意 AI 的分析")
+    st.info(
+        "我部分同意AI的分析，因為AI能快速從訂單配送與冷鏈溫控資料中找出值得關注的管理問題，"
+        "提供分析方向；但目前資料缺少訂單與冷鏈之間的共同關聯欄位，且部分資料存在品質問題，"
+        "仍需人工判斷驗證後才能做出最終決策。"
+    )
+
+    # ---------- 任務03｜燃料提煉廠 Worksheet ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>🏭 任務03｜燃料提煉廠 Worksheet</h2>", unsafe_allow_html=True)
+    st.caption("雙CSV清洗＋業務報告（W1 Day2）")
+    st.markdown(
+        "適用於 Week1・Day2／預估填寫時間：全日穿插填寫，15:00前彙整\n\n"
+        "**本版重點**：訂單CSV與冷鏈CSV流程完全分章，避免互混"
+    )
+
+    st.subheader("〔Section 0〕雙CSV流程速覽")
+    s0_data = {
+        "CSV": ["訂單CSV", "冷鏈CSV"],
+        "章節": ["Section A", "Section B"],
+        "出檔": ["A_物流_訂單配送_CLEAN.csv", "A_物流_冷鏈溫控_CLEAN.csv"],
+        "流程": ["覆蓋率／準確度／時效／主資料治理", "感測器故障／時戳解析／pass_flag重算／異常集中"],
+    }
+    st.table(pd.DataFrame(s0_data).set_index("CSV"))
+    st.caption("本日清洗兩份CSV，兩份各自獨立流程，不要互混；建議節奏：早上Section A（訂單），下午Section B（冷鏈），Section C才整合算KPI")
+
+    st.subheader("〔Section 1〕觀念回顧")
+    st.markdown("**1.1 五件套 Prompt（讓AI當助教）**")
+    prompt5_data = {
+        "件": ["角色", "診斷", "分階段", "回報", "驗收"],
+        "內容": [
+            "我是物流公司的分析師",
+            "目前我的環境是有VS Code跟Python，發生的問題是有髒資料",
+            "「請分幾個步驟教，每步問我做完了沒」",
+            "「我會把每步的結果（指令輸出）貼給你」",
+            "「最後給我三行驗證指令確認OK」",
+        ],
+    }
+    st.table(pd.DataFrame(prompt5_data).set_index("件"))
+
+    st.markdown("**1.2 品質三問（資料清洗框架）**")
+    q3_data = {
+        "問": ["覆蓋率", "準確度", "時效"],
+        "工具": [".isna().sum() / drop_duplicates / 主鍵衝突", ".value_counts() / 異常值 / 格式統一", "邏輯檢查 / 未來日期 / 時戳順序"],
+        "物流例子": ["訂單缺customer_id", "溫層6種寫法", "送達早於出貨"],
+    }
+    st.table(pd.DataFrame(q3_data).set_index("問"))
+
+    st.markdown("**1.3 5種以上髒資料模式**")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("- **缺漏**：哪些欄位有空白")
+        st.markdown("- **異常值**：數量、金額不合理")
+        st.markdown("- **時序錯亂**：時間邏輯不合理")
+    with c2:
+        st.markdown("- **重複**：region缺24、qty缺15、freight_twd缺37")
+        st.markdown("- **格式不一**：freight_twd負數12筆；另有qty=-64")
+        st.markdown("- **第6種（自選）**：送達早於出貨5筆")
+
+    st.divider()
+    st.subheader("Section A｜訂單CSV清洗（09:50-12:00）")
+    st.caption('載入：df_orders = pd.read_csv("A_物流_訂單配送_202501-202506.csv")，預期815筆')
+
+    st.markdown("**A-§A 覆蓋率（25 min）**")
+    aa_data = {
+        "步": [1, 2, 3, 4, 5, 6],
+        "動作": [
+            "文字去空白 .str.strip()", "空字串轉NaN replace('', np.nan)",
+            "關鍵欄位缺漏刪（order_id/customer_id）", "數值缺漏用同溫層中位數補freight_twd",
+            "完全重複列 drop_duplicates()", "主鍵衝突（同order_id兩筆，選qty大者）",
+        ],
+        "移除筆數": ["0筆", "0筆", "15筆", "0筆", "－", "0筆"],
+        "判斷理由": [
+            "去除前後空白，統一格式", "統一缺漏值格式，方便後續處理",
+            "無法唯一識別訂單或客戶，因此刪除", "正常配送數量與運費不應為負數，可能是輸入錯誤或退貨",
+            "完成資料清洗後輸出清洗檔，供後續分析使用",
+            "order_id應代表唯一訂單，若重複代表可能重複匯入",
+        ],
+    }
+    st.table(pd.DataFrame(aa_data).set_index("步"))
+
+    st.markdown("**A-§B 準確度（45 min）**")
+    ab_data = {
+        "步": [1, 2, 3],
+        "動作": ["負數運費 freight_twd.abs()", "溫層歸一（6種寫法統一）", "日期格式統一 pd.to_datetime(errors='coerce')"],
+        "處理筆數": ["12筆", "0筆", "0筆"],
+        "判斷理由": [
+            "配送運費通常不應為負值，負值可能是輸入錯誤或退貨",
+            "同一溫層有多種寫法（如AMBIENT、常溫、CHILLED等）",
+            "原始資料同時存在三種日期格式，需統一轉為datetime",
+        ],
+    }
+    st.table(pd.DataFrame(ab_data).set_index("步"))
+    st.info("溫層6種寫法歸一檢核：冷藏／冷藏區／冷藏(2-8°C)／chilled／CHILLED 全部統一成「冷藏」")
+
+    st.markdown("**A-§C 時效（40 min）**")
+    ac_data = {
+        "步": [1, 2],
+        "動作": ["ship_datetime ≤ delivery_datetime 邏輯檢查", "未來日期（order_date > 2026-06-30）剔除"],
+        "標記/刪除筆數": ["25筆", "7筆"],
+        "立場": ["標記", "標記"],
+    }
+    st.table(pd.DataFrame(ac_data).set_index("步"))
+    st.caption("講義立場：時戳錯序標記不刪（可追蹤）；未來日期剔除（違反時序因果）")
+
+    st.markdown("**A-§D 主資料治理（50 min）**")
+    ad_data = {
+        "步": [1, 2],
+        "動作": ["customer_name.value_counts() 看momo5種寫法", "以customer_id為Master歸一customer_name"],
+        "結果": ["發現同一客戶有多種寫法，例如momo購物網、MOMO等", "customer_id為客戶唯一識別碼，以其作為主資料依據"],
+    }
+    st.table(pd.DataFrame(ad_data).set_index("步"))
+
+    st.success("✅ A段出檔檢核：產出 A_物流_訂單配送_CLEAN.csv（預期~800筆）；我的CLEAN共800筆（原815-移除15+補回0=800）；df_orders.isna().sum() 全部=0（自我驗收）")
+
+    st.divider()
+    st.subheader("Section B｜冷鏈CSV清洗（14:00-14:50）")
+    st.caption('載入：df_cold = pd.read_csv("A_物流_冷鏈溫控_202501-202506.csv")，預期1,215筆')
+
+    b_data = {
+        "步驟": [1, 2, 3, 4, 5],
+        "動作": [
+            "刪 record_id/timestamp 缺失", "完全重複列",
+            "感測器故障標記（999/-999/99.9）→ sensor_fault_flag=1, temp_c=NaN",
+            "時戳多格式解析，失敗者刪", "其他關鍵欄（vehicle_id）空值：dropna（temp_c故障NaN保留）",
+        ],
+        "移除/標記筆數": ["32筆/0筆", "15筆", "0筆/51筆", "0筆", "32筆/0筆"],
+        "判斷理由": [
+            "UNKNOWN/無法解析", "刪除",
+            "哨兵值不代表真實溫度，將temp_c設為NaN",
+            "無法解析：0筆，所以沒有資料被刪除", "缺失標記/UNKNOWN",
+        ],
+    }
+    st.table(pd.DataFrame(b_data).set_index("步驟"))
+    st.success("✅ B段出檔檢核：產出 A_物流_冷鏈溫控_CLEAN.csv（預期~1,200筆）；我的CLEAN共1200筆；df_cold.isna().sum() 確認剩餘NaN都是故障標記後刻意NaN的temp_c")
+
+    st.divider()
+    st.subheader("Section C｜整合＋業務報告（14:50-15:45）")
+
+    st.markdown("**C.1 三個業務數字（儀表板檢視）**")
+
+    kpi_col1, kpi_col2, kpi_col3 = st.columns(3)
+    with kpi_col1:
+        st.plotly_chart(make_gauge("基礎達交率", 95, 95), width="stretch")
+        st.caption("目標 ≥95%　金線＝目標門檻")
+    with kpi_col2:
+        st.plotly_chart(make_gauge("冷鏈溫控達標率", 99.5, 99.5), width="stretch")
+        st.caption("目標 ≥99.5%")
+    with kpi_col3:
+        st.plotly_chart(make_gauge("Top20%客戶運費占比", 80, 80), width="stretch")
+        st.caption("驗證80/20法則")
+
+    st.markdown("**C.2 清洗稽核日誌.md（主交付物）**")
+    st.code(
+        "# 任務03清洗稽核日誌\n\n"
+        "## 訂單CSV（原815筆）\n"
+        "- §A覆蓋率：移除15筆，主因完全重複列及同一order_id重複，避免重複計算\n"
+        "- §B準確度：處理12筆，主因負運費、統一溫層寫法、統一日期格式，提高分析準確性\n"
+        "- §C時效：標記32筆，刪除0筆，主因保留異常資料供後續人工確認",
+        language="markdown",
+    )
+
+    st.markdown("**C.3 業務對話演練（對總經理的話——結論＋三方向）**")
+    c3_data = {
+        "段": ["1句話結論", "三個方向擇1調查", "接D3預告"],
+        "內容": [
+            "本次完成訂單配送與冷鏈溫控資料的清理與標準化，建立可供分析的資料基礎",
+            "1. 提升配送效率　2. 強化冷鏈品質管理　3. 優化客戶與配送成本",
+            "明天Day3儀表板會用這三個切面同時秀給您看",
+        ],
+    }
+    st.table(pd.DataFrame(c3_data).set_index("段"))
+
+    st.markdown("**〔評分對照〕**")
+    score_data = {
+        "維度": ["覆蓋率（訂單§A+主鍵衝突）", "準確度（訂單§B+Excel序列日期）", "時效（訂單§C標記+剔未來日期）",
+                "主資料治理（訂單§D+Master邏輯）", "冷鏈清洗（Section B）", "稽核日誌（每步+判斷理由+KPI）", "總計"],
+        "配分": [20, 20, 20, 15, 15, 10, 100],
+        "我的得分": [15, 15, 15, 5, 5, 5, 60],
+    }
+    st.table(pd.DataFrame(score_data).set_index("維度"))
 
 # ============================================================
 # 第二週～第八週：空白佔位
