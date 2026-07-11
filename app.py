@@ -185,6 +185,26 @@ def style_fig(fig):
     return fig
 
 
+def back_to_home_button():
+    st.markdown(
+        f"""
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 8px;">
+            <a href="#" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}}); return false;"
+               style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
+                      border: 1px solid {JADE}; border-radius: 6px; color: {JADE};
+                      text-decoration: none; font-weight: 700; font-size: 14px;
+                      letter-spacing: 0.05em;">
+                🏠 返回首頁
+            </a>
+        </div>
+        <p style="text-align: center; color: {MUTED}; font-size: 12px; margin-top: 6px;">
+            點擊後將捲動至頁面最上方，再點選上方「🏠 首頁」分頁
+        </p>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def week_placeholder(week_num):
     st.markdown(
         f"""
@@ -926,6 +946,8 @@ with tab_w1:
     st.table(pd.DataFrame(insight_data).set_index("#"))
     st.info("範例：C003水產鮮活的M在Top3，但R已經90天沒下單……（高金額但即將流失，業務拜訪優先）")
 
+    back_to_home_button()
+
 # ============================================================
 # 第二週：任務06 + 任務07 + 任務08 + 任務09
 # ============================================================
@@ -1522,29 +1544,37 @@ with tab_w2:
         language=None,
     )
 
+    back_to_home_button()
+
 with tab_w3:
     st.markdown("<h2>第三週</h2>", unsafe_allow_html=True)
     week_placeholder(3)
+    back_to_home_button()
 
 with tab_w4:
     st.markdown("<h2>第四週</h2>", unsafe_allow_html=True)
     week_placeholder(4)
+    back_to_home_button()
 
 with tab_w5:
     st.markdown("<h2>第五週</h2>", unsafe_allow_html=True)
     week_placeholder(5)
+    back_to_home_button()
 
 with tab_w6:
     st.markdown("<h2>第六週</h2>", unsafe_allow_html=True)
     week_placeholder(6)
+    back_to_home_button()
 
 with tab_w7:
     st.markdown("<h2>第七週</h2>", unsafe_allow_html=True)
     week_placeholder(7)
+    back_to_home_button()
 
 with tab_w8:
     st.markdown("<h2>第八週</h2>", unsafe_allow_html=True)
     week_placeholder(8)
+    back_to_home_button()
 
 st.divider()
 st.caption("🌱 我的學習歷程：八週學習紀錄")
