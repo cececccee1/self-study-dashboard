@@ -269,7 +269,7 @@ with tab_home:
         """
         - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
         - **第一週** 目前已放入任務01、02、03、04、05
-        - **第二週** 目前已放入任務06、07
+        - **第二週** 目前已放入任務06、07、08
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -1230,6 +1230,168 @@ with tab_w2:
         ],
     }
     st.table(pd.DataFrame(reflect7_data).set_index("問題"))
+
+    # ---------- 任務08｜供應鏈串接 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>🔗 任務08｜供應鏈串接</h2>", unsafe_allow_html=True)
+    st.caption("三表Merge＋主因標籤（個人作答）")
+    st.markdown(
+        "適用：Week2・Day8，預估填寫時間50分鐘（15:00-15:50）\n\n"
+        "繳交方式：請依據指定方式繳交（/Day8/任務08_供應鏈串接/）\n\n"
+        "建議檔名：D8_任務08_供應鏈串接_你的姓名（可打包zip或單檔）"
+    )
+
+    st.subheader("Section 1｜情境（3 min）")
+    st.markdown(
+        "虛擬企業C（食品批發商）的老闆抱怨：「最近C類庫存暴增30%，"
+        "但業務說沒問題、倉儲說沒問題、採購也說沒問題。幫我抓出問題在誰。」\n\n"
+        "**三表資料**：\n"
+        "- purchase.csv（採購單號、SKU、供應商、訂購量、預計到貨）\n"
+        "- receipt.csv（採購單號、SKU、實際到貨、實際數量、品質旗標）\n"
+        "- sales.csv（銷售單號、SKU、客戶、出貨量、出貨日）\n\n"
+        "**你的任務**：用Pandas Merge串起三表，找出Top5庫存積壓SKU，並標出主因。"
+    )
+
+    st.subheader("Section 2｜觀念回顧（填空，5 min）")
+    st.markdown("**2.1 長鞭效應四大放大來源**")
+    bullwhip_data = {
+        "#": [1, 2, 3, 4],
+        "來源": [
+            "安全庫存效應(Safety Stock Amplification)", "批量訂購(Order Batching／EOQ)",
+            "促銷與清庫存循環(Promotion Cycling)", "短缺博弈(Shortage Gaming)",
+        ],
+        "為什麼放大": ["看到大單就調高安全庫存", "訂滿經濟批量才下單", "促銷囤貨、平期清庫存", "怕拿不到就先報大量"],
+    }
+    st.table(pd.DataFrame(bullwhip_data).set_index("#"))
+
+    st.markdown("**2.2 前置期三段拆解**")
+    lt_data = {
+        "段別": ["訂單前置", "供應商前置", "物流前置"],
+        "縮寫": ["OLT", "SLT", "DLT"],
+        "內容": ["內部從需求確認到下單", "供應商收單到出貨", "出貨到入庫"],
+        "可控？": ["可控", "半控", "半控"],
+    }
+    st.table(pd.DataFrame(lt_data).set_index("段別"))
+
+    st.markdown("**2.3 Pandas Merge四式—商業意義**")
+    merge_data = {
+        "寫法": ["inner", "left", "right", "outer"],
+        "商業意義（用一句話）": [
+            "只留A與B都有的資料（交集），用於嚴格分析，會漏看單邊獨有的異常",
+            "保留A表全部，B對不到的填NaN，是「以A為主視角」的分析（例如看訂了但還沒到貨的採購單）",
+            "保留B表全部，鏡像left，業界較少用（通常改成調換左右表位置、用left達成同樣效果）",
+            "保留兩表全部資料，沒對到的都留著填NaN，用來看「哪裡缺漏」，適合稽核用途",
+        ],
+    }
+    st.table(pd.DataFrame(merge_data).set_index("寫法"))
+
+    st.markdown("**2.4 反直覺三點（連連看配對答案）**")
+    match_data = {
+        "配對": ["B", "A", "C"],
+        "說法": [
+            "真正成本：安全庫存×倉儲成本×資金利率",
+            "看到C類庫存上升先看採購紀錄",
+            "你選哪個how反映你選哪個視角",
+        ],
+    }
+    st.table(pd.DataFrame(match_data).set_index("配對"))
+    st.caption("原題：A. 庫存積壓很少是賣不好，常常是買得太兇　B. 供應商「便宜」常常用LT換來　C. Merge不是技術題，是商業假設題")
+
+    st.subheader("Section 3｜三表Merge實作（15 min）")
+    st.markdown("**3.1 Step 1：採購↔進貨（對LT）**")
+    st.code(
+        'import pandas as pd\n'
+        'p = pd.read_csv("purchase.csv", encoding="utf-8-sig", parse_dates=["下單日", "預計到貨"])\n'
+        'r = pd.read_csv("receipt.csv",  encoding="utf-8-sig", parse_dates=["實際到貨"])\n'
+        '# 你選的how = "left"\n'
+        'pr = p.merge(r, on=["採購單號", "SKU"], how="left")\n'
+        '# LT三層\n'
+        'pr["實際LT"]   = (pr["實際到貨"] - pr["下單日"]).dt.days\n'
+        'pr["計畫LT"]   = (pr["預計到貨"] - pr["下單日"]).dt.days\n'
+        'pr["LT延遲日"] = pr["實際LT"] - pr["計畫LT"]\n'
+        'print(pr.head())',
+        language="python",
+    )
+    st.markdown(
+        "**你選的how＝\"left\"**\n\n"
+        "**理由**：以採購單為主視角，保留「訂了但還沒到貨」的採購單，才能看出斷貨追責的早期警訊"
+    )
+    st.success("✅ 觀察：Merge後筆數＝102（原p＝102筆／原r＝73筆）")
+
+    st.markdown("**3.2 Step 2：加銷售**")
+    st.code(
+        's = pd.read_csv("sales.csv", encoding="utf-8-sig", parse_dates=["出貨日"])\n'
+        'sku_sales = s.groupby("SKU")["出貨量"].sum().reset_index()\n'
+        'sku_sales.columns = ["SKU", "九月銷量"]\n'
+        'full = pr.merge(sku_sales, on="SKU", how="left")\n'
+        'full["九月銷量"] = full["九月銷量"].fillna(0)\n'
+        'full["庫存積壓量"] = full["實際數量"] - full["九月銷量"]',
+        language="python",
+    )
+
+    st.markdown("**3.3 Step 3：Top5積壓SKU**")
+    st.code(
+        '積壓 = full[full["庫存積壓量"] > 0].sort_values("庫存積壓量", ascending=False)\n'
+        'print(積壓.head(5))',
+        language="python",
+    )
+    top5_data = {
+        "排名": [1, 2, 3, 4, 5],
+        "SKU": ["S-1015", "S-1023", "S-1031", "S-1002", "S-1012"],
+        "供應商": ["SUP-02", "SUP-03", "SUP-04", "SUP-02", "SUP-02"],
+        "進貨量": [941, 438, 201, 580, 278],
+        "9月銷量": [77, 135, 37, 418, 131],
+        "積壓量": [864, 303, 164, 162, 147],
+        "實際LT": ["11天", "28天", "16天", "12天", "14天"],
+    }
+    st.table(pd.DataFrame(top5_data).set_index("排名"))
+
+    st.subheader("Section 4｜主因標籤（15 min）")
+    st.caption("這是本任務最關鍵欄位，佔35分。")
+    st.markdown("**4.1 主因四種候選**")
+    reason_data = {
+        "標籤": ["採購過量", "LT過長", "銷售下滑", "品質瑕疵"],
+        "判定線索（程式實際）": [
+            "實際進貨量>前三月平均月銷×倍率閾值（預設2.0）且庫存積壓量>100",
+            "供應商LT變異（σ/μ）>0.30",
+            "周轉率（九月銷量÷實際進貨量）<0.20",
+            "不良次數≥1且不良率（不良次數÷實際進貨量）≥5%",
+        ],
+    }
+    st.table(pd.DataFrame(reason_data).set_index("標籤"))
+
+    st.markdown("**4.2 為Top5 SKU各標主因**")
+    label5_data = {
+        "SKU": ["S-1015", "S-1023", "S-1031", "S-1002", "S-1012"],
+        "主因標籤": ["採購過量／銷售下滑", "採購過量／銷售下滑", "銷售下滑", "一般庫存", "採購過量"],
+        "證據（具體數字）": [
+            "進貨941件是前三月均銷91.7件的10.3倍（遠超2倍門檻）",
+            "進貨438件是前三月均銷136.7件的3.2倍（超過2倍門檻）",
+            "進貨201件其實只是前三月均銷290件的0.7倍（未達採購過量門檻）",
+            "進貨580件是前三月均銷439.7件的1.3倍（未達2倍門檻）",
+            "進貨278件是前三月均銷132件的2.1倍（略超2倍門檻）",
+        ],
+    }
+    st.table(pd.DataFrame(label5_data).set_index("SKU"))
+
+    st.markdown("**4.3 主因分布**")
+    dist_data = {
+        "主因": ["採購過量", "銷售下滑", "LT過長", "品質瑕疵（含退貨）"],
+        "SKU數": ["3（S-1015、S-1023、S-1012）", "2（S-1015、S-1031）", "1（S-1023）", "0"],
+    }
+    st.table(pd.DataFrame(dist_data).set_index("主因"))
+    st.success("✅ 結論：5個SKU中最常見主因是「採購過量」（3支SKU都有這個標籤：S-1015、S-1023、S-1012）")
+
+    st.subheader("Section 5｜一句話結論（10 min）")
+    st.info(
+        "主因是採購過量，5支Top積壓SKU中3支進貨量遠超前三月平均銷量（S-1015達10.3倍）。"
+        "我建議下月暫停這幾支SKU新採購，並要求業務重新核對9月銷售預測，"
+        "同時對LT變異過高的供應商啟動改善計畫。"
+    )
+
+    st.subheader("Section 6｜GenAI sub-task 連動（2 min）")
+    st.markdown("- 上午GenAI報告中，你抽到的新品＝ *（尚未填寫）*")
+    st.markdown("- 回答：這份報告對你今天的任務08有沒有幫助？如何幫助？ *（尚未填寫）*")
 
 with tab_w3:
     st.markdown("<h2>第三週</h2>", unsafe_allow_html=True)
