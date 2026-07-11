@@ -337,8 +337,8 @@ if st.session_state.page == "home":
                     padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
                     position: relative; overflow: hidden;">
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
-            <p style="color: {MUTED}; margin: 0; font-size: 15px;">
-                把每一週投入的時間，都變成看得見的成果
+            <p style="color: {TEXT}; margin: 0; font-size: 28px; font-weight: 700; line-height: 1.4;">
+                把每一週投入的時間，<span style="color: {JADE};">都變成看得見的成果</span>
             </p>
         </div>
         """,
