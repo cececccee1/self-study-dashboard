@@ -538,7 +538,7 @@ with tab_w1:
     }
     st.table(pd.DataFrame(ad_data).set_index("步"))
 
-    st.success("✅ A段出檔檢核：產出 A_物流_訂單配送_CLEAN.csv（預期~800筆）；我的CLEAN共800筆（原815-移除15+補回0=800）；df_orders.isna().sum() 全部=0（自我驗收）")
+    st.success("✅ A段出檔檢核：產出 A_物流_訂單配送_CLEAN.csv（預期約800筆）；我的CLEAN共800筆（原815-移除15+補回0=800）；df_orders.isna().sum() 全部=0（自我驗收）")
 
     st.divider()
     st.subheader("Section B｜冷鏈CSV清洗（14:00-14:50）")
@@ -559,7 +559,7 @@ with tab_w1:
         ],
     }
     st.table(pd.DataFrame(b_data).set_index("步驟"))
-    st.success("✅ B段出檔檢核：產出 A_物流_冷鏈溫控_CLEAN.csv（預期~1,200筆）；我的CLEAN共1200筆；df_cold.isna().sum() 確認剩餘NaN都是故障標記後刻意NaN的temp_c")
+    st.success("✅ B段出檔檢核：產出 A_物流_冷鏈溫控_CLEAN.csv（預期約1,200筆）；我的CLEAN共1200筆；df_cold.isna().sum() 確認剩餘NaN都是故障標記後刻意NaN的temp_c")
 
     st.divider()
     st.subheader("Section C｜整合＋業務報告（14:50-15:45）")
@@ -656,7 +656,7 @@ with tab_w1:
         ],
     }
     st.table(pd.DataFrame(src_data).set_index("CSV"))
-    st.success("✅ 訂單CLEAN我有793筆（D2末預期~800筆）；冷鏈CLEAN我有943筆（D2末預期~1200筆）；pass_flag.mean()＝73.85%（預期70-80%）")
+    st.success("✅ 訂單CLEAN我有793筆（D2末預期約800筆）；冷鏈CLEAN我有943筆（D2末預期約1200筆）；pass_flag.mean()＝73.85%（預期70-80%）")
 
     st.subheader("Section 3｜儀表板版面設計（15 min）")
     st.markdown("**3.1 F字型版面草稿**")
