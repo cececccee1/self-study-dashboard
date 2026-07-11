@@ -6,7 +6,7 @@ import streamlit as st
 from pathlib import Path
 from datetime import datetime
 
-st.set_page_config(page_title="我的自學歷程", layout="wide", page_icon="🖌️")
+st.set_page_config(page_title="我的學習歷程", layout="wide", page_icon="🖌️")
 
 # ============================================================
 # 設計代幣（Design Tokens）：古風配色 —— 墨黑底 × 朱紅印璽 × 泥金
@@ -228,7 +228,7 @@ def make_gauge(title, value, target, suffix="%"):
 
 
 st.markdown(
-    "<h1 style='white-space: nowrap;'>🖌️📜🏮 我的自學歷程：八週學習紀錄</h1>",
+    "<h1 style='white-space: nowrap;'>🖌️📜🏮 我的學習歷程：八週學習紀錄</h1>",
     unsafe_allow_html=True,
 )
 
@@ -255,7 +255,7 @@ with tab_home:
                     padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
                     position: relative; overflow: hidden;">
             <div class="seal-stamp"><span>自學</span></div>
-            <h2 style="color: {TEXT}; margin: 0 0 8px 0;">我的自學歷程控制塔</h2>
+            <h2 style="color: {TEXT}; margin: 0 0 8px 0;">我的學習歷程</h2>
             <p style="color: {MUTED}; margin: 0; font-size: 15px;">
                 以八週為單位，記錄每一週的任務、學習與成果
             </p>
@@ -1547,4 +1547,4 @@ with tab_w8:
     week_placeholder(8)
 
 st.divider()
-st.caption("🌱 我的自學歷程：八週學習紀錄")
+st.caption("🌱 我的學習歷程：八週學習紀錄")
