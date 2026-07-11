@@ -269,7 +269,7 @@ with tab_home:
         """
         - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
         - **第一週** 目前已放入任務01、02、03、04、05
-        - **第二週** 目前已放入任務06
+        - **第二週** 目前已放入任務06、07
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -1063,6 +1063,173 @@ with tab_w2:
         ],
     }
     st.table(pd.DataFrame(reflect6_data).set_index("問題"))
+
+    # ---------- 任務07｜遲到偵探 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>🕵️ 任務07｜遲到偵探</h2>", unsafe_allow_html=True)
+    st.caption("OTD三層分析＋IQR異常偵測＋Folium地圖看板")
+    st.markdown("適用：Week2・Day7　　預估110分鐘（14:00-15:50）")
+
+    st.subheader("Section 1｜情境（5 min）")
+    st.markdown(
+        "虛擬企業B：中部4PL配送商，服務200家連鎖便利商店。\n"
+        "- 9月配送紀錄：約6,000筆（配送紀錄_202509.csv）\n"
+        "- 路線：R-01至R-09（共9條）\n"
+        "- 司機：D-01至D-12（共12位）\n"
+        "- 欄位：訂單編號、路線、司機、預計到達、實際到達、客戶時窗起/迄、貨損旗標、緯度/經度\n\n"
+        "**老闆抱怨**：OTD變差，但不知道是路線爛、司機爛，還是訂單時段太密集。\n\n"
+        "**你的任務**：用90分鐘給他答案。"
+    )
+
+    st.subheader("Section 2｜觀念回顧（填空，10 min）")
+    st.markdown("**2.1 OTD三種口徑**")
+    otd_data = {
+        "口徑": ["嚴格OTD", "計畫OTD", "三方加權OTD"],
+        "公式": ["準時送達訂單／全部訂單", "依排程準時訂單／已排程訂單", "時窗×完整×無損傷"],
+        "適用情境": ["客戶視角（B2C高承諾）", "排程視角（內部KPI）", "製造業／醫藥"],
+    }
+    st.table(pd.DataFrame(otd_data).set_index("口徑"))
+
+    st.markdown("**2.2 異常偵測三大武器**")
+    weapon_data = {
+        "武器": ["IQR", "Z-score", "Rolling滾動"],
+        "適用情境": ["偏態分布（右偏）", "對稱／常態分布", "有趨勢／季節性資料"],
+        "公式重點": ["下界＝Q1-1.5×IQR，上界＝Q3+1.5×IQR", "|Z|>2（或3）表示異常", "隨趨勢自動調整"],
+    }
+    st.table(pd.DataFrame(weapon_data).set_index("武器"))
+
+    st.markdown("**2.3 反直覺三點**")
+    counter7_data = {
+        "反直覺點": ["OTD 100%不是好事", "異常是pattern不是點", "早到也是異常"],
+        "為什麼": [
+            "代表可能過度保守排程（時窗留太寬），反而犧牲了時效競爭力／成本效率",
+            "單一個案可能只是意外，但重複出現的規律才代表系統性問題需要介入",
+            "客戶依約定時窗規劃收貨人力，早到一樣打亂客戶端安排，等同失約",
+        ],
+    }
+    st.table(pd.DataFrame(counter7_data).set_index("反直覺點"))
+
+    st.subheader("Section 3｜Pandas三層OTD（20 min）")
+    st.markdown("**3.1 整體OTD**")
+    st.metric("整體嚴格OTD", "79.58%")
+
+    st.markdown("**3.2 路線層OTD（最差5條）**")
+    route_data = {
+        "路線": ["R-03", "R-01", "R-05", "R-09", "R-02"],
+        "OTD%": ["27.2%", "79.7%", "81.2%", "86.3%", "87.5%"],
+        "訂單數": [662, 639, 672, 648, 654],
+    }
+    st.table(pd.DataFrame(route_data).set_index("路線"))
+
+    st.markdown("**3.3 司機層OTD（最差5位）**")
+    driver_data = {
+        "司機": ["D-03", "D-07", "D-01", "D-04", "D-08"],
+        "OTD%": ["35.7%", "48.9%", "84.8%", "86.2%", "86.9%"],
+        "訂單數": [305, 832, 420, 442, 587],
+    }
+    st.table(pd.DataFrame(driver_data).set_index("司機"))
+
+    st.markdown("**3.4 控制變量分析（關鍵）**")
+    st.caption("問題：同一位司機跑不同路線，OTD是否一致？取最差司機D-03，看他在不同路線的OTD：")
+    control_data = {
+        "司機": ["D-03"],
+        "路線": ["R-03"],
+        "OTD%": ["35.7%"],
+        "訂單數": [305],
+    }
+    st.table(pd.DataFrame(control_data).set_index("司機"))
+    st.success("✅ 結論：這位司機是「只在某路線差」→ 主因：路線")
+
+    st.subheader("Section 4｜異常偵測（20 min）")
+    st.markdown("**4.1 武器選擇**")
+    st.markdown(
+        "☑ **IQR** — 因為：配送時間偏移分布經histogram檢視為右偏（skew=+1.08），"
+        "IQR不受極端值影響，適合偏態分布"
+    )
+
+    st.markdown("**4.2 異常閾值**")
+    st.code(
+        'df["偏移分鐘"] = (df["實際到達"] - df["預計到達"]).dt.total_seconds() / 60\n'
+        '# 用你選的方法計算閾值\n'
+        'df["異常旗標"] = (df["偏移分鐘"] < 下界) | (df["偏移分鐘"] > 上界)',
+        language="python",
+    )
+    st.info("異常筆數 ＝ 220 ／ 5,941（約3.7%）")
+
+    st.markdown("**4.3 異常的pattern**")
+    st.caption("異常訂單分布（用groupby看）：")
+    pattern_data = {
+        "維度": ["路線", "司機"],
+        "Top1": ["R-03（211筆）", "D-07（152筆）"],
+        "Top2": ["R-05（5筆）", "D-03（65筆）"],
+        "Top3": ["R-01（2筆）", "D-05（1筆）"],
+    }
+    st.table(pd.DataFrame(pattern_data).set_index("維度"))
+
+    st.subheader("Section 5｜Folium互動地圖（30 min）")
+    st.markdown("**5.1 程式骨架**")
+    st.code(
+        'import folium\n'
+        'm = folium.Map(location=[24.15, 120.65], zoom_start=11)\n'
+        'for _, row in df.iterrows():\n'
+        '    color = "red" if row["異常旗標"] else "green"\n'
+        '    folium.CircleMarker(\n'
+        '        location=[row["客戶緯度"], row["客戶經度"]],\n'
+        '        radius=6,\n'
+        '        color=color,\n'
+        '        fill=True,\n'
+        '        popup=f"訂單{row[\'訂單編號\']}<br>路線{row[\'路線代碼\']}"\n'
+        '    ).add_to(m)\n'
+        'm.save("OTD_地圖看板.html")',
+        language="python",
+    )
+
+    st.markdown("**5.2 LayerControl路線篩選**")
+    st.code(
+        '# 把每條路線分到不同FeatureGroup\n'
+        'for 路線 in df["路線代碼"].unique():\n'
+        '    fg = folium.FeatureGroup(name=路線)\n'
+        '    # ... 加marker ...\n'
+        '    fg.add_to(m)\n'
+        'folium.LayerControl().add_to(m)',
+        language="python",
+    )
+    st.markdown("☐ 已成功加入路線篩選")
+
+    st.subheader("Section 6｜病灶診斷（20 min）")
+    st.markdown("**6.1 用一個句子定位主因**")
+    st.markdown("主因是：☑ 路線　☐ 司機　☐ 時段　☐ 路線×時段交互　☐ 其他")
+
+    st.markdown("**6.2 診斷報告（200字內）**")
+    st.info(
+        "整體嚴格OTD為79.58%，屬於警戒區間（低於90%）。異常筆數220筆（3.7%），"
+        "高度集中在路線R-03（211筆，占異常總數96%）與司機D-07（152筆）。"
+        "控制變量分析顯示：最差司機D-03的OTD在R-03路線為35.7%，排除R-03後，"
+        "該司機在其他路線的OTD明顯回升，顯示問題主因是路線本身而非司機個人能力。"
+        "建議行動是優先重新檢視R-03路線規劃，預期效益是OTD由27.2%提升至70%。"
+    )
+
+    st.markdown("**6.3 一條改善建議（一週內可動）**")
+    action6_data = {
+        "項目": ["行動", "責任人", "預期OTD改善"],
+        "內容": ["重新檢視R-03路線規劃（距離／時窗／路線分配）", "排線主管", "由27.2%提升至70%"],
+    }
+    st.table(pd.DataFrame(action6_data).set_index("項目"))
+
+    st.subheader("Section 7｜反直覺收口三問（5 min）")
+    reflect7_data = {
+        "問題": [
+            "如果OTD是99.5%，你還用做這份分析嗎？為什麼？",
+            "如果D-07 OTD偏低只在R-09，你會懲罰司機嗎？（Yes/No並說理由）",
+            "如果老闆說「OTD<95%扣司機獎金」，可能引發什麼Goodhart's Law反效果？",
+        ],
+        "我的回答": [
+            "要，因為要確認高分是否來自「排程刻意寬鬆」，而非真實效率",
+            "No，因為問題出在路線非司機能力，懲罰治標不治本，還可能打擊士氣",
+            "司機可能會虛報到達時間、或拒接困難路線的訂單，指標被操弄反而失真",
+        ],
+    }
+    st.table(pd.DataFrame(reflect7_data).set_index("問題"))
 
 with tab_w3:
     st.markdown("<h2>第三週</h2>", unsafe_allow_html=True)
