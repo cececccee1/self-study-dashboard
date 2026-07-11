@@ -269,7 +269,7 @@ with tab_home:
         """
         - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
         - **第一週** 目前已放入任務01、02、03、04、05
-        - **第二週** 目前已放入任務06、07、08
+        - **第二週** 目前已放入任務06、07、08、09
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -927,7 +927,7 @@ with tab_w1:
     st.info("範例：C003水產鮮活的M在Top3，但R已經90天沒下單……（高金額但即將流失，業務拜訪優先）")
 
 # ============================================================
-# 第二週～第八週：空白佔位
+# 第二週：任務06 + 任務07 + 任務08 + 任務09
 # ============================================================
 with tab_w2:
     st.markdown("<h2 style='white-space: nowrap;'>📦 第二週｜任務06：倉庫整理師</h2>", unsafe_allow_html=True)
@@ -1392,6 +1392,135 @@ with tab_w2:
     st.subheader("Section 6｜GenAI sub-task 連動（2 min）")
     st.markdown("- 上午GenAI報告中，你抽到的新品＝ *（尚未填寫）*")
     st.markdown("- 回答：這份報告對你今天的任務08有沒有幫助？如何幫助？ *（尚未填寫）*")
+
+    # ---------- 任務09｜決策簡報 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>📢 任務09｜決策簡報</h2>", unsafe_allow_html=True)
+    st.caption("SCQA＋金字塔＋風險三情境（個人作答，兩路徑擇一）")
+    st.markdown(
+        "適用：Week2・Day9，預估填寫時間110分鐘（14:00-15:50，含15分鐘Showtime）\n\n"
+        "繳交方式：/Day9/任務09_決策簡報/，建議檔名 D9_任務09_決策簡報_你的姓名"
+    )
+
+    st.subheader("Section 1｜觀念回顧（填空，5 min）")
+    st.markdown("**1.1 SCQA四字訣**")
+    scqa_data = {
+        "字母": ["S", "C", "Q", "A"],
+        "完整字": ["Situation(現況)", "Complication(衝突)", "Question(問題)", "Answer(回答)"],
+        "說明": ["當前情況（共識）", "變化/問題（衝突）", "引出的核心問題", "你的建議"],
+    }
+    st.table(pd.DataFrame(scqa_data).set_index("字母"))
+
+    st.markdown("**1.2 金字塔原則三條原則**")
+    st.markdown("- ☑ 主結論在頂端")
+    st.markdown("- ☑ 三條支撐互斥（MECE）窮盡")
+    st.markdown("- ☑ 數據／案例／證據放底層")
+
+    st.markdown("**1.3 反直覺三點（自寫）**")
+    d9_counter_data = {
+        "問題": ["為什麼結論要先講？", "為什麼圖表愈多愈不專業？", "為什麼沒有風險評估老闆不買單？"],
+        "我的答案": [
+            "因為老闆時間有限，先講結論才能立刻判斷要不要繼續聽下去，業界匯報是結論先行，跟學界論文寫法相反",
+            "圖越多代表你自己也還沒消化出重點，老闆會覺得你連自己都沒把握",
+            "老闆怕的不是失敗方案，是沒被告知風險的方案，三情境寫齊反而讓老闆覺得你想清楚了",
+        ],
+    }
+    st.table(pd.DataFrame(d9_counter_data).set_index("問題"))
+
+    st.subheader("Section 2｜SCQA開場稿（15 min）")
+    st.caption("寫成「老闆60秒能進入狀況」的開場。")
+    scqa_script_data = {
+        "字母": ["S（共識）", "C（衝突）", "Q（問題）", "A（建議）"],
+        "你的句子（每段≤30字）": [
+            "9月整體準時率79.6%，低於90%警戒線",
+            "但R-03路線單獨看只有27.2%，拖累最嚴重",
+            "該換司機、調路線，還是調時窗設定？",
+            "建議重新規劃R-03路線排程",
+        ],
+    }
+    st.table(pd.DataFrame(scqa_script_data).set_index("字母"))
+
+    st.subheader("Section 3｜主結論句（關鍵，10 min）")
+    st.markdown("一句話講完該做什麼，要有動詞、要有量化。")
+    st.info("**主結論（50字內）**：「重新規劃R-03路線排程，1個月內觀察OTD能否回升至80%以上，預估月效益+8萬」")
+    st.markdown("**自我檢核：**")
+    st.markdown("- ☑ 第一個字是動詞（調整／重排／換約／強化…）")
+    st.markdown("- ☑ 含具體量化（%／月／萬元）")
+    st.markdown("- ☑ 30秒內能讓老闆做yes/no決定")
+
+    st.subheader("Section 4｜三條MECE支撐（20 min）")
+    mece_data = {
+        "#": [1, 2, 3],
+        "支撐句（≤30字）": ["問題真實存在", "主因可定位", "解法可行"],
+        "證據（數字/圖表）": [
+            "整體嚴格OTD僅79.6%，低於90%警戒線",
+            "R-03的OTD僅27.2%，控制變量分析證實是路線問題非司機",
+            "暫緩指派新司機至R-03，優先檢視距離／路況／時窗設定",
+        ],
+    }
+    st.table(pd.DataFrame(mece_data).set_index("#"))
+    st.markdown("**MECE自我檢查：**")
+    st.markdown("- ☑ 三條互斥（沒有任何一條是另一條的子集）")
+    st.markdown("- ☑ 三條窮盡（共同能撐住主結論）")
+
+    st.subheader("Section 5｜一張關鍵圖（15 min）")
+    st.markdown("不是三張，是一張。")
+    keychart_data = {
+        "項目": ["選擇的圖表類型", "為什麼是這張（50字內）", "截圖貼附位置（文字註記）"],
+        "內容": [
+            "箱型圖",
+            "一次顯示中位數＋散布度，R-03整盒顯著低於95%目標線，其他路線基本貼線，"
+            "比9條折線圖更省一頁，結論一眼看出。",
+            "D6_D7_D8_D9整合版Tab4「關鍵圖」截圖，或D9單獨版故事B的箱型圖",
+        ],
+    }
+    st.table(pd.DataFrame(keychart_data).set_index("項目"))
+
+    st.subheader("Section 6｜風險三情境（關鍵，15 min）")
+    risk_data = {
+        "情境": ["樂觀", "悲觀", "不作為"],
+        "預期結果": ["R-03路線OTD回升至80%以上", "路線問題非短期可解，僅小幅改善", "OTD持續低落，客訴增加"],
+        "月效益（具體數字）": ["+8萬", "+3萬", "-5萬/月"],
+        "對應行動": ["推進加速", "啟動Plan B", "（對照組）"],
+    }
+    st.table(pd.DataFrame(risk_data).set_index("情境"))
+
+    st.subheader("Section 7｜Streamlit路徑 OR PPT路徑（20 min）")
+    st.markdown("**選擇路徑（擇一）**：Streamlit")
+
+    st.markdown("**路徑A：Streamlit**")
+    st.markdown("- ☑ 主頁有 st.success 結論句　　☑ 三個 st.metric 卡片")
+    st.markdown("- ☑ 一張 st.plotly_chart 主圖　　☑ st.expander 摺疊三條支撐")
+    st.markdown("- ☑ 風險三情境表")
+    st.caption("執行截圖貼附位置：D6_D7_D8_D9_整合版.py執行後Tab4選「故事B」的畫面截圖")
+
+    st.markdown("**路徑B：PPT（Claude Cowork）**")
+    st.markdown("- ☐ 標題列＋主結論　　☐ 三metric卡片")
+    st.markdown("- ☐ 一張關鍵圖　　☐ 三條支撐")
+    st.markdown("- ☐ 風險三情境　　☐ 主色#003366，字體層級分明")
+    st.markdown("- PPT檔名：（未使用此路徑）")
+
+    st.subheader("Section 8｜90秒Showtime腳本（5 min）")
+    showtime_data = {
+        "時段": ["0:00-0:30", "0:30-1:00", "1:00-1:30"],
+        "內容": ["SCQA開場", "三條支撐", "風險三情境＋結語"],
+    }
+    st.table(pd.DataFrame(showtime_data).set_index("時段"))
+
+    st.markdown("**逐字稿（可寫綱要）**")
+    st.code(
+        "0:00-0:30 SCQA開場\n"
+        "「9月整體準時率79.6%，已經低於90%警戒線。但R-03這條路線單獨看只有27.2%，"
+        "是全公司拖累最嚴重的一條。我們該換司機、調路線，還是重新檢視時窗設定？"
+        "我建議重新規劃R-03路線排程。」\n\n"
+        "0:30-1:00 三條支撐\n"
+        "「第一，問題真的存在……第二，我知道問題在哪……是路線本身的問題，不是司機。"
+        "第三，我知道怎麼解決——先別派新司機去，優先檢查距離、路況、時窗設定。」\n\n"
+        "1:00-1:30 風險三情境＋結語\n"
+        "「如果順利，每月多賺8萬；就算效果普通，還是能多賺3萬；"
+        "如果什麼都不做，每月倒虧5萬。給我一個月觀察期，不達標我就回滾。」",
+        language=None,
+    )
 
 with tab_w3:
     st.markdown("<h2>第三週</h2>", unsafe_allow_html=True)
