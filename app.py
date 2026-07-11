@@ -186,6 +186,20 @@ div[class*="st-key-home_btn_wrap_"] button:hover {{
     color: {TEXT} !important;
     background-color: #7a8bb022 !important;
 }}
+
+/* 導覽列目前選中的分頁按鈕（原為橘紅），改成灰藍色調 */
+button[kind="primary"],
+[data-testid="stBaseButton-primary"] {{
+    background-color: #4a5a80 !important;
+    border-color: #7a8bb0 !important;
+    color: {TEXT} !important;
+}}
+button[kind="primary"]:hover,
+[data-testid="stBaseButton-primary"]:hover {{
+    background-color: #5a6a90 !important;
+    border-color: #9aa8c8 !important;
+    color: #ffffff !important;
+}}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
