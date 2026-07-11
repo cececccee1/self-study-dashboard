@@ -3,7 +3,6 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-import streamlit.components.v1 as components
 from pathlib import Path
 from datetime import datetime
 
@@ -173,72 +172,6 @@ label {{
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-# ============================================================
-# 分頁導覽腳本：讓「回上一頁／返回首頁」按鈕真正切換 Streamlit 分頁
-# （而不是單純捲動頁面），透過操作 st.tabs 底層的 BaseWeb tab 按鈕實現
-# ============================================================
-components.html(
-    """
-    <script>
-    (function () {
-      function setup() {
-        try {
-          var doc = window.parent.document;
-          var tabs = doc.querySelectorAll('[data-baseweb="tab"]');
-          if (!tabs.length) { setTimeout(setup, 300); return; }
-
-          if (!window.parent.__tabNavSetup) {
-            window.parent.__tabHistory = [];
-            window.parent.__currentTab = null;
-
-            tabs.forEach(function (tab) {
-              tab.addEventListener('click', function () {
-                var label = tab.innerText.trim();
-                if (window.parent.__currentTab && window.parent.__currentTab !== label) {
-                  window.parent.__tabHistory.push(window.parent.__currentTab);
-                }
-                window.parent.__currentTab = label;
-              });
-            });
-
-            window.parent.goHomeTab = function () {
-              var t2 = window.parent.document.querySelectorAll('[data-baseweb="tab"]');
-              for (var i = 0; i < t2.length; i++) {
-                if (t2[i].innerText.indexOf('首頁') !== -1) {
-                  t2[i].click();
-                  break;
-                }
-              }
-            };
-
-            window.parent.goBackTab = function () {
-              var hist = window.parent.__tabHistory;
-              var target = (hist && hist.length) ? hist.pop() : null;
-              var t2 = window.parent.document.querySelectorAll('[data-baseweb="tab"]');
-              if (target) {
-                for (var i = 0; i < t2.length; i++) {
-                  if (t2[i].innerText.trim() === target) {
-                    t2[i].click();
-                    return;
-                  }
-                }
-              }
-              window.parent.goHomeTab();
-            };
-
-            window.parent.__tabNavSetup = true;
-          }
-        } catch (e) {
-          /* 靜默失敗，不影響其餘功能 */
-        }
-      }
-      setup();
-    })();
-    </script>
-    """,
-    height=0,
-)
-
 
 def style_fig(fig):
     fig.update_layout(
@@ -252,34 +185,34 @@ def style_fig(fig):
     return fig
 
 
-def back_to_home_button():
-    st.markdown(
-        f"""
-        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
-                    margin-top: 40px; margin-bottom: 8px;">
-            <a href="#"
-               onclick="if (window.parent.goBackTab) {{ window.parent.goBackTab(); }} return false;"
-               style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
-                      border: 1px solid {GOLD}; border-radius: 6px; color: {GOLD};
-                      text-decoration: none; font-weight: 700; font-size: 14px;
-                      letter-spacing: 0.05em;">
-                ⬅ 回上一頁
-            </a>
-            <a href="#"
-               onclick="if (window.parent.goHomeTab) {{ window.parent.goHomeTab(); }} return false;"
-               style="display: inline-block; padding: 10px 28px; background: {PANEL_LIGHT};
-                      border: 1px solid {JADE}; border-radius: 6px; color: {JADE};
-                      text-decoration: none; font-weight: 700; font-size: 14px;
-                      letter-spacing: 0.05em;">
-                🏠 返回首頁
-            </a>
-        </div>
-        <p style="text-align: center; color: {MUTED}; font-size: 12px; margin-top: 6px;">
-            點擊後會直接切換到對應分頁
-        </p>
-        """,
-        unsafe_allow_html=True,
-    )
+def go_to_page(page_id):
+    """真正切換頁面：記錄歷史並更新 session_state，供下方 back_to_home_button 使用。"""
+    current = st.session_state.get("page", "home")
+    if page_id != current:
+        st.session_state.setdefault("history", [])
+        st.session_state.history.append(current)
+    st.session_state.page = page_id
+
+
+def go_back():
+    history = st.session_state.get("history", [])
+    if history:
+        st.session_state.page = history.pop()
+    else:
+        st.session_state.page = "home"
+
+
+def back_to_home_button(key_suffix):
+    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
+    col_l, col_mid1, col_mid2, col_r = st.columns([3, 1, 1, 3])
+    with col_mid1:
+        if st.button("⬅ 回上一頁", key=f"back_prev_{key_suffix}", use_container_width=True):
+            go_back()
+            st.rerun()
+    with col_mid2:
+        if st.button("🏠 返回首頁", key=f"back_home_{key_suffix}", use_container_width=True):
+            go_to_page("home")
+            st.rerun()
 
 
 def week_placeholder(week_num):
@@ -329,22 +262,41 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_home, tab_w1, tab_w2, tab_w3, tab_w4, tab_w5, tab_w6, tab_w7, tab_w8 = st.tabs([
-    "🏠 首頁",
-    "第一週",
-    "第二週",
-    "第三週",
-    "第四週",
-    "第五週",
-    "第六週",
-    "第七週",
-    "第八週",
-])
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+_NAV_ITEMS = [
+    ("home", "🏠 首頁"),
+    ("week1", "第一週"),
+    ("week2", "第二週"),
+    ("week3", "第三週"),
+    ("week4", "第四週"),
+    ("week5", "第五週"),
+    ("week6", "第六週"),
+    ("week7", "第七週"),
+    ("week8", "第八週"),
+]
+
+nav_cols = st.columns(len(_NAV_ITEMS))
+for _col, (_pid, _label) in zip(nav_cols, _NAV_ITEMS):
+    with _col:
+        if st.button(
+            _label,
+            key=f"nav_{_pid}",
+            use_container_width=True,
+            type="primary" if st.session_state.page == _pid else "secondary",
+        ):
+            go_to_page(_pid)
+            st.rerun()
+
+st.markdown("<hr style='margin-top: 4px;'>", unsafe_allow_html=True)
 
 # ============================================================
 # 首頁
 # ============================================================
-with tab_home:
+if st.session_state.page == "home":
     st.markdown(
         f"""
         <div style="background: linear-gradient(135deg, #241a0f 0%, {INK} 100%);
@@ -375,7 +327,7 @@ with tab_home:
 # ============================================================
 # 第一週：任務01 + 任務02 + 任務03
 # ============================================================
-with tab_w1:
+if st.session_state.page == "week1":
     # ---------- 任務01｜智慧戰略圖 ----------
     st.markdown("<h2 style='white-space: nowrap;'>🗺️ 第一週｜任務01：智慧戰略圖</h2>", unsafe_allow_html=True)
     st.caption("Smart Strategy Map・A物流公司（綜合型3PL）")
@@ -1023,12 +975,12 @@ with tab_w1:
     st.table(pd.DataFrame(insight_data).set_index("#"))
     st.info("範例：C003水產鮮活的M在Top3，但R已經90天沒下單……（高金額但即將流失，業務拜訪優先）")
 
-    back_to_home_button()
+    back_to_home_button("week1")
 
 # ============================================================
 # 第二週：任務06 + 任務07 + 任務08 + 任務09
 # ============================================================
-with tab_w2:
+if st.session_state.page == "week2":
     st.markdown("<h2 style='white-space: nowrap;'>📦 第二週｜任務06：倉庫整理師</h2>", unsafe_allow_html=True)
     st.caption("儲位重排ABC＋服務藍圖洞察")
     st.markdown("適用：Week2・Day6　　預估填寫時間：60分鐘（14:45-15:45）")
@@ -1621,37 +1573,37 @@ with tab_w2:
         language=None,
     )
 
-    back_to_home_button()
+    back_to_home_button("week2")
 
-with tab_w3:
+if st.session_state.page == "week3":
     st.markdown("<h2>第三週</h2>", unsafe_allow_html=True)
     week_placeholder(3)
-    back_to_home_button()
+    back_to_home_button("week3")
 
-with tab_w4:
+if st.session_state.page == "week4":
     st.markdown("<h2>第四週</h2>", unsafe_allow_html=True)
     week_placeholder(4)
-    back_to_home_button()
+    back_to_home_button("week4")
 
-with tab_w5:
+if st.session_state.page == "week5":
     st.markdown("<h2>第五週</h2>", unsafe_allow_html=True)
     week_placeholder(5)
-    back_to_home_button()
+    back_to_home_button("week5")
 
-with tab_w6:
+if st.session_state.page == "week6":
     st.markdown("<h2>第六週</h2>", unsafe_allow_html=True)
     week_placeholder(6)
-    back_to_home_button()
+    back_to_home_button("week6")
 
-with tab_w7:
+if st.session_state.page == "week7":
     st.markdown("<h2>第七週</h2>", unsafe_allow_html=True)
     week_placeholder(7)
-    back_to_home_button()
+    back_to_home_button("week7")
 
-with tab_w8:
+if st.session_state.page == "week8":
     st.markdown("<h2>第八週</h2>", unsafe_allow_html=True)
     week_placeholder(8)
-    back_to_home_button()
+    back_to_home_button("week8")
 
 st.divider()
 st.caption("🌱 我的學習歷程：八週學習紀錄")
