@@ -254,7 +254,7 @@ with tab_home:
                     border: 1px solid {BORDER};
                     padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
                     position: relative; overflow: hidden;">
-            <div class="seal-stamp"><span>自學</span></div>
+            <div class="seal-stamp"><span>學習</span></div>
             <h2 style="color: {TEXT}; margin: 0 0 8px 0;">我的學習歷程</h2>
             <p style="color: {MUTED}; margin: 0; font-size: 15px;">
                 以八週為單位，記錄每一週的任務、學習與成果
