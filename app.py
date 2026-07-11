@@ -291,7 +291,7 @@ def make_gauge(title, value, target, suffix="%"):
 
 
 st.markdown(
-    "<h1 style='white-space: nowrap;'>✨🌌 Clarice的學習歷程：八週學習紀錄</h1>",
+    "<h1 style='white-space: nowrap;'>✨🌌 Clarice的學習歷程：八週紀錄</h1>",
     unsafe_allow_html=True,
 )
 
