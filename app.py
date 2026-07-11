@@ -607,6 +607,129 @@ with tab_w1:
     }
     st.table(pd.DataFrame(score_data).set_index("維度"))
 
+    # ---------- 任務04｜現況儀表板 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>📟 任務04｜現況儀表板</h2>", unsafe_allow_html=True)
+    st.caption("給總經理30秒讀")
+    st.markdown("適用：Week1・Day3／2026起用　　預估填寫時間：100分鐘（含互看與pitch）")
+
+    st.subheader("Section 1｜觀念回顧")
+    st.markdown("**1.1 四階分析階梯**")
+    ladder_data = {
+        "階": ["1. Descriptive", "2. Diagnostic", "3. Predictive", "4. Prescriptive"],
+        "問題": ["發生了什麼？", "為什麼發生？", "將會發生什麼？", "該怎麼辦？"],
+        "典型產出": ["儀表板、報表、統計摘要", "異常下鑽、關聯分析", "預測模型", "最佳化建議、AI代理"],
+        "本日目標": ["今天主場", "W1收尾", "W3", "W4-W7"],
+    }
+    st.table(pd.DataFrame(ladder_data).set_index("階"))
+
+    st.markdown("**1.2 描述性統計三把刀**")
+    stat3_data = {
+        "把刀": ["集中：Mean／Median／Mode", "離散：Std／IQR／全距", "分布：看直方圖"],
+        "重點問答": [
+            "何時用Median？→ 分布對稱時／有極端值時／類別型資料",
+            "IQR是Q3-Q1，代表 → 離平均的平均距離／Q3-Q1，中間50%的範圍／max-min",
+            "是否常態及是否長尾 → 物流資料幾乎都有長尾：少數大客戶占大比例運費，長尾＝80/20法則的徵兆",
+        ],
+    }
+    st.table(pd.DataFrame(stat3_data).set_index("把刀"))
+
+    st.markdown("**1.3 報表 vs 儀表板四判準**")
+    report_dash_data = {
+        "#": [1, 2, 3, 4],
+        "報表": ["月結／週結靜態", "密密麻麻", "給分析師", "答「過去」"],
+        "儀表板": ["準即時更新", "30秒讀完", "給管理者", "指「現在的行動」"],
+    }
+    st.table(pd.DataFrame(report_dash_data).set_index("#"))
+
+    st.subheader("Section 2｜資料來源確認（5 min）")
+    st.caption("D2清洗後產出兩個*_CLEAN.csv，本日儀表板從這兩個讀：")
+    src_data = {
+        "CSV": ["A_物流_訂單配送_CLEAN.csv", "A_物流_冷鏈溫控_CLEAN.csv"],
+        "預期欄位": [
+            "order_id／customer_id／order_date／freight_twd／qty／temp_layer／ship_datetime／delivery_datetime",
+            "sensor_id／vehicle_id／warehouse_id／timestamp／temp_c／pass_flag／sensor_fault_flag",
+        ],
+        "用途": [
+            "KPI卡：總訂單數、平均運費、達交率；折線：週訂單量趨勢",
+            "KPI卡：冷鏈達標率（紅字警示）；長條：車輛/倉庫排行",
+        ],
+    }
+    st.table(pd.DataFrame(src_data).set_index("CSV"))
+    st.success("✅ 訂單CLEAN我有793筆（D2末預期~800筆）；冷鏈CLEAN我有943筆（D2末預期~1200筆）；pass_flag.mean()＝73.85%（預期70-80%）")
+
+    st.subheader("Section 3｜儀表板版面設計（15 min）")
+    st.markdown("**3.1 F字型版面草稿**")
+    st.code(
+        "標題列\n"
+        "┌────────┐ ┌────────┐ ┌────────┐\n"
+        "│ KPI 1  │ │ KPI 2  │ │ KPI 3  │  ← 最左上＝最重要\n"
+        "└────────┘ └────────┘ └────────┘\n\n"
+        "┌──────────────┐ ┌──────────────┐\n"
+        "│ 圖1（週訂單）│ │ 圖2（溫控達標）│\n"
+        "│    折線圖     │ │    車輛排行    │\n"
+        "└──────────────┘ └──────────────┘\n\n"
+        "⚠ 預警標註：冷鏈達標率 ___%（目標 99.5%）",
+        language=None,
+    )
+
+    st.markdown("**3.2 三個KPI卡規劃**")
+    st.caption("★ 必須「訂單面＋冷鏈面」都覆蓋（只放訂單會被扣分）")
+    kpi3_data = {
+        "卡號": [1, 2, 3],
+        "指標名稱": ["總訂單數", "基礎達交率", "冷鏈達標率"],
+        "計算邏輯": [
+            "len(df_orders)",
+            "先排除異常值（ship_before_deliver_ok==False）後計算準時交貨比例",
+            "排除pass_flag缺值（75筆，感測器故障或讀數異常）後計算達標比例",
+        ],
+        "目標值": ["無固定目標（描述性指標，反映資料量與營運規模）", "95%", "99.5%"],
+        "紅字警示": ["否", "是", "是"],
+    }
+    st.table(pd.DataFrame(kpi3_data).set_index("卡號"))
+
+    st.markdown("**3.3 兩張圖規劃**")
+    chart2_data = {
+        "圖號": [1, 2],
+        "類型": ["折線", "長條"],
+        "X軸": ["週（order_date依週彙總，W-SUN）", "車輛編號 vehicle_id"],
+        "Y軸": ["order_date出貨數量加總 qty", "冷鏈異常次數 pass_flag=0"],
+        "回答什麼問題": ["出貨量是否有高峰、低谷或趨勢？", "哪些車輛異常最多、需要優先改善？"],
+    }
+    st.table(pd.DataFrame(chart2_data).set_index("圖號"))
+
+    st.subheader("Section 4｜Streamlit dashboard.py 開發（40 min・主交付物①）")
+    st.markdown("**4.1 環境啟動檢核**")
+    st.markdown("- ☐ `pip show streamlit` 有版本號出現")
+    st.markdown("- ☑ `streamlit hello` 跑得起來")
+    st.markdown("- 我的工作資料夾：`0701`")
+
+    st.markdown("**4.2 程式骨架（沿講義範本擴充）**")
+    skeleton_data = {
+        "段落": [
+            "st.set_page_config + st.title",
+            "pd.read_csv載兩個CSV（訂單+冷鏈）",
+            "3個 st.metric KPI卡",
+            "2張圖（st.line_chart/st.bar_chart/st.plotly_chart）",
+            "預警標註（st.error或紅字markdown）",
+        ],
+        "完成": ["✅", "✅", "✅", "☐", "✅"],
+        "自我說明": [
+            "已設定頁面標題、版面配置（寬版）及儀表板標題",
+            "已成功載入訂單配送與冷鏈溫控兩份CLEAN CSV檔",
+            "已建立總訂單數、基礎達交率、冷鏈達標率三個KPI卡",
+            "已完成每週出貨數量折線圖，尚未加入車輛排行長條圖",
+            "冷鏈達標率低於目標99.5%時，會顯示紅字警示",
+        ],
+    }
+    st.table(pd.DataFrame(skeleton_data).set_index("段落"))
+
+    st.markdown("**4.3 啟動驗收**")
+    st.code("streamlit run dashboard.py", language="bash")
+    st.markdown("- ☑ 瀏覽器自動開 http://localhost:8501")
+    st.markdown("- ☑ 30秒內能看完（用碼表算）")
+    st.markdown("- ☑ 紅字警示醒目")
+
 # ============================================================
 # 第二週～第八週：空白佔位
 # ============================================================
