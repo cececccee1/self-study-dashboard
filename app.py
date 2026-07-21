@@ -352,6 +352,7 @@ if st.session_state.page == "home":
         - **第一週** 目前已放入任務01、02、03、04、05
         - **第二週** 目前已放入任務06、07、08、09
         - **第三週** 目前已放入任務10、11、12、13
+        - **第四週** 目前已放入任務14、15
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -2425,8 +2426,517 @@ if st.session_state.page == "week3":
     back_to_home_button("week3")
 
 if st.session_state.page == "week4":
-    st.markdown("<h2>第四週</h2>", unsafe_allow_html=True)
-    week_placeholder(4)
+    # ---------- 任務14｜輿情分析師 ----------
+    st.markdown("<h2 style='white-space: nowrap;'>💬 第四週｜任務14：輿情分析師</h2>", unsafe_allow_html=True)
+    st.caption("Voice of Customer Analyst・虛擬企業B：中型3PL＋末端宅配商，主倉桃園，服務電商客戶")
+    st.markdown("適用於：Week 4・Day 16　　範例資料：客訴文本_202509-202602.csv（200筆）")
+
+    st.divider()
+    st.subheader("Section 1｜情境設定（5分鐘）")
+    st.markdown(
+        "虛擬企業B：中型3PL＋末端宅配商，主倉桃園，服務電商客戶。\n"
+        "- 8個分散管道（LINE@／FB／Google／Email／電話／官網／Shopee／蝦皮）\n"
+        "- 半年累計約200-300筆客訴\n"
+        "- 客服部以「結案數量」為KPI，品質／根因從未分析過"
+    )
+    st.markdown(
+        "**主管的痛**：「我們每個月接幾百筆客訴，但我不知道哪一類最該優先解決，"
+        "也不知道客戶是真的變多了，還是只是會抱怨的客戶比較會講。」"
+    )
+    st.markdown("**你的任務**：用200筆客訴文本資料＋5份訪談紀錄，跑一次「輿情分析＋服務反推」，給主管一個可行動的洞察。")
+
+    st.divider()
+    st.subheader("Section 2｜觀念回顧（填空，10分鐘）")
+    st.markdown("**2.1 文本探勘三步法**")
+    text_step_data = {
+        "階段": ["原始文本 →[1]", "乾淨文本 →[2]", "數值向量 →[3]"],
+        "內容": ["預處理", "表示", "模型 → 標籤／主題"],
+    }
+    st.table(pd.DataFrame(text_step_data).set_index("階段"))
+
+    st.markdown("**2.2 情感分析三種粒度**")
+    granularity_data = {
+        "粒度": ["二元", "多級", "多面向"],
+        "描述": ["正向／負向二元", "4-5級分布", "多面向同句評多項"],
+        "適用場景": ["商品評論NPS", "客訴監測", "餐廳／旅館評論"],
+    }
+    st.table(pd.DataFrame(granularity_data).set_index("粒度"))
+
+    st.markdown("**2.3 反直覺三點（連連看）**")
+    counter14_data = {
+        "#": [1, 2, 3],
+        "反直覺說法": ["「正」級客戶比「強烈負」有挽留價值", "LLM對「髒文本」反而比BERT強", "強烈負客訴根因不在第一句話"],
+        "我的配對": ["C", "A", "B"],
+        "為什麼": [
+            "強烈負的多半已要走，正級還願意給建議",
+            "訓練語料涵蓋網路文本，見過這種風格",
+            "客訴升級是「沒被接住」而非初始事件",
+        ],
+    }
+    st.table(pd.DataFrame(counter14_data).set_index("#"))
+
+    st.divider()
+    st.subheader("Section 3｜Python LLM API 實作（35分鐘・工具區）")
+    st.markdown("**3.1 程式檢核點**")
+    st.caption("請依下列順序執行，並記下每步觀察。")
+    st.code(
+        '# 步驟1：讀資料\n'
+        'import pandas as pd\n'
+        'df = pd.read_csv("客訴文本_202509-202602.csv", encoding="utf-8-sig")\n'
+        'print(df.shape)          # 預期：(200, 7)\n'
+        'print(df.columns.tolist())  # 7個欄位',
+        language="python",
+    )
+    step1_data = {
+        "項目": ["形狀(rows, cols)", "欄位名稱"],
+        "結果": ["(200, 7)", "['id', 'timestamp', 'customer_id', 'channel', 'content', 'sentiment', 'pain_category']"],
+    }
+    st.table(pd.DataFrame(step1_data).set_index("項目"))
+
+    st.markdown("**步驟2：看分布**")
+    st.code(
+        'print(df["pain_category"].value_counts())\n'
+        'print(df["sentiment"].value_counts())',
+        language="python",
+    )
+    pain_col1, pain_col2 = st.columns(2)
+    with pain_col1:
+        pain_dist_data = {"痛點": ["配送延遲", "貨損", "客服回應", "包裝環保"], "筆數": [80, 40, 40, 40]}
+        st.table(pd.DataFrame(pain_dist_data).set_index("痛點"))
+        pain_fig = go.Figure(go.Bar(
+            x=["配送延遲", "貨損", "客服回應", "包裝環保"],
+            y=[80, 40, 40, 40],
+            marker_color=JADE,
+        ))
+        pain_fig.update_layout(title="客訴痛點分布")
+        st.plotly_chart(style_fig(pain_fig), use_container_width=True)
+    with pain_col2:
+        sentiment_dist_data = {"情感": ["正", "中性", "負", "強烈負"], "筆數": [20, 60, 90, 30]}
+        st.table(pd.DataFrame(sentiment_dist_data).set_index("情感"))
+        sentiment_fig = go.Figure(go.Pie(
+            labels=["正", "中性", "負", "強烈負"],
+            values=[20, 60, 90, 30],
+            marker_colors=[GOLD, TEAL, RUST, JADE],
+            hole=0.5,
+        ))
+        sentiment_fig.update_layout(title="客訴情感分布")
+        st.plotly_chart(style_fig(sentiment_fig), use_container_width=True)
+
+    st.markdown("**3.2 LLM 情感分類**")
+    st.caption("對100筆做LLM重新標註，跟人工標籤對比。")
+    st.code(
+        '# 步驟3：呼叫LLM（範例：實際prompt見D16_範例程式.py）\n'
+        'from openai import OpenAI\n'
+        'client = OpenAI()\n\n'
+        'def classify_sentiment(text):\n'
+        '    """回傳 \'正\' / \'中性\' / \'負\' / \'強烈負\'"""\n'
+        '    # 學員在範例程式中填寫prompt主體\n'
+        '    pass\n\n'
+        '# 對前100筆套用\n'
+        'df_test = df.sample(100, random_state=42)\n'
+        'df_test["llm_sentiment"] = df_test["content"].apply(classify_sentiment)\n\n'
+        '# 步驟4：計算準確率\n'
+        'accuracy = (df_test["sentiment"] == df_test["llm_sentiment"]).mean()\n'
+        'print(f"LLM 準確率：{accuracy:.1%}")',
+        language="python",
+    )
+    llm_acc_data = {
+        "項目": ["LLM 準確率", "預期落在75-85%區間。你的結果在區間內嗎？", "如果不在，可能原因"],
+        "結果": [
+            "94.0%", "否",
+            "☑ 模型版本與預期不同（gpt-4o-mini vs gpt-4o）／☐ prompt寫得不夠精確／☐ 樣本剛好抽到很多模糊邊界",
+        ],
+    }
+    st.table(pd.DataFrame(llm_acc_data).set_index("項目"))
+
+    st.markdown("**3.3 三筆錯標分析**")
+    mislabel_data = {
+        "#": [1, 2, 3],
+        "content（節錄）": [
+            "一斤跟妳們客服反映三次，每次都說……",
+            "拆開發現裡面零件少一個，而且外盒……",
+            "上次客服說會回電，結果到現在沒消……",
+        ],
+        "人工標": ["負", "負", "負"],
+        "LLM標": ["強烈負", "中性", "中性"],
+        "你猜為什麼錯？": [
+            "模型判斷到「三次、每次、客服、處……」等重複申訴用語，語氣強度被判得比人工標更重",
+            "模型可能將內容視為客觀描述，沒有偵測到隱含的不滿情緒",
+            "屬於委婉抱怨，沒有使用激烈字眼，模型較難判斷出情緒強度",
+        ],
+    }
+    st.table(pd.DataFrame(mislabel_data).set_index("#"))
+
+    st.markdown("**3.4 痛點關鍵字抽取（自行延伸）**")
+    st.code(
+        'def extract_pains(text, max_n=3):\n'
+        '    """回傳 list of str，每個4字以內"""\n'
+        '    # 學員填寫prompt\n'
+        '    pass\n\n'
+        'df_test["pains"] = df_test["content"].apply(extract_pains)',
+        language="python",
+    )
+    st.caption("學員觀察：看10筆(pain_category, pains)，LLM抽出的痛點跟標籤類別一致嗎？")
+    pain_extract_data = {
+        "項目": ["content", "pain_category（原標）", "pains（LLM抽）"],
+        "內容": ["拜託你們速度可以快一點嗎，等到天荒地老", "配送延遲", "等待過久、服務過慢、效率低下"],
+    }
+    st.table(pd.DataFrame(pain_extract_data).set_index("項目"))
+    st.info(
+        "**我的觀察**：原本的pain_category只有「配送延遲」這個大分類，而LLM能進一步萃取出"
+        "「等待過久、服務過慢、效率低下」等具體痛點，更能反映客戶真正抱怨的原因，也更有助於管理者制定改善措施，"
+        "例如縮短配送時間、提升作業效率，或是作為客服分析、流程改善與建立改善優先順序的依據。"
+    )
+
+    st.divider()
+    st.subheader("Section 6｜反思（10分鐘・收口）")
+    st.markdown("**6.1 三個反直覺問題（一句話）**")
+    reflect14_data = {
+        "問題": [
+            "Q1：為什麼「正」級客戶反而比「強烈負」有挽留價值？",
+            "Q2：為什麼LLM對含emoji＋錯字文本，正確率可能高於BERT？",
+            "Q3：為什麼強烈負客訴根因常不在第一句？",
+        ],
+        "我的答案": [
+            "正向客戶維護成本較低，持續經營更容易轉為忠誠客戶。",
+            "LLM能綜合理解上下文、語氣、Emoji與錯字，不只依靠固定關鍵字，因此較不容易誤判。",
+            "客戶通常先描述事件，真正的不滿原因會在後續細節或最後一句才表達出來。",
+        ],
+    }
+    st.table(pd.DataFrame(reflect14_data).set_index("問題"))
+
+    st.markdown("**6.2 給主管的一頁洞察（最終產出）**")
+    insight14_data = {
+        "項目": [
+            "痛點優先順序（依筆數＋強烈負比例）",
+            "最該關注的「升級型客訴」（看似小問題、實際大殺傷）",
+            "我們組設計的服務改善方案",
+            "HMW",
+            "解法",
+            "為什麼非AI不可",
+        ],
+        "內容": [
+            "1. 配送延遲　2. 客服回應　3. 包裝損保",
+            "客服未即時回覆導致客戶重複反映，最終演變成強烈負評與流失風險。",
+            "建立AI客訴智慧分析系統，自動辨識情緒、分類痛點並依嚴重程度排序，"
+            "將配送延遲、客服未回覆等高風險案件即時通知相關單位優先處理。",
+            "如何縮短配送等待時間，並提升客服回覆效率，以降低負面客訴？",
+            "建立AI客訴分類與痛點分析機制，自動辨識配送延遲、客服未回覆等高風險案件，優先通知客服與物流單位介入處理。",
+            "客訴內容多為自由文字，包含錯字、口語及Emoji，人工閱讀耗時且容易遺漏。"
+            "AI能快速分析大量客訴、萃取痛點並判斷情緒，協助管理者即時掌握趨勢。",
+        ],
+    }
+    st.table(pd.DataFrame(insight14_data).set_index("項目"))
+
+    # ---------- 任務15｜路徑規劃師 ----------
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>🗺️ 任務15：路徑規劃師</h2>", unsafe_allow_html=True)
+    st.caption("Route Planner・CVRPTW決策：可行性＋成本雙觀點")
+    st.markdown(
+        "青年AI實戰養成班・智慧物流班　　適用：Week 4・Day 17　　範例資料：D17_路徑規劃師（4個CSV）"
+    )
+
+    st.divider()
+    st.subheader("Section 1｜情境描述（5分鐘）")
+    st.markdown(
+        "你是物流營運分析師，今天要把20門市配送問題，從直覺派車升級成可解釋的CVRPTW決策。"
+        "你要同時回答兩個主管問題：\n\n"
+        "1. 為什麼OR-Tools方案比直覺方案更可行？\n"
+        "2. 這個方案在成本上到底省多少、值不值得推？\n\n"
+        "今日核心不是只追最低成本，而是「可行性＋成本」雙觀點同時成立，並寫成給主管可直接決策的一頁說明。"
+    )
+    st.markdown(
+        "- V1 2.5T：容量1500kg、里程成本7 NTD/km、固定成本800 NTD/日\n"
+        "- V2 3.5T：容量2200kg、里程成本10 NTD/km、固定成本1200 NTD/日\n"
+        "- V3 1T：容量200kg、里程成本3 NTD/km、固定成本300 NTD/日\n\n"
+        "配送20個門市訂單，其中12個門市有時窗限制（早／午／晚三段）。"
+        "主管的痛點是：按地理區分車 vs 按時窗排序，到底誰才對？"
+    )
+    st.markdown("**你的任務**：用OR-Tools找出可執行路徑，並回答「為什麼這個方案比直覺方案更值得」。")
+    st.warning("**雙觀點重點**：可行性（違反數）＋成本（節省率）要同時回答，不能只答一邊。")
+
+    st.divider()
+    st.subheader("Section 2｜概念橋接與定位（10分鐘・概念整理）")
+    st.markdown("**2.1 AI落地四階階梯**")
+    st.caption("第2章把AI／BI分析能力分成四階（由下而上）。W3「AI價值師」（D11-D14）做的是第3階；W4 D17「路徑規劃師」跳到第4階。")
+    ladder15_data = {
+        "階": [1, 2, 3, 4],
+        "能力": ["Descriptive 描述性", "Diagnostic 診斷性", "Predictive 預測性", "Prescriptive 處方性"],
+        "回答": ["發生了什麼？", "為什麼發生？", "接下來會發生什麼？", "應該怎麼做？"],
+        "典型工具": ["BI儀表板／報表", "鑽取、根因分析", "機器學習", "最佳化引擎／模擬"],
+        "對應（本班）": ["月報／儀表板", "異常偵測", "D11-D14（AI價值師）", "本日D17（路徑規劃）"],
+    }
+    st.table(pd.DataFrame(ladder15_data).set_index("階"))
+    st.success("W3→W4 D17的跳階意義（20字內）：由預測未來，進一步最佳化決策。")
+
+    st.markdown("**2.2 VRP結構圖**")
+    st.code(
+        "TSP 一加[多車] --> VRP 一加[容量限制] --> CVRP 一加[時間窗] --> CVRPTW（本日）\n"
+        "                                                    |\n"
+        "                                                    └─加多depot──> MDVRP\n"
+        "                                                    └─加動態────> DVRP（W6 D28預告）",
+        language=None,
+    )
+    vrp_data = {
+        "變體": ["TSP", "VRP", "CVRP", "CVRPTW ★"],
+        "真實場景（填空）": [
+            "業務員拜訪N個客戶，找最短迴圈", "變成多台車一起配送",
+            "每台車還要考慮載重限制", "再加入客戶收貨時間限制（本次課程重點）",
+        ],
+    }
+    st.table(pd.DataFrame(vrp_data).set_index("變體"))
+
+    st.markdown("**2.3 為什麼VRP是NP-hard**")
+    st.markdown("20個門市的可能路徑數 ≈ 20! ≈ **2,432,902,008,176,640,000**（種）。")
+    st.markdown("現代電腦每秒算10億次，全部算完約需 **77** 年。")
+    st.info("結論：沒辦法找到絕對**最佳解**，只能找**夠好的可行解**。")
+
+    st.markdown("**2.4 反直覺三點（連連看）**")
+    counter15_data = {
+        "#": [1, 2, 3],
+        "反直覺說法": ["可行≠最佳；最佳≠永遠存在", "多給一輛車不一定更快", "VRP沒絕對最佳，只有good enough"],
+        "我的配對": ["B", "C", "A"],
+        "為什麼": [
+            "直覺方案可能違反時窗／工時，OR-Tools主賣可行性",
+            "車輛固定成本下，多車不一定更省",
+            "NP-hard性質，短時間內常用近似解",
+        ],
+    }
+    st.table(pd.DataFrame(counter15_data).set_index("#"))
+
+    st.divider()
+    st.subheader("Section 3｜Python OR-Tools 實作（40分鐘・工具區）")
+    st.markdown("**3.1 程式檢核點・載入4 CSV**")
+    st.code(
+        '# 步驟1：讀4份CSV（注意utf-8-sig避免BOM）\n'
+        'import pandas as pd\n'
+        'stores = pd.read_csv("配送網絡_台中20門市.csv", encoding="utf-8-sig")\n'
+        'vehicles = pd.read_csv("配送網絡_車型.csv", encoding="utf-8-sig")\n'
+        'dist = pd.read_csv("配送網絡_距離矩陣.csv", encoding="utf-8-sig", index_col=0)\n'
+        'time = pd.read_csv("配送網絡_時間矩陣.csv", encoding="utf-8-sig", index_col=0)\n'
+        'print(stores.shape, vehicles.shape, dist.shape, time.shape)',
+        language="python",
+    )
+    shape_data = {
+        "項目": ["stores 形狀", "vehicles 形狀", "dist／time 矩陣形狀"],
+        "形狀": ["(21, 10)", "(3, 7)", "(21, 21)（應為21×21，含depot）"],
+    }
+    st.table(pd.DataFrame(shape_data).set_index("項目"))
+
+    st.markdown("**3.2 程式檢核點・看溫層／時窗分布**")
+    st.code(
+        '# 步驟2：看分布\n'
+        'print(stores["temp_zone"].value_counts())\n'
+        'print(stores[stores["tw_open"].notna()].shape[0], "家有時窗")',
+        language="python",
+    )
+    temp_dist_data = {
+        "項目": ["冷藏門市數", "常溫門市數", "有時窗門市數", "占比(%)"],
+        "數值": ["12家", "8家", "12家", "60%"],
+    }
+    st.table(pd.DataFrame(temp_dist_data).set_index("項目"))
+
+    st.markdown("**3.3 baseline不可行驗證（對齊講義§2.4反直覺1）**")
+    st.code(
+        '# 步驟3：用nearest-neighbor跑一次「直覺方案」\n'
+        '# 完整邏輯見D17_範例程式.ipynb Cell 5-6\n'
+        'baseline_violations = compute_route(baseline_assignment)\n'
+        'print(f"時窗違反：{baseline_violations[\'tw\']} 條")\n'
+        'print(f"工時違反：{baseline_violations[\'hours\']} 台")\n'
+        'print(f"總成本：NT$ {baseline_violations[\'cost\']:.0f}")',
+        language="python",
+    )
+    baseline_data = {
+        "項目": ["時窗違反", "工時違反", "baseline 總成本", "結論：baseline 可行／不可行"],
+        "結果": ["4 條", "2 台", "NT$3,148", "不可行"],
+    }
+    st.table(pd.DataFrame(baseline_data).set_index("項目"))
+
+    st.markdown("**3.4 OR-Tools五步建模**")
+    st.caption("請按順序填空，對應.ipynb Cell 7-8：")
+    ortools_step_data = {
+        "步": [1, 2, 3, 4, 5],
+        "動作": [
+            "整數化 km×1000 / NTD×100", "建立RoutingIndexManager + RoutingModel",
+            "加三個dimension", "溫層硬約束", "求解",
+        ],
+        "關鍵函式名": [
+            "int(...)", "pywrapcp.RoutingModel",
+            "routing.AddDimension × 3（距離／容量／時間）", "routing.VehicleVar(idx).SetValues(v_idx)",
+            "search_parameters.local_search_metaheuristic = routing_enums_pb2.GUIDED_LOCAL_SEARCH",
+        ],
+    }
+    st.table(pd.DataFrame(ortools_step_data).set_index("步"))
+    st.caption("填完跑完後，記下：")
+    ortools_result_data = {
+        "項目": ["OR-Tools 求解時間", "時窗違反", "工時違反", "OR-Tools 總成本"],
+        "結果": ["≈5 秒", "0 條（應為0）", "0 台（應為0）", "NT$3,044"],
+    }
+    st.table(pd.DataFrame(ortools_result_data).set_index("項目"))
+
+    st.markdown("**3.5 反直覺2證據蒐集（對應反直覺2的證據）**")
+    st.code(
+        '# 步驟4：印出每車跑了什麼\n'
+        'for vid, route in ortools_routes.items():\n'
+        '    print(f"{vid}: {len(route)} 站,載重 {route_load}/{capacity} ({pct}%)")',
+        language="python",
+    )
+    vehicle_route_data = {
+        "車輛": ["V1 冷藏2.5T", "V2 常溫3.5T", "V3 機車1T"],
+        "站數": ["10站", "9站", "3站"],
+        "載重(kg)": ["1475／1500", "1190／2200", "195／200"],
+        "滿載率(%)": ["98%", "54%", "98%"],
+    }
+    st.table(pd.DataFrame(vehicle_route_data).set_index("車輛"))
+    st.info("觀察題：V3機車為什麼只跑3站？（對應反直覺2的證據）—— 因機車容量小，送一站就接近滿載。")
+
+    st.divider()
+    st.subheader("Section 4｜folium 視覺化（15分鐘・工具區尾段）")
+    st.markdown("**4.1 產出 route_map.html（對齊講義§3.3）**")
+    st.code(
+        'import folium\n'
+        'm = folium.Map(location=[24.16, 120.65], zoom_start=12)\n'
+        'colors = {"V1": "blue", "V2": "red", "V3": "green"}\n'
+        'for vid, route in ortools_routes.items():\n'
+        '    coords = [(s["lat"], s["lon"]) for s in [depot] + route + [depot]]\n'
+        '    folium.PolyLine(coords, color=colors[vid], weight=3,\n'
+        '                     popup=f"{vid} 路徑").add_to(m)\n'
+        '    for s in route:\n'
+        '        folium.Marker([s["lat"], s["lon"]],\n'
+        '                       popup=f"{s[\'store_id\']} {s[\'store_name\']}<br>到達 {arrive_time}").add_to(m)\n'
+        'm.save("route_map.html")',
+        language="python",
+    )
+
+    st.markdown("**4.2 觀察題**")
+    st.caption("打開route_map.html後，目視觀察：")
+    observe_data = {
+        "問題": ["哪一輛車跑得最遠？", "三車路徑是否有跨區交叉？（直覺方案不會有，OR-Tools可能會）圈選", "如果有交叉，你猜為什麼OR-Tools故意這樣派？"],
+        "回答": [
+            "V1 冷藏車", "有",
+            "因為系統同時考慮溫層、容量、時窗、工時與成本，跨區可能比單純按區域分車的總成本更低，"
+            "是以整體最佳化為目標，而非追求視覺上的區域整齊。",
+        ],
+    }
+    st.table(pd.DataFrame(observe_data).set_index("問題"))
+
+    st.divider()
+    st.subheader("Section 5｜雙觀點對比＋決策說明（35分鐘・任務15核心）")
+    st.markdown("**5.1 雙觀點對比表（對齊講義§5.4）**")
+    st.caption("請對照.ipynb Cell 10跑出的雙觀點表，填空：")
+    compare_data = {
+        "觀點": ["可行性 ★", "成本", "車輛運用（V3滿載率）", "路徑邏輯"],
+        "直覺方案(baseline)": ["✗ 4條時窗違反＋2台超工時", "NT$3,148", "44%（只跑3站）", "nearest-neighbor 看似直覺"],
+        "OR-Tools": ["✓ 0違反＋0超工時", "NT$3,044", "98%（只跑1站）", "跨區互換獲得最佳"],
+        "學員觀察": [
+            "OR-Tools主要價值是先找到真正可執行的方案", "省下：3.3%（教學版3-5%）",
+            "對應反直覺第2點", "對應4（metaheuristic）",
+        ],
+    }
+    st.table(pd.DataFrame(compare_data).set_index("觀點"))
+
+    compare_fig = go.Figure()
+    compare_fig.add_trace(go.Bar(name="直覺方案(baseline)", x=["總成本(NT$)", "時窗違反(條)", "工時違反(台)"], y=[3148, 4, 2], marker_color=GOLD))
+    compare_fig.add_trace(go.Bar(name="OR-Tools", x=["總成本(NT$)", "時窗違反(條)", "工時違反(台)"], y=[3044, 0, 0], marker_color=JADE))
+    compare_fig.update_layout(title="Baseline vs OR-Tools：可行性＋成本雙觀點", barmode="group")
+    st.plotly_chart(style_fig(compare_fig), use_container_width=True)
+
+    st.markdown("**5.2 業界比例尺（對齊講義§5.4）**")
+    scale15_data = {
+        "規模": ["20點教學版（本日）", "50+點業界case", "500+點全國配送"],
+        "節省率": ["3.3%", "15-30%", "2-4%"],
+        "主軸": ["看可行性（可行性／成本）", "可行性兼成本", "雙觀點都極大化"],
+    }
+    st.table(pd.DataFrame(scale15_data).set_index("規模"))
+
+    st.markdown("**5.3 決策說明.md 三題（任務15交付#3・對齊講義§5.2）**")
+    st.caption("請寫成一頁 決策說明.md，結構如下：")
+    st.code(
+        "[路徑規劃決策說明・給主管]\n"
+        "# 1. 為什麼這樣分車？（對應反直覺第2點）\n"
+        "我們組的派車邏輯：\n"
+        "以總成本最小化為核心，同時滿足容量、時窗、工時三項硬約束，\n"
+        "系統會依各車型的載重與成本結構，自動分配站點使整體最佳化，\n"
+        "而非單純依地理區塊平均分車。\n\n"
+        "V3 機車為什麼只跑3站？\n"
+        "因為V3容量僅200kg，滿載率已達98%，屬於容量限制下的最佳配置，\n"
+        "繼續加派站點會超出容量上限，屬於系統依成本與容量自動決策的結果。\n\n"
+        "# 2. 這個方案總成本 vs 直覺方案差多少？（雙觀點）\n"
+        "可行性觀點：baseline 4 條違反 vs OR-Tools 0 違反\n"
+        "成本觀點：baseline NT$3,148 → OR-Tools NT$3,044，省 3.3%\n"
+        "主要賣點：這個規模(20點)我們主賣「可行性」，不主賣「大幅降本」。\n\n"
+        "# 3. 如果再加一輛車，值得嗎？（邊際成本分析）\n"
+        "加V4後，固定成本+800 NTD/天，預估路徑省150 NTD/天，\n"
+        "淨變化 = -650 NTD/天，結論：不值得（詳見5.4加分題實測）。\n\n"
+        "---\n"
+        "產出方：組別__ / 學員__，日期__/__/__",
+        language=None,
+    )
+
+    st.markdown("**5.4 加分題（任選一，+5分）**")
+    st.markdown(
+        "☐ A. metaheuristic對比：把GUIDED_LOCAL_SEARCH換成SIMULATED_ANNEALING，跑兩次看結果差幾%\n\n"
+        "☐ B. 罰金權重：把時窗違反從硬約束改軟約束＋penalty=500/分鐘，看可行解放多少\n\n"
+        "☑ C. 加第4輛車：加一輛V4=V1同規格，看邊際成本是否划算\n\n"
+        "☐ D. dropping nodes：用routing.AddDisjunction允許某些單放棄，看OR-Tools會自動放棄哪幾單"
+    )
+    st.info("加分觀察：增加車輛不代表一定更划算，應以總成本（固定成本＋配送成本）作為決策依據，而不是只看配送距離或站數。")
+
+    st.divider()
+    st.subheader("Section 6｜反思與統整（10分鐘・概念統整）")
+    st.markdown("**6.1 反直覺概念統整三問（對齊講義§6.1）**")
+    st.caption("請用一句話回答：")
+    reflect15_data = {
+        "問題": [
+            "Q1：為什麼baseline「按地理區分車」直覺方案，實測會違反時窗／工時？直覺哪裡錯？",
+            "Q2：為什麼OR-Tools把V3機車只給1個重單跑？明明V3容量最小、最便宜應該多跑才對？",
+            "Q3：OR-Tools跑30秒 vs 跑30分鐘差多少？為什麼不跑久一點？",
+        ],
+        "我的答案": [
+            "因為只考慮地理位置，沒有同時考慮時窗、工時、容量等限制，因此容易產生不可行方案",
+            "因為V3載重已達98%，AI是依容量與總成本最佳化，而不是平均分配配送站數",
+            "OR-Tools運算越久，改善通常會越來越小，因此找到品質夠好的解即可，不必一直追求最佳解",
+        ],
+    }
+    st.table(pd.DataFrame(reflect15_data).set_index("問題"))
+
+    st.markdown("**6.2 AI四階階梯反思（對齊講義§1.3・第2章）**")
+    st.caption("回到Section 2.1的四階階梯。")
+    ladder_reflect_data = {
+        "問題": ["你個人目前在物流職涯中，最常用的是第幾階分析？", "D17之前，你以為AI在物流的角色是第幾階？", "D17之後，你發現AI在物流的角色其實還能做到第幾階？"],
+        "回答": ["2", "3", "4"],
+    }
+    st.table(pd.DataFrame(ladder_reflect_data).set_index("問題"))
+    st.success("一句話總結W3→W4 D17的「Predictive→Prescriptive」跳階對你的衝擊：我發現AI的價值不只是預測，而是能在多種限制下找出最佳決策方案。")
+
+    st.markdown("**6.3 給主管的一頁洞察（本任務最終產出）**")
+    st.caption("請用「雙觀點結論＋規模推估＋下一步行動」完成一頁洞察。")
+    insight15_data = {
+        "項目": ["雙觀點結論(本日20點教學版)", "業界比例尺(供主管評估投資值不值)", "我們組推薦的下一步行動", "HMW", "解法", "為什麼非OR-Tools不可"],
+        "內容": [
+            "可行性：baseline 4條違反 → OR-Tools 0違反；成本：baseline NT$3,148 → OR-Tools NT$3,044，省3.3%",
+            "50+站：預估省15-30%；500+站：預估省2-4%",
+            "先在小規模驗證可行性效益，待站點數擴大到50+後導入正式路徑最佳化系統，成本效益會更明顯",
+            "如何在維持配送可行性的前提下，逐步擴大最佳化規模以放大成本節省效益？",
+            "先以20點教學版驗證可行性價值，逐步擴大至50+站導入正式排程系統，並持續監控違反次數與節省率",
+            "1. 人工排程無法同時滿足容量、時窗、工時等多重限制；2. NP-hard問題人工窮舉不可行，必須用近似最佳化演算法；"
+            "3. 規模越大，OR-Tools可放大的節省效益越明顯，人工排程無法規模化",
+        ],
+    }
+    st.table(pd.DataFrame(insight15_data).set_index("項目"))
+
+    st.divider()
+    st.subheader("給組長的提醒")
+    reminder_data = {
+        "提醒事項": [
+            "時間分配：Section 3-4約55分鐘（工具區），Section 5約35分鐘（任務區），Section 6約10分鐘（概念統整）。",
+            "跳階教學張力：Section 2.1四階階梯＋Section 6.2反思，是本日最重要的「W3→W4跳階」教學張力來源，不要跳過。",
+            "雙觀點不可省略：Section 5.1雙觀點對比表是評分權重最高（25%）的一題，務必兩條都答。",
+            "加分題不強制：Section 5.4是給學有餘力的學員，不影響及格。",
+        ],
+    }
+    st.table(pd.DataFrame(reminder_data).set_index("提醒事項"))
+
     back_to_home_button("week4")
 
 if st.session_state.page == "week5":
