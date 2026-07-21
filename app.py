@@ -337,8 +337,21 @@ if st.session_state.page == "home":
                     padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
                     position: relative; overflow: hidden;">
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
-            <p style="color: {TEXT}; margin: 0; font-size: 28px; font-weight: 700; line-height: 1.4;">
+            <div style="color: {GOLD}; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">
+                八週學習紀錄
+            </div>
+            <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: 28px; font-weight: 700; line-height: 1.4;">
                 把每一週投入的時間，<span style="color: {JADE};">都變成看得見的成果</span>
+            </h1>
+            <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; max-width: 640px; margin-bottom: 20px;">
+                嗨，我是洪歆穎（Clarice）👋<br>
+                這裡是我的學習歷程——從資料清洗、機器學習建模到AI應用的一步步紀錄。
+                在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，
+                尤其是物流領域裡客戶分析、預測與決策最佳化的應用。
+                歡迎透過下方 LINE 跟我交流！
+            </p>
+            <p style="color: {MUTED}; margin: 0; font-size: 15px;">
+                歡迎點擊上方分頁瀏覽各週內容
             </p>
         </div>
         """,
