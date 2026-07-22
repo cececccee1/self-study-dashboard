@@ -365,11 +365,67 @@ if st.session_state.page == "home":
         - **第一週** 目前已放入任務01、02、03、04、05
         - **第二週** 目前已放入任務06、07、08、09
         - **第三週** 目前已放入任務10、11、12、13
-        - **第四週** 目前已放入任務14、15
+        - **第四週** 目前已放入任務14、15、16
         - 其餘週次會隨課程進度陸續補上
         """
     )
     st.info("💡 點擊上方分頁按鈕切換各週內容。")
+
+    st.divider()
+    st.markdown(
+        f"""
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
+                    padding: 24px; margin-bottom: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">學習歷程摘要・VMDA四角色串接</h3>
+            <p style="color: {TEXT}; font-size: 15px; line-height: 1.9; margin-bottom: 0;">
+                這四週的學習，其實是同一條路徑不斷往上走的過程。
+                <br><br>
+                第一週我從<b style="color: {JADE};">資料（Data）</b>開始——用RFM分析看懂「誰是真正重要的客戶」，
+                把混亂的原始資料整理成主管一眼就懂的儀表板，這是往下所有決策的地基。
+                第二週我把視角拉到現場，用ABC分類重排倉儲儲位、分析OTD準時率，
+                開始理解<b style="color: {JADE};">管理（Management）</b>不只是數字，
+                還牽涉到人員動線、車輛排程這些真實的營運限制與流程邏輯。
+                <br><br>
+                第三週我把資料跟管理串在一起，開始讓AI做「預測」——用決策樹預測誰會流失、
+                用K-means把1,500位客戶自動分群、用Prophet預測銷量，
+                AI開始從「看得懂」進化到「猜得準」，直接對應到客戶流失、營收這些
+                <b style="color: {JADE};">商業價值（Value）</b>問題。
+                第四週是整段歷程最大的跳躍：我學會的不再只是預測，而是讓
+                <b style="color: {JADE};">AI／架構（AI/Architecture）</b>
+                直接參與決策——用LLM分析客訴文本找出根因、用OR-Tools在容量與時窗限制下，
+                把配送方案的違反數從4條降到0、成本省下3.3%。
+                <br><br>
+                串起來看，這其實是一個完整的商業問題解決邏輯：先讀懂資料（D），
+                理解管理現場的限制（M），用AI預測會發生什麼（也是Value的體現），
+                最後讓AI直接告訴我該怎麼做最划算（A）。
+                四個角色不是四段獨立的作業，而是<b>同一套解決問題的能力，隨著複雜度層層堆疊上去</b>。
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f"""
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
+                    padding: 24px; margin-bottom: 24px; text-align: center;">
+            <p style="color: {GOLD}; font-size: 13px; letter-spacing: 0.1em; margin-bottom: 10px;">5分鐘看懂我的價值</p>
+            <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
+            <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
+                完整呈現我如何從資料分析、管理現場、AI預測到最終讓AI直接參與決策，
+                含K-means分群debug過程與OR-Tools雙觀點決策的完整推理。
+            </p>
+            <a href="https://docs.google.com/presentation/d/1t9up8rw5Lys_fCUwvzMjA829KcOfjhAWVp13UAQ40I0/edit?usp=sharing"
+               target="_blank"
+               style="display: inline-block; padding: 12px 32px; background: {JADE}; color: {INK};
+                      border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;
+                      letter-spacing: 0.05em;">
+                📊 查看完整簡報
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.divider()
     st.subheader("📇 聯絡資訊")
@@ -2949,6 +3005,249 @@ if st.session_state.page == "week4":
         ],
     }
     st.table(pd.DataFrame(reminder_data).set_index("提醒事項"))
+
+    st.divider()
+
+    # ---------- 任務16｜整合架構師 ----------
+    st.markdown("<h2 style='white-space: nowrap;'>🔗 任務16：整合架構師</h2>", unsafe_allow_html=True)
+    st.caption("Integration Architect・虛擬企業D：中部生鮮宅配商，你是這家公司的BI架構師")
+    st.markdown("適用於：Week 4・Day 18／2026年6月起用　　範例資料：50客戶＋4模型結果，整合到SQLite＋Streamlit")
+
+    st.divider()
+    st.subheader("Section 1｜情境設定（5分鐘）")
+    st.markdown(
+        "虛擬企業D：中部生鮮宅配商，你是這家公司的BI架構師。\n"
+        "公司過去三個月用了四個AI模型（W3學員自己訓的）：\n"
+        "- D11 流失預測（誰快跑了？）\n"
+        "- D12 銷量預測（下月該備多少貨？）\n"
+        "- D13 客戶分群（這個客戶屬於哪一群？）\n"
+        "- D17 路徑最佳化（今天派車怎麼跑？）\n\n"
+        "四個模型各自輸出CSV，放在share drive，沒人能一次看完。"
+    )
+    st.markdown(
+        "**主管的痛**：「我每天要看四份報表才能判斷一個客戶，客服電話進來客戶問『我這個月會怎樣？』，"
+        "我要在五秒鐘內回答，現在做不到。」"
+    )
+    st.markdown(
+        "**你的任務**：用Streamlit＋SQLite做一個「物流控制塔v0.1」，讓老闆打開首頁就能挑一個客戶，"
+        "看到四個模型的所有結論。順便在第3頁標註「四模型分別需要多即時」與「過度即時／過度延遲」判斷。"
+    )
+
+    st.divider()
+    st.subheader("Section 2｜觀念回顧（填空，10分鐘）")
+    st.markdown("**2.1 雙必講教案速查（對齊講義§2.1＋§2.2）**")
+    st.markdown("教案1：主資料治理 Master/Subscriber 鐵律（填空）")
+    mdm_rule_data = {
+        "鐵律": ["鐵律1", "鐵律2", "鐵律3"],
+        "內容": [
+            "每個欄位只能有 1 個Master",
+            "Master變更必須 主動 推送給Subscriber（填：主動／被動）",
+            "Subscriber不可直接 寫，只能讀Master同步來的副本（填：讀／寫）",
+        ],
+    }
+    st.table(pd.DataFrame(mdm_rule_data).set_index("鐵律"))
+
+    st.markdown("教案2：介面即時性光譜（連連看）－把「即時性等級」連到「相對成本」：")
+    realtime_spectrum_data = {
+        "等級": ["Batch", "Mini-batch", "Near-real-time", "Real-time"],
+        "相對成本（倍數）": ["1×", "2×", "5×", "15×"],
+    }
+    st.table(pd.DataFrame(realtime_spectrum_data).set_index("等級"))
+    st.caption("（提示：Batch=1×為基準，光譜在講義§2.2表）")
+
+    st.markdown("**2.2 第3章§兩階段決策金字塔七步驟（對齊講義§2.3）**")
+    st.caption("七步驟由下往上填：")
+    pyramid_data = {
+        "階": ["第7階", "第6階", "第5階", "第4階", "第3階", "第2階", "第1階"],
+        "內容": ["跨節點協調", "最佳化求解", "規則自動化", "預測建模", "統計描述", "資料整合", "資料感知"],
+        "對應任務": [
+            "W6-W7第二階段", "D17 OR-Tools", "D19 Agent", "W3 D11-D12", "W1 D3-D5",
+            "★今天D18在這（統計、預測、規則、最佳化、跨節點）", "D16＋D17",
+        ],
+    }
+    st.table(pd.DataFrame(pyramid_data).set_index("階"))
+
+    st.markdown("**2.3 反直覺三點（連連看，對齊講義§2.4）**")
+    counter16_data = {
+        "反直覺": ["A. 整合難在治理不是技術", "B. 越即時≠越好", "C. 整合介面失效是慢慢腐爛"],
+        "為什麼": [
+            "即時性是對數成本曲線，99%場景日批次或分鐘級足夠",
+            "iPaaS／ETL工具都成熟，真正卡關是「誰是Master」的政治問題",
+            "客戶地址差一個字、SKU對映表沒更新，三個月後才被客訴炸出來",
+        ],
+        "連連看": [2, 1, 3],
+    }
+    st.table(pd.DataFrame(counter16_data).set_index("反直覺"))
+
+    st.divider()
+    st.subheader("Section 3｜SQLite 整合層實作（30分鐘・工具區）")
+    st.markdown("**3.1 程式檢核點・跑gen產6 CSV**")
+    st.code(
+        "cd 02_CoursePlan/範例資料與程式/W4/D18_整合架構師\npython gen_d18_csv.py",
+        language="bash",
+    )
+    st.caption("預期看到：✓ 50客戶／20門市／30非門市／9極端組合／8欄位MDM — 全部合規")
+    st.warning("如果沒看到9極端組合通過，你的環境seed可能不對（預設20260513）。")
+    gen_check_data = {
+        "項目": ["客戶數", "高流失客戶（churn≥0.75）", "高銷量客戶（sales≥800）"],
+        "你跑出的結果": [50, 6, 3],
+        "預期": [50, 6, 3],
+    }
+    st.table(pd.DataFrame(gen_check_data).set_index("項目"))
+
+    st.markdown("**3.2 程式檢核點・跑ETL建integrated.db**")
+    st.code("python etl_to_sqlite.py", language="bash")
+    st.caption("預期看到：[Step 3] 整合完成 — integrated.db，✓ ETL完成＋6個驗證查詢全部通過")
+    st.success("填：你的integrated.db大小約 45,056 byte（預期12,000-15,000，實際依環境略有差異屬正常）")
+
+    st.markdown("**3.3 LEFT JOIN 失效情境驗證（★教學重點）**")
+    st.caption("跑 python D18_範例程式.py，找出示範1客戶C040的查詢結果。")
+    c040_data = {
+        "欄位": ["customer_name", "is_store", "churn_prob", "segment_name", "vehicle_id"],
+        "C040的值": ["李醫師訂購", "N（Y/N）", 0.172, "主流_中等", "NULL（預期：NULL ⚠ 教學重點）"],
+    }
+    st.table(pd.DataFrame(c040_data).set_index("欄位"))
+    st.markdown("寫一句話：為什麼C040的vehicle_id是NULL？（對齊講義§3.3＋§5.2教案內容）")
+    st.success(
+        "因為C040是非門市散戶（is_store=N），D17路徑最佳化（OR-Tools）只規劃了C001-C020這20個門市的配送路線，"
+        "C021-C050這30個非門市散戶（如診所自行訂購）是由其他管道（機車快遞／客戶自取）服務，根本不在D17的排程範圍內。"
+        "用LEFT JOIN才能讓C040仍然出現在客戶360畫面上（只是路徑欄位顯示NULL）；如果改用INNER JOIN，"
+        "C040這類客戶會整筆從清單消失，主管會誤以為系統裡根本沒有這個客戶。"
+    )
+
+    st.divider()
+    st.subheader("Section 4｜Streamlit 三頁原型機實作（30分鐘・工具區尾段）")
+    st.markdown("**4.1 首頁啟動・客戶360**")
+    st.code("streamlit run app.py", language="bash")
+    st.caption("預期瀏覽器自動開 http://localhost:8501。")
+    st.caption("操作：在sidebar依序選以下客戶＋截圖／觀察：")
+    customer360_data = {
+        "客戶": ["C002 家樂福北屯", "C010 Cama西屯", "C045 早餐車", "C040 李醫師"],
+        "觀察重點": ["高流失＋高銷量＝VIP風險", "低流失＋低銷量＝健康小客戶", "高流失＋低銷量＝可放棄", "非門市，LEFT JOIN失效"],
+        "你看到的KPI": [
+            "churn 85% / sales 1200kg / 分群 IP_高頻次",
+            "churn 8% / sales 80kg / 分群 便利店_低頻",
+            "churn 93% / sales 75kg / 分群 尾巴_低頻",
+            "第二列是否出現警示框(Y/N)：Y",
+        ],
+    }
+    st.table(pd.DataFrame(customer360_data).set_index("客戶"))
+
+    st.markdown("**4.2 第2頁地圖＋銷量地圖**")
+    st.caption("切到「2_路徑與銷量地圖」頁。操作：filter三選一（全部50／僅20門市／僅30非門市）各切一次，觀察地圖點數變化。")
+    map_check_data = {
+        "項目": ["全部50：地圖上看到", "銷量條圖最高的客戶ID", "銷量條圖最低的客戶ID"],
+        "結果": ["50個點／派車表筆數20（預期20）", "C008（預期C008家樂福青海店，1450kg）", "C047（預期C047巷弄柑仔店北屯，60kg）"],
+    }
+    st.table(pd.DataFrame(map_check_data).set_index("項目"))
+
+    st.markdown("**4.3 第3頁即時性光譜＋MDM治理檢核**")
+    st.caption("切到「3_即時性光譜」頁。")
+    spectrum_check_data = {
+        "項目": ["對數成本曲線 Real-time等級", "四模型即時性檢測表中，判定⚠過度延遲的模型", "MDM治理檢核結果：8欄位都恰好1個Master"],
+        "結果": ["15×（預期15×）", "D17配送路徑（預期D17路徑）", "是"],
+    }
+    st.table(pd.DataFrame(spectrum_check_data).set_index("項目"))
+
+    st.divider()
+    st.subheader("Section 5｜整合決策說明三題（15分鐘・任務16交付#3）")
+    st.caption("任務16三件交付之一：整合決策說明.md，回答下面三題，每題限200字內。")
+
+    st.markdown("**5.1 你的db schema為什麼這樣切？（200字內）**")
+    st.success(
+        "我把6個來源CSV切成5張主表＋1張治理表：customers是主表（PK=customer_id），"
+        "churn_predictions、sales_forecast、customer_segments、delivery_routes各自用customer_id當FK串接。"
+        "這樣設計是因為四個AI模型（D11-D13、D17）的輸出頻率、欄位結構都不同，分開存才不會互相污染；"
+        "而customer_id是唯一能跨表串接的鍵，因此LEFT JOIN customers時，即使某模型沒有該客戶的資料"
+        "（如C040沒有delivery_routes），仍能保留客戶完整輪廓，不會整筆消失。若改用INNER JOIN，"
+        "任何一個模型缺資料就會讓客戶從清單掉出，主管會誤判系統裡沒有這個客戶。"
+    )
+    schema_score_data = {
+        "評分檢核點": [
+            "有提到「PK/FK」一詞 → +2分",
+            "有提到「customer_id為跨表串接鍵」 → +2分",
+            "有提到「LEFT JOIN vs INNER JOIN 業務語意」 → +3分（8分滿分）",
+        ],
+    }
+    st.table(pd.DataFrame(schema_score_data).set_index("評分檢核點"))
+
+    st.markdown("**5.2 四個模型各別需要的即時性等級**")
+    model_realtime_data = {
+        "模型": ["D11 流失預測", "D12 銷量預測", "D13 客戶分群", "D17 配送路徑"],
+        "你判定的等級": ["Mini-batch（週）", "Batch（月）", "Batch（月）", "Mini-batch（日）⚠過度延遲"],
+        "理由（一句話）": [
+            "戶流失是行為趨勢，週級更新就夠，不需要分鐘級",
+            "月級銷量預測本身週期就是月，日批次運算後留給主管看一天綽綽有餘",
+            "分群是客戶的長期行為屬性，不會一天內劇烈變動",
+            "目前是日批次，但物流業常有下午才進來的急單，日批次來不及反應",
+        ],
+    }
+    st.table(pd.DataFrame(model_realtime_data).set_index("模型"))
+    model_score_data = {
+        "評分檢核點": [
+            "四模型都有等級判斷 → +4分",
+            "至少1個過度即時／過度延遲判斷＋改善建議 → +3分",
+            "引用對數成本曲線 → +1分（8分滿分）",
+        ],
+    }
+    st.table(pd.DataFrame(model_score_data).set_index("評分檢核點"))
+
+    st.markdown("**5.3 MDM規則表中，Master指派至少2-3個欄位＋理由**")
+    mdm_master_data = {
+        "欄位": ["customer_id", "customer_address", "任選第三個：vehicle_id"],
+        "你指派的Master": ["ERP", "CRM", "WMS"],
+        "理由（一句話）": [
+            "客戶在ERP（訂單帳務系統）開帳建立，ERP是這個ID的源頭",
+            "客戶搬家會打電話給客服，CRM是唯一接觸點——不是「ERP資料量最大」就該當Master",
+            "倉庫貨架的實體數量由倉管實際盤點掌握，WMS看到的是第一手現場資料",
+        ],
+    }
+    st.table(pd.DataFrame(mdm_master_data).set_index("欄位"))
+    mdm_score_data = {
+        "評分檢核點": ["至少2個欄位有Master指派 → +4分", "理由提到「權威來源」概念（不是「資料量大」） → +4分（8分滿分）"],
+    }
+    st.table(pd.DataFrame(mdm_score_data).set_index("評分檢核點"))
+
+    st.divider()
+    st.subheader("Section 6｜反思（10分鐘・概念統整）")
+    st.markdown("**6.1 反直覺概念統整三問（50字內）**")
+    reflect16_data = {
+        "問題": ["1. 整合難在哪（治理vs技術）", "2. 越即時越好嗎？什麼時候才值得即時？", "3. LEFT JOIN vs INNER JOIN 的業務語意差異"],
+        "我的答案": [
+            "難在治理（誰是Master）不是技術。工具都很成熟，真正卡關的是「誰負責改這個欄位」的共識，沒共識再貴的iPaaS也只是把混亂搬到更快的管道",
+            "不是。即時性是對數成本曲線，從分鐘級跳到秒級要多2.5倍成本，秒級跳毫秒級再多3倍。99%場景日批次或分鐘級就夠，只有像AGV衝突避讓這種「物理衝突會出事」的場景才值得付10倍以上成本",
+            "這是業務問題不是技術問題。主管要看「全部客戶」＝LEFT JOIN；只想看「同時在5個系統都有資料」的客戶＝INNER JOIN。用錯了，30個非門市客戶會直接從主管視野裡消失",
+        ],
+    }
+    st.table(pd.DataFrame(reflect16_data).set_index("問題"))
+
+    st.markdown("**6.2 給總經理的一頁洞察（200字內）**")
+    st.caption("假設你要把今天三件交付用200字內寫成「給總經理一頁洞察」，內容要：")
+    st.markdown(
+        "- 點出9個極端組合中最該優先處理的1-2個客戶（VIP_AT_RISK）\n"
+        "- 點出本系統最該升即時性等級的1個介面（D17配送路徑）\n"
+        "- 點出本系統至少1個MDM治理風險（任選一個欄位）"
+    )
+    st.success(
+        "本次整合50位客戶的四項模型輸出後，發現3位客戶（C002家樂福北屯、C008家樂福青海店、C033福華大飯店）"
+        "同時具備「高流失風險(churn≥78%)＋高月銷量(≥950kg)」的VIP_AT_RISK組合，建議業務團隊本週優先安排拜訪，"
+        "避免高價值客戶流失。系統面，D17配送路徑目前是日批次更新，但下午才進來的急單無法即時反映，"
+        "建議升級為「事件觸發＋增量重算」，成本增加有限但能將反應時間從24小時縮短到30分鐘。治理面，"
+        "客戶地址欄位目前由CRM掌握Master權威（而非資料量最大的ERP），這個安排正確，但仍建議定期稽核CRM→WMS/TMS的"
+        "同步管道，避免發生「客戶搬家半年司機仍送舊地址」的治理風險。"
+    )
+
+    st.divider()
+    st.subheader("給組長的提醒")
+    reminder16_data = {
+        "提醒事項": [
+            "Section 3／Section 4是工具區的檢核點，助教現場1-on-1巡場確認每位學員都跑通。",
+            "Section 5是任務16三件交付中「整合決策說明.md」的草稿，結束前10分鐘助教必看。",
+            "加分項三選一不必強迫，先確保5維度都過60分再說。",
+            "對學員提示：「整合決策說明.md 是任務交付，沒寫等於沒交。」",
+        ],
+    }
+    st.table(pd.DataFrame(reminder16_data).set_index("提醒事項"))
 
     back_to_home_button("week4")
 
