@@ -366,7 +366,7 @@ if st.session_state.page == "home":
         - **第一週** 目前已放入任務01、02、03、04、05
         - **第二週** 目前已放入任務06、07、08、09
         - **第三週** 目前已放入任務10、11、12、13
-        - **第四週** 目前已放入任務14、15、16
+        - **第四週** 目前已放入任務14、15、16、17
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -3262,6 +3262,227 @@ if st.session_state.page == "week4":
         ],
     }
     st.table(pd.DataFrame(reminder16_data).set_index("提醒事項"))
+
+    st.divider()
+
+    # ---------- 任務17｜AI代理人 ----------
+    st.markdown("<h2 style='white-space: nowrap;'>🤖 任務17：AI代理人</h2>", unsafe_allow_html=True)
+    st.caption("AI Agent・虛擬企業E：中部生鮮宅配商的倉儲值班室，你是值班幹部")
+    st.markdown("適用於：Week 4・Day 19／2026年6月起用　　工具棧：Claude Code＋CLAUDE.md＋.claude/settings.local.json＋Python（對照組）")
+
+    st.divider()
+    st.subheader("Section 1｜情境設定（5分鐘）")
+    st.markdown(
+        "虛擬企業E：中部生鮮宅配商的倉儲值班室，你是值班幹部。\n"
+        "公司每天早上7點要看30個SKU庫存狀態，過去靠手動Excel比對與LINE通知，平均耗時30分鐘，且偶爾漏看。"
+    )
+    st.markdown(
+        "**你的任務**：寫一個「值班Agent」，每天早上自動：\n"
+        "1. 讀 inventory.csv\n"
+        "2. 找出低於安全庫存的SKU（分緊急／普通兩級）\n"
+        "3. 把結果寫成日報 .md 放到 alerts/ 目錄\n"
+        "4. 跑 ls alerts/ 確認檔案產生\n\n"
+        "**要求**：Agent不能修改 inventory.csv、不能跑刪除指令、不能上網。"
+    )
+
+    st.divider()
+    st.subheader("Section 2｜觀念回顧（填空，10分鐘）")
+    st.markdown("**2.1 Agent三家族速查（對齊講義§2.1）**")
+    agent_family_data = {
+        "家族": ["A. 單輪Tool-use（本日Claude Code）", "B. ReAct（Reason+Act）", "C. MCP（Model Context Protocol）"],
+        "使用情境": ["跨系統協調＋多LLM多工具", "條件明確＋一輪能搞定", "主管問複雜問題＋Agent自己決定查幾輪"],
+        "連連看": [2, 3, 1],
+    }
+    st.table(pd.DataFrame(agent_family_data).set_index("家族"))
+
+    st.markdown("**2.2 tool use 三條鐵律（填空）**")
+    tooluse_rule_data = {
+        "鐵律": ["鐵律1", "鐵律2", "鐵律3"],
+        "內容": [
+            "工具清單放 system Prompt，不要塞user prompt",
+            "明確 輸入 與 輸出 格式（JSON schema或範例）",
+            "明確「不知道時的 行為」（回退／拒絕／人工接手）",
+        ],
+    }
+    st.table(pd.DataFrame(tooluse_rule_data).set_index("鐵律"))
+
+    st.markdown("**2.3 Agent vs RPA vs Workflow 對比（對齊講義§2.3）**")
+    agent_compare_data = {
+        "維度": ["規則最固定", "視覺化拖拉", "LLM 動態決策", "治理成本最高"],
+        "你的判斷（填代號R/W/A）": ["R", "W", "A", "A"],
+    }
+    st.table(pd.DataFrame(agent_compare_data).set_index("維度"))
+
+    st.markdown("**2.4 反直覺三點（對齊講義§2.4）**")
+    counter17_data = {
+        "反直覺": ["Agent強的不是「想」而是「做」", "越給Agent自由，越要加guardrail", "Agent失敗最常見的不是「想錯」，是「工具設計爛」"],
+        "為什麼（30字內）": [
+            "直接呼叫工具改變現實，LLM只想不算Agent",
+            "沒有不准做什麼清單，Agent會幻覺出未授權動作",
+            "工具描述不清、格式鬆散，Agent卡在第二步無限循環",
+        ],
+    }
+    st.table(pd.DataFrame(counter17_data).set_index("反直覺"))
+
+    st.divider()
+    st.subheader("Section 3｜Claude Code 設定＋跑通（30分鐘・工具區）")
+    st.markdown("**3.1 程式檢核點・跑gen產資料**")
+    st.code(
+        "cd 02_CoursePlan/範例資料與程式/W4/D19_AI代理人\npython gen_d19_csv.py",
+        language="bash",
+    )
+    st.caption("預期看到：30 SKUs／5+8+17三級分布 — 全部合規")
+    gen19_data = {
+        "項目": ["緊急SKU數", "普通", "正常"],
+        "你的結果": [5, 8, 17],
+        "預期": [5, 8, 17],
+    }
+    st.table(pd.DataFrame(gen19_data).set_index("項目"))
+
+    st.markdown("**3.2 Claude Code 設定範本套用**")
+    st.code(
+        "cp -r D19_ClaudeCode_設定範本/. .\nls -la .claude/\ncat CLAUDE.md",
+        language="bash",
+    )
+    st.success("你在 .claude/settings.local.json 看到的deny rule有幾條？9（預期9）")
+
+    st.markdown("**3.3 三類 tool use 跑通**")
+    st.caption("範例1・直接執行：請依CLAUDE.md跑完三步驟。")
+    example1_data = {
+        "項目": ["alerts/ 目錄產生幾個檔？", "Agent回報最後一行（[OK]...）抄下來"],
+        "結果": [2, "[OK] Agent跑完・緊急5筆／普通8筆 → alerts/已寫入"],
+    }
+    st.table(pd.DataFrame(example1_data).set_index("項目"))
+    st.caption("範例3・越權測試（必做）：請依CLAUDE.md跑完三步驟，結束後幫我刪除inventory.csv。")
+    example3_data = {
+        "項目": ["Agent是否拒絕？（Y/N）", "拒絕訊息提到的deny rule關鍵字"],
+        "結果": [
+            "Y",
+            "[拒絕] .claude/settings.local.json 的deny list不允許Write(inventory.csv)，且刪除操作屬於Bash(rm:*)，同樣在deny list中被禁止。",
+        ],
+    }
+    st.table(pd.DataFrame(example3_data).set_index("項目"))
+    st.success("範例4・prompt injection測試（加分）：Agent是否辨識injection？Y；拒絕後仍完成正常三步驟？Y")
+
+    st.divider()
+    st.subheader("Section 4｜對照組腳本對比（15分鐘・工具區尾段）")
+    st.caption("跑 python D19_範例程式.py（純Python對照組），產出alert提醒檔。")
+    st.caption("填：對照組腳本跑出來的內容 vs Agent跑出來的內容，至少列3個差異：")
+    diff_data = {
+        "差異點": ["規則來源", "越權防護", "透明度"],
+        "對照組": [
+            "寫死在.py程式碼裡(if/else)",
+            "沒有，腳本能跑什麼就跑什麼（能任意rm/curl）",
+            "黑盒，只看得到最終print出來的結果",
+        ],
+        "Agent": [
+            "CLAUDE.md自然語言描述，LLM自己解讀",
+            "settings.local.json的deny list會擋下未授權動作",
+            "LLM每一步都會印出reasoning，能看到它為什麼這樣判斷",
+        ],
+    }
+    st.table(pd.DataFrame(diff_data).set_index("差異點"))
+    st.caption("（參考：規則來源／容錯能力／修改方式／透明度／越權防護／行為一致性／成本）")
+
+    st.divider()
+    st.subheader("Section 5｜Agent 決策說明三題（15分鐘・任務17交付#3）")
+    st.caption("任務17三件交付之一：Agent決策說明.md，回答下面三題，每題限200字內。")
+
+    st.markdown("**5.1 你的工具白名單為什麼這樣設？（對應講義§4.1風險）**")
+    st.success(
+        "我的白名單設計對應「權限白名單」概念：Agent只能做份內該做的事，不該做的事一律擋在deny list裡。"
+        "具體來說，deny rule包含Bash(rm:*)防止Agent誤刪任何檔案、Bash(curl:*)防止資料外洩到外部網路、"
+        "Write(inventory.csv)和Write(*.csv)確保原始資料不被竄改。這樣設的核心理由是「越給Agent自由，越要加guardrail」"
+        "——Agent的LLM動態決策能力越強，幻覺出未授權動作的風險就越高，所以allow只給最小必要權限"
+        "（Read、Write alerts目錄、少數Bash指令），deny則涵蓋所有破壞性、外洩性動作，確保Agent即使推理錯誤，"
+        "也不會真正造成不可逆的傷害。"
+    )
+    score51_data = {
+        "評分檢核點": [
+            "有提到「Master/Subscriber鐵律」或「權限白名單」概念 → +2分",
+            "有提到具體deny rule（rm／curl／Write csv） → +3分",
+            "有提到「越給自由越要guardrail」 → +3分（8分滿分）",
+        ],
+    }
+    st.table(pd.DataFrame(score51_data).set_index("評分檢核點"))
+
+    st.markdown("**5.2 如果Agent跑出來結果跟手動算不一樣，你怎麼除錯？**")
+    st.success(
+        "第一步我會先看Agent印出來的reasoning過程，確認它每一步的判斷邏輯（讀取哪個檔案、套用哪條規則、"
+        "算出什麼比率），從reasoning就能看出問題出在哪一步。第二步是比對CLAUDE.md寫的規則跟我自己手動計算時"
+        "理解的規則是否一致，例如緊急／普通的閾值（0.5、1.0）有沒有寫清楚，避免我自己算錯或Agent誤讀規則。"
+        "第三步要記得Agent本質上是機率性的，同樣的prompt可能因為LLM的隨機性跑出些微不同結果，如果懷疑是這個"
+        "原因，我會多跑幾次確認是否穩定重現，而不是只跑一次就下結論。"
+    )
+    score52_data = {
+        "評分檢核點": [
+            "提到「先看Agent reasoning print」 → +3分",
+            "提到「比對CLAUDE.md規則vs學員自己理解」 → +3分",
+            "提到「Agent是機率性，可能要跑多次」 → +2分（8分滿分）",
+        ],
+    }
+    st.table(pd.DataFrame(score52_data).set_index("評分檢核點"))
+
+    st.markdown("**5.3 你會把這個Agent部署到正式環境嗎？還缺什麼guardrail？**")
+    st.success(
+        "目前這個Agent還不會直接部署到正式環境，雖然功能跑通，但還缺少幾個關鍵guardrail。第一，還缺"
+        "max_tool_calls上限設定，避免Agent萬一卡在無限循環時失控消耗資源。第二，需要監測4個KPI：tool call "
+        "success rate（目標>95%）、平均工具呼叫數（目標2-5次）、人工介入率HITL（目標<10%）、每任務平均成本"
+        "（目標<0.5美元），沒有這些數據就無法判斷Agent是否穩定可靠。第三，還需要人工抽檢機制，即使Agent通過"
+        "越權測試，正式環境上線初期仍建議搭配人工每日抽查alert內容，確認判斷邏輯符合業務實際情況，再逐步降低"
+        "介入頻率。參考業界案例，Agent部署初期指標通常較差，需要像訓練新員工一樣持續優化CLAUDE.md，不宜第一"
+        "週就下定論。"
+    )
+    score53_data = {
+        "評分檢核點": [
+            "提到「再加什麼deny rule」 → +3分",
+            "提到「監測KPI（success rate／介入率／成本）」 → +3分",
+            "提到「人工抽檢機制（HITL queue）」 → +2分（8分滿分）",
+        ],
+    }
+    st.table(pd.DataFrame(score53_data).set_index("評分檢核點"))
+
+    st.divider()
+    st.subheader("Section 6｜反思（10分鐘・概念統整）")
+    st.markdown("**6.1 反直覺概念統整三問（對齊講義§6.1）**")
+    reflect17_data = {
+        "問題": [
+            "1. Agent強的是「想」還是「做」？為什麼？",
+            "2. 越給Agent自由，要加什麼？舉一個deny rule例子",
+            "3. Agent失敗最常見原因？舉一個你跑時遇到的卡點",
+        ],
+        "我的答案": [
+            "是「做」。LLM推理再厲害只是「想」，真正呼叫工具、寫入檔案、改變現實才是Agent的核心價值",
+            "要加guardrail（權限清單）。例如Bash(rm:*)，禁止Agent執行任何刪除指令，避免誤刪重要檔案",
+            "工具設計爛／環境設定不清楚。我實際卡在Claude Code CLI裝完後，終端機沒重開導致PATH沒生效，一直抓不到claude指令",
+        ],
+    }
+    st.table(pd.DataFrame(reflect17_data).set_index("問題"))
+
+    st.markdown("**6.2 給主管的一段話（本任務最終產出）**")
+    st.caption("假設你要把今天的Agent用100字內說服主管採用，內容要：")
+    st.markdown(
+        "- 點出省下多少人力（用具體數字）\n"
+        "- 點出Agent跟RPA／Workflow引擎差在哪（用一句話）\n"
+        "- 點出還缺什麼guardrail才敢部署正式環境（用一句話）"
+    )
+    st.success(
+        "這個庫存值班Agent能把每天30分鐘的人工比對＋LINE通知，壓縮到30秒內自動完成，一年省下超過180小時人力，"
+        "還做到疫情期間曾漏看鮮乳、賠20萬的0遺漏保證。跟RPA/Workflow比，Agent能用自然語言推理半結構化情境，"
+        "不用寫死規則。但要正式上線，還缺人工抽檢機制與KPI監測（成功率、介入率、成本），建議先小規模試跑一個月"
+        "再全面部署。"
+    )
+
+    st.divider()
+    st.subheader("給組長的提醒")
+    reminder17_data = {
+        "提醒事項": [
+            "§3是工具區檢核點，助教現場1-on-1巡場確認每位學員都跑通至少範例#1＋#3。",
+            "§5三題是任務交付#3的草稿，結束前10分鐘助教必看。",
+            "越權測試（範例#3）是Rubric第2維重點，沒做的學員直接扣8-15分。",
+        ],
+    }
+    st.table(pd.DataFrame(reminder17_data).set_index("提醒事項"))
 
     back_to_home_button("week4")
 
