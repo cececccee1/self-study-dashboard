@@ -336,20 +336,20 @@ if st.session_state.page == "home":
         f"""
         <div style="background: linear-gradient(135deg, #1c1c28 0%, {INK} 100%);
                     border: 1px solid {BORDER};
-                    padding: 40px 30px; border-radius: 4px; margin-bottom: 24px;
+                    padding: 40px 24px; border-radius: 4px; margin-bottom: 24px;
                     position: relative; overflow: hidden;">
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
             <div style="color: {GOLD}; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">
                 八週學習紀錄
             </div>
-            <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: 28px; font-weight: 700; line-height: 1.4;">
+            <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; line-height: 1.4; white-space: nowrap;">
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
             <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; margin-bottom: 0;">
                 嗨，我是洪歆穎（Clarice）👋<br>
-                這裡是我的學習歷程——從資料清洗、機器學習建模到AI應用的一步步紀錄。
-                在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，
-                尤其是物流領域裡客戶分析、預測與決策最佳化的應用。
+                這裡是我的學習歷程——從資料清洗、機器學習建模到AI應用的一步步紀錄。<br>
+                在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，<br>
+                尤其是物流領域裡客戶分析、預測與決策最佳化的應用。<br>
                 歡迎透過下方 LINE 跟我交流！
             </p>
         </div>
