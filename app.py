@@ -3,6 +3,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 from pathlib import Path
 from datetime import datetime
 
@@ -416,12 +417,32 @@ if st.session_state.page == "home":
                 完整呈現我如何從資料分析、管理現場、AI預測到最終讓AI直接參與決策，
                 含K-means分群debug過程與OR-Tools雙觀點決策的完整推理。
             </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    components.html(
+        """
+        <div style="width: 100%; height: 500px; border-radius: 8px; overflow: hidden;">
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSWD1nFUanagBHgSMPaeGWHblLMfL0vHfQRWXToWDqIzZhFd5jupt6g8A75pM3VfDs8Y0cxnCJOl8YD/pubembed?start=false&loop=false&delayms=3000"
+                style="width: 100%; height: 100%; border: 0;"
+                frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+            </iframe>
+        </div>
+        """,
+        height=510,
+    )
+
+    st.markdown(
+        f"""
+        <div style="text-align: center; margin-bottom: 24px;">
             <a href="https://docs.google.com/presentation/d/15LAkGTmSTCH0fbdAD_GwE_XYo2o9vMnH0Ch0HtK89wI/edit?usp=sharing"
                target="_blank"
                style="display: inline-block; padding: 12px 32px; background: {JADE}; color: {INK};
                       border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;
                       letter-spacing: 0.05em;">
-                📊 查看完整簡報
+                📊 在新分頁開啟完整簡報
             </a>
         </div>
         """,
