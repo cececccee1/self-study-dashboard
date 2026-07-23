@@ -428,6 +428,80 @@ if st.session_state.page == "home":
         unsafe_allow_html=True,
     )
 
+    st.markdown(
+        f"""
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
+                    padding: 24px; margin-bottom: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">🎯 想接的題目方向</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <tr style="background: {PANEL};">
+                    <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">方向</th>
+                    <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">說明</th>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">物流AI Agent自動化</td>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">用Claude Code打造值班／派工Agent，自動判斷異常、寫入提醒檔，減少人工巡查與漏看風險</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">客服流程自動化</td>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">結合LLM情感分析＋Agent工具鏈，將客訴文本自動分類、判斷嚴重度並觸發派工，取代人工逐則判讀</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; color: {TEXT};">企業內部流程Agent化</td>
+                    <td style="padding: 8px; color: {TEXT};">把重複性高的資料比對、報表產出、跨系統查詢工作，用Agent+guardrail設計自動化，兼顧效率與安全邊界</td>
+                </tr>
+            </table>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.subheader("⭐ 精選案例")
+    st.caption("時間有限的話，看這三個任務就夠了")
+    spotlight_col1, spotlight_col2, spotlight_col3 = st.columns(3)
+    with spotlight_col1:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W3・任務13</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">K-means分群debug全紀錄</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">從畸形分群到標準化修正後的正常分布，完整的問題發現與驗證過程</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week3", use_container_width=True):
+            go_to_page("week3")
+            st.rerun()
+    with spotlight_col2:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務15</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">OR-Tools雙觀點決策</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">可行性違反數從4條降到0，成本省3.3%，用數字證明AI決策比直覺方案更值得</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week4a", use_container_width=True):
+            go_to_page("week4")
+            st.rerun()
+    with spotlight_col3:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務17</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">AI代理人自動值班</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">用Claude Code打造值班Agent，每天30分鐘人工比對壓縮到30秒自動完成，通過越權測試與guardrail設計</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week4b", use_container_width=True):
+            go_to_page("week4")
+            st.rerun()
+
     st.divider()
     st.subheader("📇 聯絡資訊")
     contact_col1, contact_col2, contact_col3 = st.columns([1, 1, 2])
@@ -464,6 +538,9 @@ if st.session_state.page == "home":
                 </p>
                 <p style="color: {MUTED}; font-size: 14px; margin: 0;">
                     有任何問題或想交流學習心得，歡迎透過 LINE 聯絡我！
+                </p>
+                <p style="color: {MUTED}; font-size: 14px; margin: 8px 0 0 0;">
+                    ✉️ Email：cececccee1@gmail.com
                 </p>
             </div>
             """,
@@ -1045,6 +1122,20 @@ if st.session_state.page == "week1":
     }
     st.table(pd.DataFrame(coverage_data).set_index("分群"))
     st.success("✅ 自我檢核：≥5群覆蓋（<5會扣分）")
+
+    fig_w1t05 = go.Figure(go.Bar(
+        x=["VIP", "Loyal", "Big Spenders", "New/Promising", "Potential", "At Risk", "Hibernating", "Lost"],
+        y=[1, 0, 1, 1, 1, 2, 1, 1],
+        marker_color=JADE,
+    ))
+    fig_w1t05.update_layout(
+        title="RFM 八分群客戶數分布（滑鼠懸停看細節）",
+        paper_bgcolor=PANEL, plot_bgcolor=PANEL,
+        font_color=TEXT, title_font_color=GOLD,
+        xaxis=dict(gridcolor=BORDER), yaxis=dict(gridcolor=BORDER, dtick=1),
+        height=320, margin=dict(t=50, b=20, l=20, r=20),
+    )
+    st.plotly_chart(fig_w1t05, use_container_width=True)
 
     st.markdown("**4.2 Excel客戶分層名單（主交付物②）**")
     st.markdown("將Section 3.2的內容，寫進 `客戶分層名單.xlsx`，欄位設計：customer_id／name／R／F／M／RFM_score／分群／建議行動")
@@ -1838,6 +1929,21 @@ if st.session_state.page == "week3":
     }
     st.table(pd.DataFrame(top5imp_data).set_index("Rank"))
 
+    fig_w3t10 = go.Figure(go.Bar(
+        y=["Recency", "Frequency", "AvgOrder", "投訴次數", "分群:At-Risk"],
+        x=[42, 21, 13, 10, 8],
+        orientation="h",
+        marker_color=JADE,
+    ))
+    fig_w3t10.update_layout(
+        title="決策樹特徵重要度 (%)（滑鼠懸停看細節）",
+        paper_bgcolor=PANEL, plot_bgcolor=PANEL,
+        font_color=TEXT, title_font_color=GOLD,
+        xaxis=dict(gridcolor=BORDER), yaxis=dict(gridcolor=BORDER, autorange="reversed"),
+        height=320, margin=dict(t=50, b=20, l=20, r=20),
+    )
+    st.plotly_chart(fig_w3t10, use_container_width=True)
+
     st.markdown("**5.3 一條決策路徑解讀（挑Top1高風險客）**")
     st.caption("寫成「If A and B and C → 流失機率X%」一行。")
     st.info("If Recency > 30 AND Frequency < 3 → 流失機率92%")
@@ -2035,6 +2141,19 @@ if st.session_state.page == "week3":
     }
     st.table(pd.DataFrame(metric11_data).set_index("指標"))
 
+    fig_w3t11m = go.Figure()
+    fig_w3t11m.add_trace(go.Bar(name="Prophet", x=["RMSE", "MAE", "MAPE(%)"], y=[120.63, 89.72, 4.5], marker_color=JADE))
+    fig_w3t11m.add_trace(go.Bar(name="最佳Baseline", x=["RMSE", "MAE", "MAPE(%)"], y=[375.79, 313.83, 14.54], marker_color=TEAL))
+    fig_w3t11m.update_layout(
+        title="Prophet vs Baseline 誤差比較（滑鼠懸停看細節）",
+        barmode="group",
+        paper_bgcolor=PANEL, plot_bgcolor=PANEL,
+        font_color=TEXT, title_font_color=GOLD, legend_font_color=TEXT,
+        xaxis=dict(gridcolor=BORDER), yaxis=dict(gridcolor=BORDER),
+        height=320, margin=dict(t=50, b=20, l=20, r=20),
+    )
+    st.plotly_chart(fig_w3t11m, use_container_width=True)
+
     st.markdown("**5.2 上線決策**")
     st.markdown("☑ Prophet MAPE顯著低（差距≥2pp）→用Prophet")
     st.markdown("☐ Prophet MAPE接近Baseline（差距<2pp）→用Baseline")
@@ -2059,6 +2178,21 @@ if st.session_state.page == "week3":
     }
     st.table(pd.DataFrame(top5sku_data).set_index("Rank"))
     st.caption("採購建議格式建議：「備貨X個±Y（原因：Trend/Seasonality/Holiday）」")
+
+    sku_labels = ["SKU_001", "SKU_003", "SKU_004", "SKU_002", "SKU_006"]
+    fig_w3t11f = go.Figure()
+    fig_w3t11f.add_trace(go.Bar(name="yhat_lower", x=sku_labels, y=[1307, 577, 827, 839, 781], marker_color=BORDER))
+    fig_w3t11f.add_trace(go.Bar(name="yhat點估", x=sku_labels, y=[1480, 620, 863, 862, 800], marker_color=JADE))
+    fig_w3t11f.add_trace(go.Bar(name="yhat_upper", x=sku_labels, y=[1648, 657, 901, 886, 819], marker_color=GOLD))
+    fig_w3t11f.update_layout(
+        title="Top 5 SKU 下月銷量預測區間（滑鼠懸停看採購建議）",
+        barmode="group",
+        paper_bgcolor=PANEL, plot_bgcolor=PANEL,
+        font_color=TEXT, title_font_color=GOLD, legend_font_color=TEXT,
+        xaxis=dict(gridcolor=BORDER), yaxis=dict(gridcolor=BORDER),
+        height=340, margin=dict(t=50, b=20, l=20, r=20),
+    )
+    st.plotly_chart(fig_w3t11f, use_container_width=True)
 
     st.divider()
     st.subheader("Section 7｜採購建議書（10分鐘・主交付物）")
@@ -2211,6 +2345,20 @@ if st.session_state.page == "week3":
     st.table(pd.DataFrame(top5rule_data).set_index("Rank"))
     st.markdown("**自我檢核：**")
     st.markdown("☑ Top5全部Lift>1.3　　☐ 4種業務動作至少3種被覆蓋　　☑ 排除「人人都買」(P(B)>90%)的偽規則")
+
+    fig_w3t12 = go.Figure(go.Bar(
+        x=["尿布→啤酒", "啤酒→尿布", "起司→紅酒", "紅酒→起司", "醬油→米"],
+        y=[7.32, 7.32, 7.20, 7.20, 5.18],
+        marker_color=GOLD,
+    ))
+    fig_w3t12.update_layout(
+        title="Top 5 關聯規則 Lift 值（滑鼠懸停看業務動作）",
+        paper_bgcolor=PANEL, plot_bgcolor=PANEL,
+        font_color=TEXT, title_font_color=GOLD,
+        xaxis=dict(gridcolor=BORDER, tickfont=dict(size=10)), yaxis=dict(gridcolor=BORDER),
+        height=320, margin=dict(t=50, b=20, l=20, r=20),
+    )
+    st.plotly_chart(fig_w3t12, use_container_width=True)
 
     st.divider()
     st.subheader("Section 5｜GenAI sub-task（60分鐘・主交付物③）")
@@ -2375,6 +2523,28 @@ if st.session_state.page == "week3":
         "Silhouette": [0.357, 0.328, 0.272, 0.329, 0.335, 0.293, 0.308],
     }
     st.table(pd.DataFrame(k_scan_data).set_index("k"))
+
+    fig_w3t13 = go.Figure()
+    fig_w3t13.add_trace(go.Scatter(
+        x=["2", "3", "4", "5", "6", "7", "8"],
+        y=[3787.4, 3022.4, 2482.8, 2075.7, 1789.4, 1602.4, 1437.5],
+        name="Inertia", line=dict(color=JADE), yaxis="y1",
+    ))
+    fig_w3t13.add_trace(go.Scatter(
+        x=["2", "3", "4", "5", "6", "7", "8"],
+        y=[0.357, 0.328, 0.272, 0.329, 0.335, 0.293, 0.308],
+        name="Silhouette", line=dict(color=GOLD), yaxis="y2",
+    ))
+    fig_w3t13.update_layout(
+        title="K-means：Inertia (Elbow) vs Silhouette（滑鼠懸停看該k值判斷）",
+        paper_bgcolor=PANEL, plot_bgcolor=PANEL,
+        font_color=TEXT, title_font_color=GOLD, legend_font_color=TEXT,
+        xaxis=dict(title="k", gridcolor=BORDER),
+        yaxis=dict(title="Inertia", gridcolor=BORDER),
+        yaxis2=dict(title="Silhouette", overlaying="y", side="right", gridcolor=BORDER),
+        height=340, margin=dict(t=50, b=20, l=20, r=20),
+    )
+    st.plotly_chart(fig_w3t13, use_container_width=True)
 
     st.markdown("**結論**")
     k_conclusion_data = {
