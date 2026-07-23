@@ -445,41 +445,64 @@ if st.session_state.page == "home":
         - 其餘週次會隨課程進度陸續補上
         """
     )
-    st.info("💡 想看每週詳細的分析過程？點擊上方分頁按鈕切換各週內容。")
+    st.info(
+        "💡 想看每週詳細的分析過程？點擊上方分頁按鈕切換各週內容。\n\n"
+        "以下每週分頁保留完整的課堂作業紀錄：任務編號、debug過程、原始截圖，是實際操作的完整記錄，不是精簡摘要。"
+    )
 
     st.divider()
     st.markdown(
-        f"""
-        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
-                    padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">學習歷程摘要・VMDA四角色串接</h3>
-            <p style="color: {TEXT}; font-size: 15px; line-height: 1.9; margin-bottom: 0;">
-                這四週的學習，其實是同一條路徑不斷往上走的過程。
-                <br><br>
-                第一週我從<b style="color: {JADE};">資料（Data）</b>開始——用RFM分析看懂「誰是真正重要的客戶」，
-                把混亂的原始資料整理成主管一眼就懂的儀表板，這是往下所有決策的地基。
-                第二週我把視角拉到現場，用ABC分類重排倉儲儲位、分析OTD準時率，
-                開始理解<b style="color: {JADE};">管理（Management）</b>不只是數字，
-                還牽涉到人員動線、車輛排程這些真實的營運限制與流程邏輯。
-                <br><br>
-                第三週我把資料跟管理串在一起，開始讓AI做「預測」——用決策樹預測誰會流失、
-                用K-means把1,500位客戶自動分群、用Prophet預測銷量，
-                AI開始從「看得懂」進化到「猜得準」，直接對應到客戶流失、營收這些
-                <b style="color: {JADE};">商業價值（Value）</b>問題。
-                第四週是整段歷程最大的跳躍：我學會的不再只是預測，而是讓
-                <b style="color: {JADE};">AI／架構（AI/Architecture）</b>
-                直接參與決策——用LLM分析客訴文本找出根因、用OR-Tools在容量與時窗限制下，
-                把配送方案的違反數從4條降到0、成本省下3.3%。
-                <br><br>
-                串起來看，這其實是一個完整的商業問題解決邏輯：先讀懂資料（D），
-                理解管理現場的限制（M），用AI預測會發生什麼（也是Value的體現），
-                最後讓AI直接告訴我該怎麼做最划算（A）。
-                四個角色不是四段獨立的作業，而是<b>同一套解決問題的能力，隨著複雜度層層堆疊上去</b>。
-            </p>
-        </div>
-        """,
+        f"""<h3 style="font-size: 16px; margin-bottom: 4px; color: {GOLD};">學習歷程時間軸・VMDA四角色串接</h3>""",
         unsafe_allow_html=True,
     )
+
+    week_data = [
+        {
+            "tab": "W1・Data",
+            "role": "Data・資料",
+            "task": "用RFM分析看懂「誰是真正重要的客戶」，把原始資料整理成主管一眼就懂的儀表板",
+            "num": "8",
+            "label": "個消費行為分群",
+        },
+        {
+            "tab": "W2・Management",
+            "role": "Management・現場",
+            "task": "用ABC分類重排倉儲儲位、分析OTD準時率，理解人員動線與車輛排程的真實營運限制",
+            "num": "3",
+            "label": "表整合定位瓶頸主因",
+        },
+        {
+            "tab": "W3・Value",
+            "role": "Value・預測",
+            "task": "用決策樹預測流失、K-means自動分群、Prophet預測銷量，AI從「看得懂」進化到「猜得準」",
+            "num": "1,500",
+            "label": "位客戶被自動精準分群",
+        },
+        {
+            "tab": "W4・AI/Architecture",
+            "role": "AI/Architecture・決策",
+            "task": "用LLM分析客訴文本找出根因、用OR-Tools在容量與時窗限制下找最佳配送方案",
+            "num": "3.3%",
+            "label": "AI決策比人工直覺省下的成本",
+        },
+    ]
+
+    week_tabs = st.tabs([wk["tab"] for wk in week_data])
+    for tab, wk in zip(week_tabs, week_data):
+        with tab:
+            st.markdown(
+                f"""
+                <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 18px 20px; margin-bottom: 16px;">
+                    <div style="font-size: 12px; color: {GOLD}; letter-spacing: 0.05em; margin-bottom: 8px;">{wk['role']}</div>
+                    <div style="font-size: 14px; color: {TEXT}; line-height: 1.7; margin-bottom: 12px;">{wk['task']}</div>
+                    <div style="display: flex; align-items: baseline; gap: 8px;">
+                        <span style="font-size: 24px; font-weight: 700; color: {JADE};">{wk['num']}</span>
+                        <span style="font-size: 13px; color: {MUTED};">{wk['label']}</span>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
     st.markdown(
         f"""
