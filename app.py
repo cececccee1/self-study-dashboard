@@ -343,18 +343,58 @@ if st.session_state.page == "home":
                 八週學習紀錄
             </div>
             <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: 28px; font-weight: 700; line-height: 1.4;">
-                把每一週投入的時間，<span style="color: {JADE};">都變成看得見的成果</span>
+                用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
-            <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; max-width: 640px; margin-bottom: 20px;">
+            <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; max-width: 640px; margin-bottom: 0;">
                 嗨，我是洪歆穎（Clarice）👋<br>
                 這裡是我的學習歷程——從資料清洗、機器學習建模到AI應用的一步步紀錄。
                 在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，
                 尤其是物流領域裡客戶分析、預測與決策最佳化的應用。
                 歡迎透過下方 LINE 跟我交流！
             </p>
-            <p style="color: {MUTED}; margin: 0; font-size: 15px;">
-                歡迎點擊上方分頁瀏覽各週內容
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f"""
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
+                    padding: 24px; margin-bottom: 24px; text-align: center;">
+            <p style="color: {GOLD}; font-size: 13px; letter-spacing: 0.1em; margin-bottom: 10px;">5分鐘看懂我的價值</p>
+            <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
+            <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
+                從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
+                再用決策樹、K-means、Prophet做預測，最後用LLM與OR-Tools讓AI直接參與決策——
+                把配送方案的違反數從4條降到0、成本省下3.3%。
             </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    components.html(
+        """
+        <div style="width: 100%; height: 500px; border-radius: 8px; overflow: hidden;">
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRth1zx5-KFABz5qo3oPFnRakNXnd-EvaWXdvur5mHJxPDKaln5M-g3kCPAdDBUyyoLvXyoB6PNNTVX/pubembed?start=false&loop=false&delayms=3000"
+                style="width: 100%; height: 100%; border: 0;"
+                frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+            </iframe>
+        </div>
+        """,
+        height=510,
+    )
+
+    st.markdown(
+        f"""
+        <div style="text-align: center; margin-bottom: 24px;">
+            <a href="https://docs.google.com/presentation/d/e/2PACX-1vRth1zx5-KFABz5qo3oPFnRakNXnd-EvaWXdvur5mHJxPDKaln5M-g3kCPAdDBUyyoLvXyoB6PNNTVX/pubembed"
+               target="_blank"
+               style="display: inline-block; padding: 12px 32px; background: {JADE}; color: {INK};
+                      border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;
+                      letter-spacing: 0.05em;">
+                📊 在新分頁開啟完整簡報
+            </a>
         </div>
         """,
         unsafe_allow_html=True,
@@ -371,7 +411,7 @@ if st.session_state.page == "home":
         - 其餘週次會隨課程進度陸續補上
         """
     )
-    st.info("💡 點擊上方分頁按鈕切換各週內容。")
+    st.info("💡 想看每週詳細的分析過程？點擊上方分頁按鈕切換各週內容。")
 
     st.divider()
     st.markdown(
@@ -410,48 +450,6 @@ if st.session_state.page == "home":
     st.markdown(
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
-                    padding: 24px; margin-bottom: 24px; text-align: center;">
-            <p style="color: {GOLD}; font-size: 13px; letter-spacing: 0.1em; margin-bottom: 10px;">5分鐘看懂我的價值</p>
-            <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
-            <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
-                完整呈現我如何從資料分析、管理現場、AI預測到最終讓AI直接參與決策，
-                含K-means分群debug過程與OR-Tools雙觀點決策的完整推理。
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    components.html(
-        """
-        <div style="width: 100%; height: 500px; border-radius: 8px; overflow: hidden;">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSWD1nFUanagBHgSMPaeGWHblLMfL0vHfQRWXToWDqIzZhFd5jupt6g8A75pM3VfDs8Y0cxnCJOl8YD/pubembed?start=false&loop=false&delayms=3000"
-                style="width: 100%; height: 100%; border: 0;"
-                frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
-            </iframe>
-        </div>
-        """,
-        height=510,
-    )
-
-    st.markdown(
-        f"""
-        <div style="text-align: center; margin-bottom: 24px;">
-            <a href="https://docs.google.com/presentation/d/15LAkGTmSTCH0fbdAD_GwE_XYo2o9vMnH0Ch0HtK89wI/edit?usp=sharing"
-               target="_blank"
-               style="display: inline-block; padding: 12px 32px; background: {JADE}; color: {INK};
-                      border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;
-                      letter-spacing: 0.05em;">
-                📊 在新分頁開啟完整簡報
-            </a>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        f"""
-        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px;">
             <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">🎯 想接的題目方向</h3>
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
@@ -460,16 +458,12 @@ if st.session_state.page == "home":
                     <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">說明</th>
                 </tr>
                 <tr>
-                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">物流AI Agent自動化</td>
-                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">用Claude Code打造值班／派工Agent，自動判斷異常、寫入提醒檔，減少人工巡查與漏看風險</td>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">客訴根因分析＋派工自動化</td>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">不只找出客訴在罵什麼，而是把LLM根因分析結果直接串進派工邏輯——D16客訴文本分析＋OR-Tools配送最佳化（違反數4→0、成本降3.3%）已經跑過完整的分析到執行流程</td>
                 </tr>
                 <tr>
-                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">客服流程自動化</td>
-                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">結合LLM情感分析＋Agent工具鏈，將客訴文本自動分類、判斷嚴重度並觸發派工，取代人工逐則判讀</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; color: {TEXT};">企業內部流程Agent化</td>
-                    <td style="padding: 8px; color: {TEXT};">把重複性高的資料比對、報表產出、跨系統查詢工作，用Agent+guardrail設計自動化，兼顧效率與安全邊界</td>
+                    <td style="padding: 8px; color: {TEXT};">AI模型健檢／debug顧問</td>
+                    <td style="padding: 8px; color: {TEXT};">幫已上線的模型抓邏輯漏洞，不只是重新建模——K-means、Apriori、決策樹三個任務都曾抓出「模型看起來在跑，但邏輯其實有洞」的問題（如固定推薦結果、參數誤判成早停）</td>
                 </tr>
             </table>
         </div>
@@ -478,8 +472,22 @@ if st.session_state.page == "home":
     )
 
     st.subheader("⭐ 精選案例")
-    st.caption("時間有限的話，看這三個任務就夠了")
-    spotlight_col1, spotlight_col2, spotlight_col3 = st.columns(3)
+    st.caption("時間有限的話，看這四個任務就夠了")
+    spotlight_col0, spotlight_col1, spotlight_col2, spotlight_col3 = st.columns(4)
+    with spotlight_col0:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W1・任務05</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">RFM八分群客戶價值分析</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">把客戶拆成8個消費行為群，看出誰是真正該投入資源的20%，這是後面所有預測與決策的地基</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week1", use_container_width=True):
+            go_to_page("week1")
+            st.rerun()
     with spotlight_col1:
         st.markdown(
             f"""
