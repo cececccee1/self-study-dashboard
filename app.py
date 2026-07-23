@@ -416,7 +416,7 @@ if st.session_state.page == "home":
                 完整呈現我如何從資料分析、管理現場、AI預測到最終讓AI直接參與決策，
                 含K-means分群debug過程與OR-Tools雙觀點決策的完整推理。
             </p>
-            <a href="https://docs.google.com/presentation/d/1t9up8rw5Lys_fCUwvzMjA829KcOfjhAWVp13UAQ40I0/edit?usp=sharing"
+            <a href="https://docs.google.com/presentation/d/15LAkGTmSTCH0fbdAD_GwE_XYo2o9vMnH0Ch0HtK89wI/edit?usp=sharing"
                target="_blank"
                style="display: inline-block; padding: 12px 32px; background: {JADE}; color: {INK};
                       border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;
