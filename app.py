@@ -345,7 +345,7 @@ if st.session_state.page == "home":
             <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: 28px; font-weight: 700; line-height: 1.4;">
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
-            <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; max-width: 640px; margin-bottom: 0;">
+            <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; margin-bottom: 0;">
                 嗨，我是洪歆穎（Clarice）👋<br>
                 這裡是我的學習歷程——從資料清洗、機器學習建模到AI應用的一步步紀錄。
                 在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，
