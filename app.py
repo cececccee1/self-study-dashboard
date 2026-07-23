@@ -400,6 +400,40 @@ if st.session_state.page == "home":
         unsafe_allow_html=True,
     )
 
+    stat_col1, stat_col2, stat_col3 = st.columns(3)
+    with stat_col1:
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <div style="font-size: 28px; color: {JADE}; font-weight: 700;">8</div>
+                <div style="font-size: 13px; color: {MUTED};">週學習週期</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with stat_col2:
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <div style="font-size: 28px; color: {JADE}; font-weight: 700;">4</div>
+                <div style="font-size: 13px; color: {MUTED};">已完成週次</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with stat_col3:
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <div style="font-size: 28px; color: {JADE}; font-weight: 700;">3.3%</div>
+                <div style="font-size: 13px; color: {MUTED};">AI決策省下的成本</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.divider()
+
     st.subheader("🧭 使用導覽")
     st.markdown(
         """
