@@ -3266,15 +3266,14 @@ if st.session_state.page == "week4":
 
     st.divider()
     st.subheader("給組長的提醒")
-    reminder_data = {
-        "提醒事項": [
-            "時間分配：Section 3-4約55分鐘（工具區），Section 5約35分鐘（任務區），Section 6約10分鐘（概念統整）。",
-            "跳階教學張力：Section 2.1四階階梯＋Section 6.2反思，是本日最重要的「W3→W4跳階」教學張力來源，不要跳過。",
-            "雙觀點不可省略：Section 5.1雙觀點對比表是評分權重最高（25%）的一題，務必兩條都答。",
-            "加分題不強制：Section 5.4是給學有餘力的學員，不影響及格。",
-        ],
-    }
-    st.table(pd.DataFrame(reminder_data).set_index("提醒事項"))
+    reminder_items = [
+        "時間分配：Section 3-4約55分鐘（工具區），Section 5約35分鐘（任務區），Section 6約10分鐘（概念統整）。",
+        "跳階教學張力：Section 2.1四階階梯＋Section 6.2反思，是本日最重要的「W3→W4跳階」教學張力來源，不要跳過。",
+        "雙觀點不可省略：Section 5.1雙觀點對比表是評分權重最高（25%）的一題，務必兩條都答。",
+        "加分題不強制：Section 5.4是給學有餘力的學員，不影響及格。",
+    ]
+    for item in reminder_items:
+        st.markdown(f"- {item}")
 
     st.divider()
 
@@ -3432,14 +3431,13 @@ if st.session_state.page == "week4":
         "（如C040沒有delivery_routes），仍能保留客戶完整輪廓，不會整筆消失。若改用INNER JOIN，"
         "任何一個模型缺資料就會讓客戶從清單掉出，主管會誤判系統裡沒有這個客戶。"
     )
-    schema_score_data = {
-        "評分檢核點": [
-            "有提到「PK/FK」一詞 → +2分",
-            "有提到「customer_id為跨表串接鍵」 → +2分",
-            "有提到「LEFT JOIN vs INNER JOIN 業務語意」 → +3分（8分滿分）",
-        ],
-    }
-    st.table(pd.DataFrame(schema_score_data).set_index("評分檢核點"))
+    schema_score_items = [
+        "有提到「PK/FK」一詞 → +2分",
+        "有提到「customer_id為跨表串接鍵」 → +2分",
+        "有提到「LEFT JOIN vs INNER JOIN 業務語意」 → +3分（8分滿分）",
+    ]
+    for item in schema_score_items:
+        st.markdown(f"- {item}")
 
     st.markdown("**5.2 四個模型各別需要的即時性等級**")
     model_realtime_data = {
@@ -3453,14 +3451,13 @@ if st.session_state.page == "week4":
         ],
     }
     st.table(pd.DataFrame(model_realtime_data).set_index("模型"))
-    model_score_data = {
-        "評分檢核點": [
-            "四模型都有等級判斷 → +4分",
-            "至少1個過度即時／過度延遲判斷＋改善建議 → +3分",
-            "引用對數成本曲線 → +1分（8分滿分）",
-        ],
-    }
-    st.table(pd.DataFrame(model_score_data).set_index("評分檢核點"))
+    model_score_items = [
+        "四模型都有等級判斷 → +4分",
+        "至少1個過度即時／過度延遲判斷＋改善建議 → +3分",
+        "引用對數成本曲線 → +1分（8分滿分）",
+    ]
+    for item in model_score_items:
+        st.markdown(f"- {item}")
 
     st.markdown("**5.3 MDM規則表中，Master指派至少2-3個欄位＋理由**")
     mdm_master_data = {
@@ -3473,10 +3470,9 @@ if st.session_state.page == "week4":
         ],
     }
     st.table(pd.DataFrame(mdm_master_data).set_index("欄位"))
-    mdm_score_data = {
-        "評分檢核點": ["至少2個欄位有Master指派 → +4分", "理由提到「權威來源」概念（不是「資料量大」） → +4分（8分滿分）"],
-    }
-    st.table(pd.DataFrame(mdm_score_data).set_index("評分檢核點"))
+    mdm_score_items = ["至少2個欄位有Master指派 → +4分", "理由提到「權威來源」概念（不是「資料量大」） → +4分（8分滿分）"]
+    for item in mdm_score_items:
+        st.markdown(f"- {item}")
 
     st.divider()
     st.subheader("Section 6｜反思（10分鐘・概念統整）")
@@ -3509,15 +3505,14 @@ if st.session_state.page == "week4":
 
     st.divider()
     st.subheader("給組長的提醒")
-    reminder16_data = {
-        "提醒事項": [
-            "Section 3／Section 4是工具區的檢核點，助教現場1-on-1巡場確認每位學員都跑通。",
-            "Section 5是任務16三件交付中「整合決策說明.md」的草稿，結束前10分鐘助教必看。",
-            "加分項三選一不必強迫，先確保5維度都過60分再說。",
-            "對學員提示：「整合決策說明.md 是任務交付，沒寫等於沒交。」",
-        ],
-    }
-    st.table(pd.DataFrame(reminder16_data).set_index("提醒事項"))
+    reminder16_items = [
+        "Section 3／Section 4是工具區的檢核點，助教現場1-on-1巡場確認每位學員都跑通。",
+        "Section 5是任務16三件交付中「整合決策說明.md」的草稿，結束前10分鐘助教必看。",
+        "加分項三選一不必強迫，先確保5維度都過60分再說。",
+        "對學員提示：「整合決策說明.md 是任務交付，沒寫等於沒交。」",
+    ]
+    for item in reminder16_items:
+        st.markdown(f"- {item}")
 
     st.divider()
 
@@ -3653,14 +3648,13 @@ if st.session_state.page == "week4":
         "（Read、Write alerts目錄、少數Bash指令），deny則涵蓋所有破壞性、外洩性動作，確保Agent即使推理錯誤，"
         "也不會真正造成不可逆的傷害。"
     )
-    score51_data = {
-        "評分檢核點": [
-            "有提到「Master/Subscriber鐵律」或「權限白名單」概念 → +2分",
-            "有提到具體deny rule（rm／curl／Write csv） → +3分",
-            "有提到「越給自由越要guardrail」 → +3分（8分滿分）",
-        ],
-    }
-    st.table(pd.DataFrame(score51_data).set_index("評分檢核點"))
+    score51_items = [
+        "有提到「Master/Subscriber鐵律」或「權限白名單」概念 → +2分",
+        "有提到具體deny rule（rm／curl／Write csv） → +3分",
+        "有提到「越給自由越要guardrail」 → +3分（8分滿分）",
+    ]
+    for item in score51_items:
+        st.markdown(f"- {item}")
 
     st.markdown("**5.2 如果Agent跑出來結果跟手動算不一樣，你怎麼除錯？**")
     st.success(
@@ -3670,14 +3664,13 @@ if st.session_state.page == "week4":
         "第三步要記得Agent本質上是機率性的，同樣的prompt可能因為LLM的隨機性跑出些微不同結果，如果懷疑是這個"
         "原因，我會多跑幾次確認是否穩定重現，而不是只跑一次就下結論。"
     )
-    score52_data = {
-        "評分檢核點": [
-            "提到「先看Agent reasoning print」 → +3分",
-            "提到「比對CLAUDE.md規則vs學員自己理解」 → +3分",
-            "提到「Agent是機率性，可能要跑多次」 → +2分（8分滿分）",
-        ],
-    }
-    st.table(pd.DataFrame(score52_data).set_index("評分檢核點"))
+    score52_items = [
+        "提到「先看Agent reasoning print」 → +3分",
+        "提到「比對CLAUDE.md規則vs學員自己理解」 → +3分",
+        "提到「Agent是機率性，可能要跑多次」 → +2分（8分滿分）",
+    ]
+    for item in score52_items:
+        st.markdown(f"- {item}")
 
     st.markdown("**5.3 你會把這個Agent部署到正式環境嗎？還缺什麼guardrail？**")
     st.success(
@@ -3689,14 +3682,13 @@ if st.session_state.page == "week4":
         "介入頻率。參考業界案例，Agent部署初期指標通常較差，需要像訓練新員工一樣持續優化CLAUDE.md，不宜第一"
         "週就下定論。"
     )
-    score53_data = {
-        "評分檢核點": [
-            "提到「再加什麼deny rule」 → +3分",
-            "提到「監測KPI（success rate／介入率／成本）」 → +3分",
-            "提到「人工抽檢機制（HITL queue）」 → +2分（8分滿分）",
-        ],
-    }
-    st.table(pd.DataFrame(score53_data).set_index("評分檢核點"))
+    score53_items = [
+        "提到「再加什麼deny rule」 → +3分",
+        "提到「監測KPI（success rate／介入率／成本）」 → +3分",
+        "提到「人工抽檢機制（HITL queue）」 → +2分（8分滿分）",
+    ]
+    for item in score53_items:
+        st.markdown(f"- {item}")
 
     st.divider()
     st.subheader("Section 6｜反思（10分鐘・概念統整）")
@@ -3731,14 +3723,13 @@ if st.session_state.page == "week4":
 
     st.divider()
     st.subheader("給組長的提醒")
-    reminder17_data = {
-        "提醒事項": [
-            "§3是工具區檢核點，助教現場1-on-1巡場確認每位學員都跑通至少範例#1＋#3。",
-            "§5三題是任務交付#3的草稿，結束前10分鐘助教必看。",
-            "越權測試（範例#3）是Rubric第2維重點，沒做的學員直接扣8-15分。",
-        ],
-    }
-    st.table(pd.DataFrame(reminder17_data).set_index("提醒事項"))
+    reminder17_items = [
+        "§3是工具區檢核點，助教現場1-on-1巡場確認每位學員都跑通至少範例#1＋#3。",
+        "§5三題是任務交付#3的草稿，結束前10分鐘助教必看。",
+        "越權測試（範例#3）是Rubric第2維重點，沒做的學員直接扣8-15分。",
+    ]
+    for item in reminder17_items:
+        st.markdown(f"- {item}")
 
     st.divider()
     st.markdown("<h2 style='white-space: nowrap;'>📎 任務18：AI賦能作品集（BOSS二件套）</h2>", unsafe_allow_html=True)
@@ -3816,14 +3807,13 @@ if st.session_state.page == "week4":
 
     st.divider()
     st.subheader("給組長的提醒")
-    reminder18_data = {
-        "提醒事項": [
-            "BOSS二件套皆為必交，缺一不可（獎勵金審核標準之一）；截止前確認兩個連結都能「公開開啟」，不是只有自己帳號登入才看得到。",
-            "BOSS_I簡報要有「主深入論述任務」，不要五頁平鋪，主管5分鐘看完要能記住一個具體案例。",
-            "BOSS_II「想接題目方向」寫得越具體，W5 D21分組時被同儕找上的機率越高——這是分組權力的個人選秀。",
-        ],
-    }
-    st.table(pd.DataFrame(reminder18_data).set_index("提醒事項"))
+    reminder18_items = [
+        "BOSS二件套皆為必交，缺一不可（獎勵金審核標準之一）；截止前確認兩個連結都能「公開開啟」，不是只有自己帳號登入才看得到。",
+        "BOSS_I簡報要有「主深入論述任務」，不要五頁平鋪，主管5分鐘看完要能記住一個具體案例。",
+        "BOSS_II「想接題目方向」寫得越具體，W5 D21分組時被同儕找上的機率越高——這是分組權力的個人選秀。",
+    ]
+    for item in reminder18_items:
+        st.markdown(f"- {item}")
 
     back_to_home_button("week4")
 
