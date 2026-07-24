@@ -168,6 +168,18 @@ label {{
     [data-testid="stMetricValue"] {{
         font-size: 22px !important;
     }}
+
+    /* 精選案例卡片（min-height: 140px）：手機上縮小內距與字級 */
+    div[style*="min-height: 140px"] {{
+        padding: 12px !important;
+        min-height: auto !important;
+    }}
+    div[style*="min-height: 140px"] h4 {{
+        font-size: 14px !important;
+    }}
+    div[style*="min-height: 140px"] p {{
+        font-size: 12px !important;
+    }}
 }}
 
 /* 隱藏標題旁自動產生的錨點連結圖示（🔗） */
@@ -361,7 +373,6 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px; text-align: center;">
-            <p style="color: {GOLD}; font-size: 13px; letter-spacing: 0.1em; margin-bottom: 10px;">5分鐘看懂我的價值</p>
             <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
             <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
                 從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
@@ -570,7 +581,7 @@ if st.session_state.page == "home":
             """,
             unsafe_allow_html=True,
         )
-        st.link_button("開啟活Demo →", "https://integration0716.streamlit.app/", use_container_width=True)
+        st.link_button("開啟活Demo →", "https://cececccee1.github.io/0717/index.html", use_container_width=True)
     with spotlight_col3:
         st.markdown(
             f"""
