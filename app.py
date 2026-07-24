@@ -529,8 +529,8 @@ if st.session_state.page == "home":
     )
 
     st.subheader("⭐ 精選案例")
-    st.caption("時間有限的話，看這四個任務就夠了")
-    spotlight_col0, spotlight_col1, spotlight_col2, spotlight_col3 = st.columns(4)
+    st.caption("時間有限的話，看這五個任務就夠了")
+    spotlight_col0, spotlight_col1, spotlight_col2, spotlight_col3, spotlight_col4 = st.columns(5)
     with spotlight_col0:
         st.markdown(
             f"""
@@ -563,6 +563,18 @@ if st.session_state.page == "home":
         st.markdown(
             f"""
             <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W3・BOSS III　🔗 活Demo</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">精準行銷引擎（5模組整合）</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">把K-means客群、Apriori規則、Prophet預測整合成一個系統，輸入客戶ID直接跳出推薦品項與LINE OA推播文案</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.link_button("開啟活Demo →", "https://integration0716.streamlit.app/", use_container_width=True)
+    with spotlight_col3:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
                 <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務15</div>
                 <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">OR-Tools雙觀點決策</h4>
                 <p style="color: {MUTED}; font-size: 13px; margin: 0;">可行性違反數從4條降到0，成本省3.3%，用數字證明AI決策比直覺方案更值得</p>
@@ -573,7 +585,7 @@ if st.session_state.page == "home":
         if st.button("前往查看 →", key="spotlight_week4a", use_container_width=True):
             go_to_page("week4")
             st.rerun()
-    with spotlight_col3:
+    with spotlight_col4:
         st.markdown(
             f"""
             <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
@@ -1085,7 +1097,7 @@ if st.session_state.page == "week1":
 
     st.markdown("**4.3 啟動驗收**")
     st.code("streamlit run dashboard.py", language="bash")
-    st.markdown("- ☑ 瀏覽器自動開 http://localhost:8501")
+    st.markdown("- ☑ 瀏覽器自動開")
     st.markdown("- ☑ 30秒內能看完（用碼表算）")
     st.markdown("- ☑ 紅字警示醒目")
 
@@ -3301,6 +3313,10 @@ if st.session_state.page == "week4":
         "**你的任務**：用Streamlit＋SQLite做一個「物流控制塔v0.1」，讓老闆打開首頁就能挑一個客戶，"
         "看到四個模型的所有結論。順便在第3頁標註「四模型分別需要多即時」與「過度即時／過度延遲」判斷。"
     )
+    st.caption(
+        "＊控制塔第2頁串接的客群分類，正是任務13在1,500位客戶全量資料中跑出的K-means模型結果——"
+        "這裡挑50位代表性客戶做成可互動的Demo，方便老闆即時查詢單一客戶狀態。"
+    )
 
     st.divider()
     st.subheader("Section 2｜觀念回顧（填空，10分鐘）")
@@ -3388,7 +3404,7 @@ if st.session_state.page == "week4":
     st.subheader("Section 4｜Streamlit 三頁原型機實作（30分鐘・工具區尾段）")
     st.markdown("**4.1 首頁啟動・客戶360**")
     st.code("streamlit run app.py", language="bash")
-    st.caption("預期瀏覽器自動開 http://localhost:8501。")
+    st.caption("預期瀏覽器自動開。")
     st.caption("操作：在sidebar依序選以下客戶＋截圖／觀察：")
     customer360_data = {
         "客戶": ["C002 家樂福北屯", "C010 Cama西屯", "C045 早餐車", "C040 李醫師"],
