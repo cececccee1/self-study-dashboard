@@ -441,7 +441,7 @@ if st.session_state.page == "home":
         - **第一週** 目前已放入任務01、02、03、04、05
         - **第二週** 目前已放入任務06、07、08、09
         - **第三週** 目前已放入任務10、11、12、13
-        - **第四週** 目前已放入任務14、15、16、17
+        - **第四週** 目前已放入任務14、15、16、17、18
         - 其餘週次會隨課程進度陸續補上
         """
     )
@@ -3740,7 +3740,93 @@ if st.session_state.page == "week4":
     }
     st.table(pd.DataFrame(reminder17_data).set_index("提醒事項"))
 
+    st.divider()
+    st.markdown("<h2 style='white-space: nowrap;'>📎 任務18：AI賦能作品集（BOSS二件套）</h2>", unsafe_allow_html=True)
+    st.caption(
+        "BOSS IV・你的價值別人聽得到嗎？把W1-W4累積的成果，用AIGC工具包成對外可論述的個人作品集｜"
+        "Week 4・Day 20｜工具棧：NotebookLM（簡報）＋Claude（GenAI作品集網頁）＋GitHub Pages"
+    )
+
+    st.subheader("Section 1｜情境設定")
+    st.markdown(
+        "第一階段（W1-W4）最後一天，主管的痛（也是W5 D21分組面試官的視角）：\n\n"
+        "「課程結束後，你的價值別人聽得到嗎？你能在5分鐘讓我知道你最值得做什麼題目嗎？」\n\n"
+        "今天要交付BOSS二件套（皆必交，獎勵金審核標準之一）：\n"
+        "- **BOSS_I**：AI簡報（NotebookLM），把W1-W3任務輸出整理成5-7頁主管敘事\n"
+        "- **BOSS_II**：專案導覽・作品集（GenAI/GitHub Pages），用一頁HTML整合簡報＋學習摘要＋聯絡方式"
+    )
+
+    st.divider()
+    st.subheader("Section 2｜BOSS_I・AI簡報（NotebookLM）")
+    boss1_data = {
+        "項目": ["來源素材", "Prompt設計", "大綱檢查＋編修", "主深入論述任務", "公開連結"],
+        "內容": [
+            "本網站GitHub Pages網址＋任務13（K-means）、任務15（OR-Tools）截圖，共3個來源",
+            "直接採用《NotebookLM_prompt_範例.md》#5最精細版規格，一次到位客製，指定主深入論述佔60%篇幅",
+            "第一輪產出6頁；動手改了3處：修正「決策樹過擬合」技術方向錯誤（應為min_samples_leaf提早停止）、"
+            "把K-means除錯頁風格改回深色電路板＋3D堆疊方塊＋氣泡圖、統一六頁視覺語言",
+            "D13 K-means分群Debug——從畸形分群（300/1/1/1198）到標準化修正後5個合理客群，"
+            "比單純預測結果更有說服力",
+            "Google Slides（凡有連結者可看）",
+        ],
+    }
+    st.table(pd.DataFrame(boss1_data).set_index("項目"))
+    st.markdown(
+        "[點此開啟BOSS_I簡報](https://docs.google.com/presentation/d/e/2PACX-1vRth1zx5-KFABz5qo3oPFnRakNXnd-EvaWXdvur5mHJxPDKaln5M-g3kCPAdDBUyyoLvXyoB6PNNTVX/pubembed)"
+    )
+    st.warning(
+        "**反直覺踩坑紀錄**：NotebookLM第一次回報「已經改好了」，但截圖核對後發現風格整個跑掉、文字也被悄悄改寫——"
+        "AI的自我陳述不能當作證據，眼見為憑才是真的完成。第二次改版失敗後，改用自己手動重建投影片，確保風格與文字都精準可控。"
+    )
+
+    st.divider()
+    st.subheader("Section 3｜BOSS_II・專案導覽・作品集（GenAI／GitHub Pages）")
+    boss2_data = {
+        "項目": ["5 Section齊全", "想接的題目方向", "三處微調", "部署方式", "公開連結"],
+        "內容": [
+            "學習摘要／簡報嵌入／學習亮點（精選案例4張卡片）／想接題目方向／聯絡資訊",
+            "捨棄範例模板的通用題目，換成扣著自己debug經驗的兩個方向：客訴根因分析＋派工自動化、AI模型健檢／debug顧問",
+            "把首頁大標題與簡報區塊順序對調，讓最強的實績（簡報）在第二眼就看到；換想接題目方向；"
+            "把冗長的VMDA說明文字改成W1~W4可點擊展開的互動時間軸",
+            "GitHub Pages自架（加分+5），非GenAI預設連結",
+            "GitHub Pages／Streamlit版（本頁）",
+        ],
+    }
+    st.table(pd.DataFrame(boss2_data).set_index("項目"))
+    st.markdown(
+        "[GitHub Pages版](https://cececccee1.github.io/index/) ｜ "
+        "[Streamlit版](https://self-study-dashboard-begin0710.streamlit.app/)"
+    )
+
+    st.divider()
+    st.subheader("Section 4｜反思・對齊講義§8反直覺概念統整三問")
+    reflect18_data = {
+        "題目": [
+            "1. 作品集不是「展示能做什麼」，而應該是什麼？",
+            "2. AIGC不是「自動寫」，而應該是什麼？",
+            "3. W4全週（智慧架構師）的價值，一句話總括？",
+        ],
+        "我的回答": [
+            "讓人「想找你」——聯絡方式＋想接題目方向，比純技術demo更有說服力",
+            "自動整理你給的素材——素材夠完整，AI才生得出深度，不是無中生有",
+            "我用AI改變配送決策與值班流程，能讓別人聽懂省下3.3%成本、30分鐘變30秒",
+        ],
+    }
+    st.table(pd.DataFrame(reflect18_data).set_index("題目"))
+
+    st.divider()
+    st.subheader("給組長的提醒")
+    reminder18_data = {
+        "提醒事項": [
+            "BOSS二件套皆為必交，缺一不可（獎勵金審核標準之一）；截止前確認兩個連結都能「公開開啟」，不是只有自己帳號登入才看得到。",
+            "BOSS_I簡報要有「主深入論述任務」，不要五頁平鋪，主管5分鐘看完要能記住一個具體案例。",
+            "BOSS_II「想接題目方向」寫得越具體，W5 D21分組時被同儕找上的機率越高——這是分組權力的個人選秀。",
+        ],
+    }
+    st.table(pd.DataFrame(reminder18_data).set_index("提醒事項"))
+
     back_to_home_button("week4")
+
 
 if st.session_state.page == "week5":
     st.markdown("<h2>第五週</h2>", unsafe_allow_html=True)
