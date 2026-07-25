@@ -89,15 +89,13 @@ hr::after {{
 }}
 
 .seal-stamp {{
-    position: absolute;
-    top: 18px;
-    right: 24px;
-    width: 56px;
-    height: 56px;
+    width: 84px;
+    height: 84px;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid {GOLD};
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border: 3px solid {GOLD};
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    margin-bottom: 28px;
 }}
 .seal-stamp img {{
     width: 100%;
@@ -347,7 +345,7 @@ if st.session_state.page == "home":
         <div style="background: linear-gradient(135deg, #1c1c28 0%, {INK} 100%);
                     border: 1px solid {BORDER};
                     padding: 40px 24px; border-radius: 4px; margin-bottom: 24px;
-                    position: relative; overflow: hidden;">
+                    overflow: hidden;">
             <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
             <div style="color: {GOLD}; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">
                 八週學習紀錄
