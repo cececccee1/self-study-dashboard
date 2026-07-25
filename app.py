@@ -302,10 +302,10 @@ def make_gauge(title, value, target, suffix="%"):
 
 st.markdown(
     f"""
-    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 14px;">
+    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.25rem;">
         <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
-             style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
-                    border: 2px solid {GOLD};" />
+             style="width: 1em; height: 1em; border-radius: 50%; object-fit: cover;
+                    border: 2px solid {GOLD}; flex-shrink: 0;" />
         Clarice的學習歷程：八週紀錄
     </h1>
     """,
@@ -361,10 +361,9 @@ if st.session_state.page == "home":
             </h1>
             <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; margin-bottom: 0;">
                 嗨，我是 Clarice👋<br>
-                從資料清洗、機器學習建模到AI應用，這是我一步步累積的成果紀錄。<br>
-                在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，<br>
-                尤其是物流領域裡客戶分析、預測與決策最佳化的應用。<br>
-                歡迎透過下方 Email 跟我交流！
+                從資料清洗的瑣碎，到機器學習建模的推敲，再到AI應用的落地，這是我一路留下的足跡。<br>
+                走著走著才發現，自己最著迷的，是用AI回應真實世界的商業提問，<br>
+                尤其是物流場域裡，關於客戶、關於預測、關於如何做出更好決策的種種思考。
             </p>
         </div>
         """,
@@ -619,13 +618,13 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px;">
             <p style="color: {TEXT}; font-size: 16px; font-weight: 700; margin-bottom: 8px;">
-                ✉️ 歡迎透過 Email 跟我交流
+                ✉️ 歡迎透過 Email 聯絡我
             </p>
             <p style="color: {MUTED}; font-size: 14px; margin: 0;">
-                有任何問題或想交流學習心得，歡迎來信聯絡我！
+                有任何問題或想交流學習心得，歡迎來信！
             </p>
             <p style="color: {MUTED}; font-size: 14px; margin: 8px 0 0 0;">
-                ✉️ Email：cececccee1@gmail.com
+                ✉️ Email：<a href="mailto:cececccee1@gmail.com" style="color: {GOLD}; text-decoration: underline;">cececccee1@gmail.com</a>
             </p>
         </div>
         """,
