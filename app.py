@@ -356,8 +356,8 @@ if st.session_state.page == "home":
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
             <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; margin-bottom: 0;">
-                嗨，我是洪歆穎（Clarice）👋<br>
-                這裡是我的學習歷程——從資料清洗、機器學習建模到AI應用的一步步紀錄。<br>
+                嗨，我是 Clarice👋<br>
+                從資料清洗、機器學習建模到AI應用，這是我一步步累積的成果紀錄。<br>
                 在這段旅程中，我發現自己對「用AI解決真實商業問題」特別有興趣，<br>
                 尤其是物流領域裡客戶分析、預測與決策最佳化的應用。<br>
                 歡迎透過下方 Email 跟我交流！
