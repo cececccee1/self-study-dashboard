@@ -301,7 +301,14 @@ def make_gauge(title, value, target, suffix="%"):
 
 
 st.markdown(
-    "<h1 style='white-space: nowrap;'>✨🌌 Clarice的學習歷程：八週紀錄</h1>",
+    f"""
+    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 14px;">
+        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
+             style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+                    border: 2px solid {GOLD};" />
+        Clarice的學習歷程：八週紀錄
+    </h1>
+    """,
     unsafe_allow_html=True,
 )
 
