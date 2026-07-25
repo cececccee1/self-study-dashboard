@@ -353,7 +353,6 @@ if st.session_state.page == "home":
                     border: 1px solid {BORDER};
                     padding: 40px 24px; border-radius: 4px; margin-bottom: 24px;
                     overflow: hidden;">
-            <div class="seal-stamp"><img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" /></div>
             <div style="color: {GOLD}; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">
                 八週學習紀錄
             </div>
