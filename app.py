@@ -302,7 +302,7 @@ def make_gauge(title, value, target, suffix="%"):
 
 st.markdown(
     f"""
-    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 1.6rem;">
+    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.2rem;">
         <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
              style="width: 1.5em; height: 1.5em; border-radius: 50%; object-fit: cover;
                     border: 2px solid {GOLD}; flex-shrink: 0;" />
