@@ -397,6 +397,174 @@ if st.session_state.page == "home":
         unsafe_allow_html=True,
     )
 
+    st.subheader("⭐ 精選案例")
+    st.caption("時間有限的話，看這五個任務就夠了")
+    spotlight_col0, spotlight_col1, spotlight_col2, spotlight_col3, spotlight_col4 = st.columns(5)
+    with spotlight_col0:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W1・任務05</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">RFM八分群客戶價值分析</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">把客戶拆成8個消費行為群，看出誰是真正該投入資源的20%，這是後面所有預測與決策的地基</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week1", use_container_width=True):
+            go_to_page("week1")
+            st.rerun()
+    with spotlight_col1:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W3・任務13</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">K-means分群debug全紀錄</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">從畸形分群到標準化修正後的正常分布，完整的問題發現與驗證過程</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week3", use_container_width=True):
+            go_to_page("week3")
+            st.rerun()
+    with spotlight_col2:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W3・BOSS III　🔗 活Demo</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">精準行銷引擎（5模組整合）</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">把K-means客群、Apriori規則、Prophet預測整合成一個系統，輸入客戶ID直接跳出推薦品項與LINE OA推播文案</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.link_button("開啟活Demo →", "https://cececccee1.github.io/0717/index.html", use_container_width=True)
+    with spotlight_col3:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務15</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">OR-Tools雙觀點決策</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">可行性違反數從4條降到0，成本省3.3%，用數字證明AI決策比直覺方案更值得</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week4a", use_container_width=True):
+            go_to_page("week4")
+            st.rerun()
+    with spotlight_col4:
+        st.markdown(
+            f"""
+            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
+                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務17</div>
+                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">AI代理人自動值班</h4>
+                <p style="color: {MUTED}; font-size: 13px; margin: 0;">用Claude Code打造值班Agent，每天30分鐘人工比對壓縮到30秒自動完成，通過越權測試與guardrail設計</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("前往查看 →", key="spotlight_week4b", use_container_width=True):
+            go_to_page("week4")
+            st.rerun()
+
+    st.divider()
+
+    st.subheader("🧭 使用導覽")
+    st.markdown(
+        """
+        - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
+        - **第一週** 目前已放入任務01、02、03、04、05
+        - **第二週** 目前已放入任務06、07、08、09
+        - **第三週** 目前已放入任務10、11、12、13
+        - **第四週** 目前已放入任務14、15、16、17、18
+        - 其餘週次會隨課程進度陸續補上
+        """
+    )
+    st.info(
+        "💡 想看每週詳細的分析過程？點擊上方分頁按鈕切換各週內容。\n\n"
+        "以下每週分頁保留完整的課堂作業紀錄：任務編號、debug過程、原始截圖，是實際操作的完整記錄，不是精簡摘要。"
+    )
+
+    st.divider()
+    st.markdown(
+        f"""<h3 style="font-size: 16px; margin-bottom: 4px; color: {GOLD};">學習歷程時間軸・VMDA四角色串接</h3>""",
+        unsafe_allow_html=True,
+    )
+
+    week_data = [
+        {
+            "tab": "W1・Data",
+            "role": "Data・資料",
+            "task": "用RFM分析看懂「誰是真正重要的客戶」，把原始資料整理成主管一眼就懂的儀表板",
+            "num": "8",
+            "label": "個消費行為分群",
+        },
+        {
+            "tab": "W2・Management",
+            "role": "Management・現場",
+            "task": "用ABC分類重排倉儲儲位、分析OTD準時率，理解人員動線與車輛排程的真實營運限制",
+            "num": "3",
+            "label": "表整合定位瓶頸主因",
+        },
+        {
+            "tab": "W3・Value",
+            "role": "Value・預測",
+            "task": "用決策樹預測流失、K-means自動分群、Prophet預測銷量，AI從「看得懂」進化到「猜得準」",
+            "num": "1,500",
+            "label": "位客戶被自動精準分群",
+        },
+        {
+            "tab": "W4・AI/Architecture",
+            "role": "AI/Architecture・決策",
+            "task": "用LLM分析客訴文本找出根因、用OR-Tools在容量與時窗限制下找最佳配送方案",
+            "num": "3.3%",
+            "label": "AI決策比人工直覺省下的成本",
+        },
+    ]
+
+    week_tabs = st.tabs([wk["tab"] for wk in week_data])
+    for tab, wk in zip(week_tabs, week_data):
+        with tab:
+            st.markdown(
+                f"""
+                <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 18px 20px; margin-bottom: 16px;">
+                    <div style="font-size: 12px; color: {GOLD}; letter-spacing: 0.05em; margin-bottom: 8px;">{wk['role']}</div>
+                    <div style="font-size: 14px; color: {TEXT}; line-height: 1.7; margin-bottom: 12px;">{wk['task']}</div>
+                    <div style="display: flex; align-items: baseline; gap: 8px;">
+                        <span style="font-size: 24px; font-weight: 700; color: {JADE};">{wk['num']}</span>
+                        <span style="font-size: 13px; color: {MUTED};">{wk['label']}</span>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    st.markdown(
+        f"""
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
+                    padding: 24px; margin-bottom: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">🎯 想接的題目方向</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <tr style="background: {PANEL};">
+                    <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">方向</th>
+                    <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">說明</th>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">客訴根因分析＋派工自動化</td>
+                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">不只找出客訴在罵什麼，而是把LLM根因分析結果直接串進派工邏輯——D16客訴文本分析＋OR-Tools配送最佳化（違反數4→0、成本降3.3%）已經跑過完整的分析到執行流程</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; color: {TEXT};">AI模型健檢／debug顧問</td>
+                    <td style="padding: 8px; color: {TEXT};">幫已上線的模型抓邏輯漏洞，不只是重新建模——K-means、Apriori、決策樹三個任務都曾抓出「模型看起來在跑，但邏輯其實有洞」的問題（如固定推薦結果、參數誤判成早停）</td>
+                </tr>
+            </table>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.markdown(
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
@@ -506,174 +674,6 @@ if st.session_state.page == "home":
             """,
             unsafe_allow_html=True,
         )
-
-    st.divider()
-
-    st.subheader("🧭 使用導覽")
-    st.markdown(
-        """
-        - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
-        - **第一週** 目前已放入任務01、02、03、04、05
-        - **第二週** 目前已放入任務06、07、08、09
-        - **第三週** 目前已放入任務10、11、12、13
-        - **第四週** 目前已放入任務14、15、16、17、18
-        - 其餘週次會隨課程進度陸續補上
-        """
-    )
-    st.info(
-        "💡 想看每週詳細的分析過程？點擊上方分頁按鈕切換各週內容。\n\n"
-        "以下每週分頁保留完整的課堂作業紀錄：任務編號、debug過程、原始截圖，是實際操作的完整記錄，不是精簡摘要。"
-    )
-
-    st.divider()
-    st.markdown(
-        f"""<h3 style="font-size: 16px; margin-bottom: 4px; color: {GOLD};">學習歷程時間軸・VMDA四角色串接</h3>""",
-        unsafe_allow_html=True,
-    )
-
-    week_data = [
-        {
-            "tab": "W1・Data",
-            "role": "Data・資料",
-            "task": "用RFM分析看懂「誰是真正重要的客戶」，把原始資料整理成主管一眼就懂的儀表板",
-            "num": "8",
-            "label": "個消費行為分群",
-        },
-        {
-            "tab": "W2・Management",
-            "role": "Management・現場",
-            "task": "用ABC分類重排倉儲儲位、分析OTD準時率，理解人員動線與車輛排程的真實營運限制",
-            "num": "3",
-            "label": "表整合定位瓶頸主因",
-        },
-        {
-            "tab": "W3・Value",
-            "role": "Value・預測",
-            "task": "用決策樹預測流失、K-means自動分群、Prophet預測銷量，AI從「看得懂」進化到「猜得準」",
-            "num": "1,500",
-            "label": "位客戶被自動精準分群",
-        },
-        {
-            "tab": "W4・AI/Architecture",
-            "role": "AI/Architecture・決策",
-            "task": "用LLM分析客訴文本找出根因、用OR-Tools在容量與時窗限制下找最佳配送方案",
-            "num": "3.3%",
-            "label": "AI決策比人工直覺省下的成本",
-        },
-    ]
-
-    week_tabs = st.tabs([wk["tab"] for wk in week_data])
-    for tab, wk in zip(week_tabs, week_data):
-        with tab:
-            st.markdown(
-                f"""
-                <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 18px 20px; margin-bottom: 16px;">
-                    <div style="font-size: 12px; color: {GOLD}; letter-spacing: 0.05em; margin-bottom: 8px;">{wk['role']}</div>
-                    <div style="font-size: 14px; color: {TEXT}; line-height: 1.7; margin-bottom: 12px;">{wk['task']}</div>
-                    <div style="display: flex; align-items: baseline; gap: 8px;">
-                        <span style="font-size: 24px; font-weight: 700; color: {JADE};">{wk['num']}</span>
-                        <span style="font-size: 13px; color: {MUTED};">{wk['label']}</span>
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-    st.markdown(
-        f"""
-        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
-                    padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">🎯 想接的題目方向</h3>
-            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                <tr style="background: {PANEL};">
-                    <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">方向</th>
-                    <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">說明</th>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">客訴根因分析＋派工自動化</td>
-                    <td style="padding: 8px; color: {TEXT}; border-bottom: 1px solid {BORDER};">不只找出客訴在罵什麼，而是把LLM根因分析結果直接串進派工邏輯——D16客訴文本分析＋OR-Tools配送最佳化（違反數4→0、成本降3.3%）已經跑過完整的分析到執行流程</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; color: {TEXT};">AI模型健檢／debug顧問</td>
-                    <td style="padding: 8px; color: {TEXT};">幫已上線的模型抓邏輯漏洞，不只是重新建模——K-means、Apriori、決策樹三個任務都曾抓出「模型看起來在跑，但邏輯其實有洞」的問題（如固定推薦結果、參數誤判成早停）</td>
-                </tr>
-            </table>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.subheader("⭐ 精選案例")
-    st.caption("時間有限的話，看這五個任務就夠了")
-    spotlight_col0, spotlight_col1, spotlight_col2, spotlight_col3, spotlight_col4 = st.columns(5)
-    with spotlight_col0:
-        st.markdown(
-            f"""
-            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
-                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W1・任務05</div>
-                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">RFM八分群客戶價值分析</h4>
-                <p style="color: {MUTED}; font-size: 13px; margin: 0;">把客戶拆成8個消費行為群，看出誰是真正該投入資源的20%，這是後面所有預測與決策的地基</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        if st.button("前往查看 →", key="spotlight_week1", use_container_width=True):
-            go_to_page("week1")
-            st.rerun()
-    with spotlight_col1:
-        st.markdown(
-            f"""
-            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
-                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W3・任務13</div>
-                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">K-means分群debug全紀錄</h4>
-                <p style="color: {MUTED}; font-size: 13px; margin: 0;">從畸形分群到標準化修正後的正常分布，完整的問題發現與驗證過程</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        if st.button("前往查看 →", key="spotlight_week3", use_container_width=True):
-            go_to_page("week3")
-            st.rerun()
-    with spotlight_col2:
-        st.markdown(
-            f"""
-            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
-                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W3・BOSS III　🔗 活Demo</div>
-                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">精準行銷引擎（5模組整合）</h4>
-                <p style="color: {MUTED}; font-size: 13px; margin: 0;">把K-means客群、Apriori規則、Prophet預測整合成一個系統，輸入客戶ID直接跳出推薦品項與LINE OA推播文案</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.link_button("開啟活Demo →", "https://cececccee1.github.io/0717/index.html", use_container_width=True)
-    with spotlight_col3:
-        st.markdown(
-            f"""
-            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
-                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務15</div>
-                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">OR-Tools雙觀點決策</h4>
-                <p style="color: {MUTED}; font-size: 13px; margin: 0;">可行性違反數從4條降到0，成本省3.3%，用數字證明AI決策比直覺方案更值得</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        if st.button("前往查看 →", key="spotlight_week4a", use_container_width=True):
-            go_to_page("week4")
-            st.rerun()
-    with spotlight_col4:
-        st.markdown(
-            f"""
-            <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px; min-height: 140px;">
-                <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.05em; margin-bottom: 8px;">W4・任務17</div>
-                <h4 style="font-size: 15px; color: {TEXT}; margin-bottom: 8px;">AI代理人自動值班</h4>
-                <p style="color: {MUTED}; font-size: 13px; margin: 0;">用Claude Code打造值班Agent，每天30分鐘人工比對壓縮到30秒自動完成，通過越權測試與guardrail設計</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        if st.button("前往查看 →", key="spotlight_week4b", use_container_width=True):
-            go_to_page("week4")
-            st.rerun()
 
     st.divider()
     st.subheader("📇 聯絡資訊")
