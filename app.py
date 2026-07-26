@@ -369,12 +369,12 @@ if st.session_state.page == "home":
 
     st.markdown(
         f"""
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">流失預測</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">銷售預測</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">客戶分群</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">LLM文本分析</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">商業決策優化</span>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+            <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">流失預測</span>
+            <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">銷售預測</span>
+            <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">客戶分群</span>
+            <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">LLM文本分析</span>
+            <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">商業決策優化</span>
         </div>
         <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px;">
             <div style="flex: 1; min-width: 160px; background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
