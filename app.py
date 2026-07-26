@@ -47,13 +47,17 @@ h1, h2, h3 {{
     letter-spacing: 0.02em;
 }}
 
-.stTabs [data-baseweb="tab-list"] {{
+.stTabs [data-baseweb="tab-list"],
+[data-testid="stTabs"] [role="tablist"] {{
     gap: 4px;
     border-bottom: 1px solid {BORDER};
     flex-wrap: wrap;
     justify-content: center !important;
     width: 100% !important;
     display: flex !important;
+}}
+[data-testid="stTabs"] {{
+    width: 100% !important;
 }}
 .stTabs [data-baseweb="tab"] {{
     color: {MUTED};
@@ -668,9 +672,6 @@ if st.session_state.page == "home":
     st.markdown(
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
-            <p style="color: {TEXT}; font-size: 16px; font-weight: 700; margin-bottom: 8px;">
-                歡迎聯絡我
-            </p>
             <p style="color: {MUTED}; font-size: 14px; margin: 0;">
                 ✉️ <a href="mailto:cececccee1@gmail.com" style="color: {GOLD}; text-decoration: underline;">cececccee1@gmail.com</a>
             </p>
