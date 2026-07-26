@@ -60,14 +60,21 @@ h1, h2, h3 {{
     width: 100% !important;
 }}
 .stTabs [data-baseweb="tab"] {{
-    color: {MUTED};
+    color: {MUTED} !important;
     font-weight: 500;
     padding: 10px 14px;
 }}
+.stTabs [data-baseweb="tab"] p,
+.stTabs [data-baseweb="tab"] div {{
+    color: inherit !important;
+}}
 .stTabs [aria-selected="true"] {{
-    color: {JADE} !important;
+    color: #FBBF24 !important;
     font-weight: 700;
-    border-bottom: 2px solid {JADE} !important;
+    border-bottom: 2px solid #FBBF24 !important;
+}}
+.stTabs [aria-selected="true"] p {{
+    color: #FBBF24 !important;
 }}
 
 [data-testid="stMetricValue"] {{
