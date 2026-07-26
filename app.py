@@ -372,8 +372,36 @@ if st.session_state.page == "home":
 
     st.markdown(
         f"""
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">流失預測</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">銷售預測</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">客戶分群</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">LLM文本分析</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">商業決策優化</span>
+        </div>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px;">
+            <div style="flex: 1; min-width: 160px; background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 26px; font-weight: 700; color: {GOLD};">3.3%</div>
+                <div style="font-size: 13px; color: {MUTED}; margin-top: 6px; line-height: 1.5;">配送方案違反數 4→0<br>物流成本下降</div>
+            </div>
+            <div style="flex: 1; min-width: 160px; background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 26px; font-weight: 700; color: {GOLD};">7.9%</div>
+                <div style="font-size: 13px; color: {MUTED}; margin-top: 6px; line-height: 1.5;">銷售預測 MAPE<br>由 11.7% 優化至此</div>
+            </div>
+            <div style="flex: 1; min-width: 160px; background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 26px; font-weight: 700; color: {GOLD};">NT$47,899</div>
+                <div style="font-size: 13px; color: {MUTED}; margin-top: 6px; line-height: 1.5;">精準辨識<br>Top10流失風險客戶資產</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px; text-align: center;">
+            <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.15em; margin-bottom: 8px;">🎯 案例代表作</div>
             <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
             <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
                 從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
@@ -384,6 +412,41 @@ if st.session_state.page == "home":
         """,
         unsafe_allow_html=True,
     )
+
+    try:
+        _cluster_df = pd.read_csv("home_cluster_data.csv")
+        _cluster_color_map = {
+            "VIP 高頻高額": JADE,
+            "穩定中段": GOLD,
+            "流失高風險": TEAL,
+            "沉睡客戶": RUST,
+        }
+        fig_home_cluster = px.scatter(
+            _cluster_df,
+            x="Recency",
+            y="Monetary",
+            color="cluster_name",
+            color_discrete_map=_cluster_color_map,
+            hover_data={"customer_id": True, "Frequency": True, "Recency": True, "Monetary": ":,.0f", "cluster_name": False},
+            labels={"Recency": "最近購買天數（越小越活躍）", "Monetary": "消費金額 (NT$)"},
+        )
+        fig_home_cluster.update_traces(marker=dict(size=6, opacity=0.7, line=dict(width=0)))
+        fig_home_cluster.update_layout(
+            plot_bgcolor=PANEL,
+            paper_bgcolor=PANEL,
+            font_color=TEXT,
+            legend_title_text="客群",
+            margin=dict(t=10, b=10, l=10, r=10),
+            height=420,
+        )
+        st.markdown(
+            f"""<div style="color: {MUTED}; font-size: 13px; text-align: center; margin-bottom: 8px;">
+            📊 任務13實際跑出的 1,500 位客戶 K-means 分群結果（滑鼠懸停看客戶細節）</div>""",
+            unsafe_allow_html=True,
+        )
+        st.plotly_chart(fig_home_cluster, use_container_width=True)
+    except FileNotFoundError:
+        pass
 
     components.html(
         """
