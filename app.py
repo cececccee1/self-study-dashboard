@@ -52,6 +52,7 @@ h1, h2, h3 {{
     border-bottom: 1px solid {BORDER};
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
 }}
 .stTabs [data-baseweb="tab"] {{
     color: {MUTED};
@@ -667,13 +668,10 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
             <p style="color: {TEXT}; font-size: 16px; font-weight: 700; margin-bottom: 8px;">
-                ✉️ 歡迎透過 Email 聯絡我
+                歡迎聯絡我
             </p>
             <p style="color: {MUTED}; font-size: 14px; margin: 0;">
-                有任何問題或想交流學習心得，歡迎來信！
-            </p>
-            <p style="color: {MUTED}; font-size: 14px; margin: 8px 0 0 0;">
-                ✉️ Email：<a href="mailto:cececccee1@gmail.com" style="color: {GOLD}; text-decoration: underline;">cececccee1@gmail.com</a>
+                ✉️ <a href="mailto:cececccee1@gmail.com" style="color: {GOLD}; text-decoration: underline;">cececccee1@gmail.com</a>
             </p>
         </div>
         """,
