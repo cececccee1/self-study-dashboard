@@ -51,6 +51,7 @@ h1, h2, h3 {{
     gap: 4px;
     border-bottom: 1px solid {BORDER};
     flex-wrap: wrap;
+    justify-content: center;
 }}
 .stTabs [data-baseweb="tab"] {{
     color: {MUTED};
@@ -359,7 +360,7 @@ if st.session_state.page == "home":
             <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; line-height: 1.4; white-space: nowrap;">
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
-            <p style="color: {TEXT}; font-size: clamp(13px, 1.3vw, 17px); line-height: 1.8; margin-bottom: 0; white-space: nowrap;">
+            <p style="color: {TEXT}; font-size: clamp(13px, 1.3vw, 17px); line-height: 1.8; margin-bottom: 0; white-space: nowrap; text-align: left;">
                 嗨，我是 Clarice👋 從資料清洗到AI決策，這是我一路累積的足跡，最有興趣的，是用AI回應物流場域裡的客戶、預測與決策問題。
             </p>
         </div>
@@ -469,7 +470,7 @@ if st.session_state.page == "home":
 
     st.divider()
     st.markdown(
-        f"""<h3 style="font-size: 16px; margin-bottom: 4px; color: {GOLD};">學習歷程時間軸・VMDA四角色串接</h3>""",
+        f"""<h3 style="font-size: 16px; margin-bottom: 4px; color: {GOLD}; text-align: center;">學習歷程時間軸・VMDA四角色串接</h3>""",
         unsafe_allow_html=True,
     )
 
@@ -509,10 +510,10 @@ if st.session_state.page == "home":
         with tab:
             st.markdown(
                 f"""
-                <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 18px 20px; margin-bottom: 16px;">
+                <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 18px 20px; margin-bottom: 16px; text-align: center;">
                     <div style="font-size: 12px; color: {GOLD}; letter-spacing: 0.05em; margin-bottom: 8px;">{wk['role']}</div>
                     <div style="font-size: 14px; color: {TEXT}; line-height: 1.7; margin-bottom: 12px;">{wk['task']}</div>
-                    <div style="display: flex; align-items: baseline; gap: 8px;">
+                    <div style="display: flex; align-items: baseline; gap: 8px; justify-content: center;">
                         <span style="font-size: 24px; font-weight: 700; color: {JADE};">{wk['num']}</span>
                         <span style="font-size: 13px; color: {MUTED};">{wk['label']}</span>
                     </div>
@@ -525,7 +526,7 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD};">🎯 想接的題目方向</h3>
+            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD}; text-align: center;">🎯 想接的題目方向</h3>
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <tr style="background: {PANEL};">
                     <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">方向</th>
@@ -549,7 +550,7 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px; text-align: center;">
-            <div style="color: {GOLD}; font-size: 12px; letter-spacing: 0.15em; margin-bottom: 8px;">🎯 案例代表作</div>
+            <div style="color: {GOLD}; font-size: 16px; letter-spacing: 0.15em; margin-bottom: 8px;">🎯 案例代表作</div>
             <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
             <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
                 從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
@@ -658,10 +659,13 @@ if st.session_state.page == "home":
         )
 
     st.divider()
-    st.subheader("📇 聯絡資訊")
+    st.markdown(
+        f"""<h3 style="text-align: center; color: {TEXT};">📇 聯絡資訊</h3>""",
+        unsafe_allow_html=True,
+    )
     st.markdown(
         f"""
-        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px;">
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
             <p style="color: {TEXT}; font-size: 16px; font-weight: 700; margin-bottom: 8px;">
                 ✉️ 歡迎透過 Email 聯絡我
             </p>
