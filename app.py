@@ -59,21 +59,41 @@ h1, h2, h3 {{
 [data-testid="stTabs"] {{
     width: 100% !important;
 }}
-.stTabs [data-baseweb="tab"] {{
+.stTabs [data-baseweb="tab"],
+.stTabs button[role="tab"] {{
     color: {MUTED} !important;
     font-weight: 500;
     padding: 10px 14px;
+    outline: none !important;
+    box-shadow: none !important;
 }}
 .stTabs [data-baseweb="tab"] p,
-.stTabs [data-baseweb="tab"] div {{
+.stTabs [data-baseweb="tab"] div,
+.stTabs [data-baseweb="tab"] span {{
     color: inherit !important;
+}}
+.stTabs [data-baseweb="tab"]:hover,
+.stTabs [data-baseweb="tab"]:focus,
+.stTabs [data-baseweb="tab"]:focus-visible,
+.stTabs [data-baseweb="tab"]:active {{
+    color: {MUTED} !important;
+}}
+.stTabs [data-baseweb="tab"]:hover p,
+.stTabs [data-baseweb="tab"]:focus p,
+.stTabs [data-baseweb="tab"]:active p {{
+    color: {MUTED} !important;
 }}
 .stTabs [aria-selected="true"] {{
     color: #FBBF24 !important;
     font-weight: 700;
     border-bottom: 2px solid #FBBF24 !important;
 }}
-.stTabs [aria-selected="true"] p {{
+.stTabs [aria-selected="true"] p,
+.stTabs [aria-selected="true"] span,
+.stTabs [aria-selected="true"]:hover,
+.stTabs [aria-selected="true"]:hover p,
+.stTabs [aria-selected="true"]:focus,
+.stTabs [aria-selected="true"]:focus p {{
     color: #FBBF24 !important;
 }}
 
