@@ -86,7 +86,7 @@ h1, h2, h3 {{
 .stTabs [aria-selected="true"] {{
     color: #FBBF24 !important;
     font-weight: 700;
-    border-bottom: 2px solid #2244A8 !important;
+    border-bottom: 2px solid #14213D !important;
 }}
 .stTabs [aria-selected="true"] p,
 .stTabs [aria-selected="true"] span,
