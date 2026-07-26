@@ -601,7 +601,7 @@ if st.session_state.page == "home":
     components.html(
         """
         <div style="width: 100%; height: 500px; border-radius: 8px; overflow: hidden;">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRth1zx5-KFABz5qo3oPFnRakNXnd-EvaWXdvur5mHJxPDKaln5M-g3kCPAdDBUyyoLvXyoB6PNNTVX/pubembed?start=false&loop=false&delayms=3000"
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRm-UNyZt3VnyWaJsn2zu6ojQCRMnocbmbS1_EwZzDq0zlB75AMwxJS0SnmCjIfVC5HCCkCvSkLy87Q/pubembed?start=false&loop=false&delayms=3000"
                 style="width: 100%; height: 100%; border: 0;"
                 frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
             </iframe>
@@ -613,7 +613,7 @@ if st.session_state.page == "home":
     st.markdown(
         f"""
         <div style="text-align: center; margin-bottom: 24px;">
-            <a href="https://docs.google.com/presentation/d/e/2PACX-1vRth1zx5-KFABz5qo3oPFnRakNXnd-EvaWXdvur5mHJxPDKaln5M-g3kCPAdDBUyyoLvXyoB6PNNTVX/pubembed"
+            <a href="https://docs.google.com/presentation/d/e/2PACX-1vRm-UNyZt3VnyWaJsn2zu6ojQCRMnocbmbS1_EwZzDq0zlB75AMwxJS0SnmCjIfVC5HCCkCvSkLy87Q/pubembed"
                target="_blank"
                style="display: inline-block; padding: 12px 32px; background: {JADE}; color: {INK};
                       border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;
@@ -3810,7 +3810,7 @@ if st.session_state.page == "week4":
     }
     st.table(pd.DataFrame(boss1_data).set_index("項目"))
     st.markdown(
-        "[點此開啟BOSS_I簡報](https://docs.google.com/presentation/d/e/2PACX-1vRth1zx5-KFABz5qo3oPFnRakNXnd-EvaWXdvur5mHJxPDKaln5M-g3kCPAdDBUyyoLvXyoB6PNNTVX/pubembed)"
+        "[點此開啟BOSS_I簡報](https://docs.google.com/presentation/d/e/2PACX-1vRm-UNyZt3VnyWaJsn2zu6ojQCRMnocbmbS1_EwZzDq0zlB75AMwxJS0SnmCjIfVC5HCCkCvSkLy87Q/pubembed)"
     )
     st.warning(
         "**反直覺踩坑紀錄**：NotebookLM第一次回報「已經改好了」，但截圖核對後發現風格整個跑掉、文字也被悄悄改寫——"
