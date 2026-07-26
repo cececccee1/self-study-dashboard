@@ -302,7 +302,7 @@ def make_gauge(title, value, target, suffix="%"):
 
 st.markdown(
     f"""
-    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.2rem;">
+    <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.7rem;">
         <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
              style="width: 1.5em; height: 1.5em; border-radius: 50%; object-fit: cover;
                     border: 2px solid {GOLD}; flex-shrink: 0;" />
@@ -359,8 +359,8 @@ if st.session_state.page == "home":
             <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; line-height: 1.4; white-space: nowrap;">
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
-            <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; margin-bottom: 0;">
-                嗨，我是 Clarice👋 從資料清洗的瑣碎，到機器學習建模的推敲，再到AI應用的落地，這是我一路留下的足跡。走著走著才發現，自己最著迷的，是用AI回應真實世界的商業提問，尤其是物流場域裡，關於客戶、關於預測、關於如何做出更好決策的種種思考。
+            <p style="color: {TEXT}; font-size: clamp(13px, 1.3vw, 17px); line-height: 1.8; margin-bottom: 0; white-space: nowrap;">
+                嗨，我是 Clarice👋 從資料清洗到AI決策，這是我一路累積的足跡——最著迷的，是用AI回應物流場域裡的客戶、預測與決策問題。
             </p>
         </div>
         """,
@@ -373,7 +373,6 @@ if st.session_state.page == "home":
             <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">流失預測</span>
             <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">銷售預測</span>
             <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">客戶分群</span>
-            <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">LLM文本分析</span>
             <span style="flex: 1; min-width: 140px; text-align: center; background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 600;">商業決策優化</span>
         </div>
         <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px;">
@@ -467,22 +466,6 @@ if st.session_state.page == "home":
             st.rerun()
 
     st.divider()
-
-    st.subheader("🧭 使用導覽")
-    st.markdown(
-        """
-        - 上方分頁依 **第一週～第八週** 排列，每週對應該週的任務內容與學習紀錄
-        - **第一週** 目前已放入任務01、02、03、04、05
-        - **第二週** 目前已放入任務06、07、08、09
-        - **第三週** 目前已放入任務10、11、12、13
-        - **第四週** 目前已放入任務14、15、16、17、18
-        - 其餘週次會隨課程進度陸續補上
-        """
-    )
-    st.info(
-        "💡 想看每週詳細的分析過程？點擊上方分頁按鈕切換各週內容。\n\n"
-        "以下每週分頁保留完整的課堂作業紀錄：任務編號、debug過程、原始截圖，是實際操作的完整記錄，不是精簡摘要。"
-    )
 
     st.divider()
     st.markdown(
