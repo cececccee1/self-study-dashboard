@@ -3890,4 +3890,7 @@ if st.session_state.page == "week8":
     back_to_home_button("week8")
 
 st.divider()
-st.caption("Clarice的學習歷程：八週學習紀錄")
+st.markdown(
+    f"""<div style="text-align: center; color: {MUTED}; font-size: 14px;">Clarice的學習歷程：八週學習紀錄</div>""",
+    unsafe_allow_html=True,
+)
