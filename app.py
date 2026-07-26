@@ -51,8 +51,9 @@ h1, h2, h3 {{
     gap: 4px;
     border-bottom: 1px solid {BORDER};
     flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
+    justify-content: center !important;
+    width: 100% !important;
+    display: flex !important;
 }}
 .stTabs [data-baseweb="tab"] {{
     color: {MUTED};
