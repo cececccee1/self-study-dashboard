@@ -3886,4 +3886,4 @@ if st.session_state.page == "week8":
     back_to_home_button("week8")
 
 st.divider()
-st.caption("✨ Clarice的學習歷程：八週學習紀錄")
+st.caption("Clarice的學習歷程：八週學習紀錄")
