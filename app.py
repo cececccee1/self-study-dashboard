@@ -532,7 +532,7 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD}; text-align: center;">🎯 想接的題目方向</h3>
+            <h3 style="font-size: 16px; margin-bottom: 14px; color: {GOLD}; text-align: center;">銜接的題目方向</h3>
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <tr style="background: {PANEL};">
                     <th style="text-align: left; padding: 8px; color: {GOLD}; border-bottom: 1px solid {BORDER};">方向</th>
@@ -556,7 +556,7 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px; text-align: center;">
-            <div style="color: {GOLD}; font-size: 16px; letter-spacing: 0.15em; margin-bottom: 8px;">🎯 案例代表作</div>
+            <div style="color: {GOLD}; font-size: 16px; font-weight: 700; letter-spacing: 0.15em; margin-bottom: 8px;">🎯 案例代表作</div>
             <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
             <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
                 從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
