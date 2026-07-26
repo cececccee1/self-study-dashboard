@@ -360,10 +360,7 @@ if st.session_state.page == "home":
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
             <p style="color: {TEXT}; font-size: 17px; line-height: 1.8; margin-bottom: 0;">
-                嗨，我是 Clarice👋<br>
-                從資料清洗的瑣碎，到機器學習建模的推敲，再到AI應用的落地，這是我一路留下的足跡。<br>
-                走著走著才發現，自己最著迷的，是用AI回應真實世界的商業提問，<br>
-                尤其是物流場域裡，關於客戶、關於預測、關於如何做出更好決策的種種思考。
+                嗨，我是 Clarice👋 從資料清洗的瑣碎，到機器學習建模的推敲，再到AI應用的落地，這是我一路留下的足跡。走著走著才發現，自己最著迷的，是用AI回應真實世界的商業提問，尤其是物流場域裡，關於客戶、關於預測、關於如何做出更好決策的種種思考。
             </p>
         </div>
         """,
@@ -373,11 +370,11 @@ if st.session_state.page == "home":
     st.markdown(
         f"""
         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">流失預測</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">銷售預測</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">客戶分群</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">LLM文本分析</span>
-            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {JADE}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">商業決策優化</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">流失預測</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">銷售預測</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">客戶分群</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">LLM文本分析</span>
+            <span style="background: {PANEL}; border: 1px solid {BORDER}; color: {GOLD}; padding: 6px 14px; border-radius: 20px; font-size: 13px;">商業決策優化</span>
         </div>
         <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px;">
             <div style="flex: 1; min-width: 160px; background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
@@ -584,21 +581,23 @@ if st.session_state.page == "home":
     try:
         _cluster_df = pd.read_csv("home_cluster_data.csv")
         _cluster_color_map = {
-            "VIP 高頻高額": JADE,
-            "穩定中段": GOLD,
-            "流失高風險": TEAL,
-            "沉睡客戶": RUST,
+            "VIP 高頻高額": "#c7cbec",
+            "穩定中段": "#86c9a8",
+            "流失高風險": "#9aa0c4",
+            "沉睡客戶": "#7a8bb0",
         }
         fig_home_cluster = px.scatter(
             _cluster_df,
             x="Recency",
             y="Monetary",
             color="cluster_name",
+            category_orders={"cluster_name": ["VIP 高頻高額", "穩定中段", "流失高風險", "沉睡客戶"]},
             color_discrete_map=_cluster_color_map,
             hover_data={"customer_id": True, "Frequency": True, "Recency": True, "Monetary": ":,.0f", "cluster_name": False},
-            labels={"Recency": "最近購買天數（越小越活躍）", "Monetary": "消費金額 (NT$)"},
+            labels={"Recency": "最近購買天數（越小越活躍）", "Monetary": "消費金額 (NT$，log scale)"},
         )
-        fig_home_cluster.update_traces(marker=dict(size=6, opacity=0.7, line=dict(width=0)))
+        fig_home_cluster.update_traces(marker=dict(size=7, opacity=0.85, line=dict(width=0.5, color=INK)))
+        fig_home_cluster.update_yaxes(type="log")
         fig_home_cluster.update_layout(
             plot_bgcolor=PANEL,
             paper_bgcolor=PANEL,
@@ -609,7 +608,7 @@ if st.session_state.page == "home":
         )
         st.markdown(
             f"""<div style="color: {MUTED}; font-size: 13px; text-align: center; margin-bottom: 8px;">
-            📊 任務13實際跑出的 1,500 位客戶 K-means 分群結果（滑鼠懸停看客戶細節）</div>""",
+            📊 任務13實際跑出的 1,500 位客戶 K-means 分群結果（滑鼠懸停看客戶細節・Y軸為log尺度）</div>""",
             unsafe_allow_html=True,
         )
         st.plotly_chart(fig_home_cluster, use_container_width=True)
