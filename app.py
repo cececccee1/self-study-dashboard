@@ -532,14 +532,14 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 16px; margin-bottom: 16px; color: {GOLD}; text-align: center;">銜接的題目方向</h3>
+            <h3 style="font-size: 16px; margin-bottom: 16px; color: #FFFFFF; text-align: center;">銜接的題目方向</h3>
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
-                    <div style="color: {JADE}; font-weight: 700; font-size: 14px; margin-bottom: 6px;">客訴根因分析＋派工自動化</div>
+                    <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">客訴根因分析＋派工自動化</div>
                     <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">不只找出客訴在罵什麼，而是把LLM根因分析結果直接串進派工邏輯——D16客訴文本分析＋OR-Tools配送最佳化（違反數4→0、成本降3.3%）已經跑過完整的分析到執行流程</div>
                 </div>
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
-                    <div style="color: {JADE}; font-weight: 700; font-size: 14px; margin-bottom: 6px;">AI模型健檢／debug顧問</div>
+                    <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">AI模型健檢／debug顧問</div>
                     <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，不只是重新建模——K-means、Apriori、決策樹三個任務都曾抓出「模型看起來在跑，但邏輯其實有洞」的問題（如固定推薦結果、參數誤判成早停）</div>
                 </div>
             </div>
