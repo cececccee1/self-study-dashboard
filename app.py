@@ -607,11 +607,11 @@ if st.session_state.page == "home":
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
                     <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">客訴根因分析＋派工自動化</div>
-                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">不只找出客訴在罵什麼，而是把LLM根因分析結果直接串進派工邏輯——D16客訴文本分析＋OR-Tools配送最佳化（違反數4→0、成本降3.3%）已經跑過完整的分析到執行流程</div>
+                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">不只找出客訴在罵什麼，而是把LLM根因分析結果直接串進派工邏輯，D16客訴文本分析＋OR-Tools配送最佳化（違反數4→0、成本降3.3%）已經跑過完整的分析到執行流程</div>
                 </div>
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
                     <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">AI模型健檢／debug顧問</div>
-                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，不只是重新建模——K-means、Apriori、決策樹三個任務都曾抓出「模型看起來在跑，但邏輯其實有洞」的問題（如固定推薦結果、參數誤判成早停）</div>
+                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，而不是砍掉重練。K-means、Apriori、決策樹三個任務都遇過同一種狀況：模型看起來在跑，邏輯卻早就出了問題，推薦結果一直卡在同一組、或是參數設太嚴讓模型提早停止學習，卻被誤診成過擬合。</div>
                 </div>
             </div>
         </div>
@@ -701,13 +701,13 @@ if st.session_state.page == "home":
 
     st.divider()
     st.markdown(
-        f"""<h3 style="text-align: center; color: {TEXT};">📇 聯絡資訊</h3>""",
+        f"""<h3 style="text-align: center; color: {TEXT}; font-size: 13px;">📇 聯絡資訊</h3>""",
         unsafe_allow_html=True,
     )
     st.markdown(
         f"""
-        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 20px; text-align: center;">
-            <p style="color: {MUTED}; font-size: 14px; margin: 0;">
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 12px; text-align: center;">
+            <p style="color: {MUTED}; font-size: 10px; margin: 0;">
                 ✉️ <a href="mailto:cececccee1@gmail.com" style="color: {GOLD}; text-decoration: underline;">cececccee1@gmail.com</a>
             </p>
         </div>
