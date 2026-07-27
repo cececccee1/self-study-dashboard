@@ -440,7 +440,7 @@ if st.session_state.page == "home":
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
             <p class="hero-intro" style="color: {TEXT}; font-size: clamp(13px, 1.3vw, 17px); line-height: 1.8; margin-bottom: 0; white-space: nowrap; text-align: left;">
-                嗨，我是 Clarice👋 從資料清洗到AI決策，這是我一路累積的足跡，最有興趣的，是用AI回應物流場域裡的客戶、預測與決策問題。
+                嗨，我是 Clarice👋 從資料清洗到AI決策，這是我一路累積的足跡，最有興趣的，是用AI回應物流場域裡的客戶、預測與決策問題
             </p>
         </div>
         """,
@@ -611,7 +611,7 @@ if st.session_state.page == "home":
                 </div>
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
                     <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">AI模型健檢／debug顧問</div>
-                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，而不是砍掉重練。K-means、Apriori、決策樹三個任務都遇過同一種狀況：模型看起來在跑，邏輯卻早就出了問題，推薦結果一直卡在同一組、或是參數設太嚴讓模型提早停止學習，卻被誤診成過擬合。</div>
+                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，而不是砍掉重練。K-means、Apriori、決策樹三個任務都遇過同一種狀況：模型看起來在跑，邏輯卻早就出了問題——推薦結果一直卡在同一組，或是參數設太嚴讓模型提早停止學習，卻被誤診成過擬合</div>
                 </div>
             </div>
         </div>
@@ -628,7 +628,7 @@ if st.session_state.page == "home":
             <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
                 從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
                 再用決策樹、K-means、Prophet做預測，最後用LLM與OR-Tools讓AI直接參與決策——
-                把配送方案的違反數從4條降到0、成本省下3.3%。
+                把配送方案的違反數從4條降到0、成本省下3.3%
             </p>
         </div>
         """,
