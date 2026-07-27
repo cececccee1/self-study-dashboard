@@ -179,6 +179,25 @@ label {{
 }}
 
 @media (max-width: 640px) {{
+    /* 導覽列：手機上強制橫向捲動，比照HTML版行為，避免9顆按鈕上下堆疊 */
+    div[class*="st-key-nav_bar_wrap"] [data-testid="stHorizontalBlock"] {{
+        flex-wrap: nowrap !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        gap: 6px !important;
+        padding-bottom: 4px;
+    }}
+    div[class*="st-key-nav_bar_wrap"] [data-testid="column"] {{
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-width: fit-content !important;
+    }}
+    div[class*="st-key-nav_bar_wrap"] button {{
+        white-space: nowrap !important;
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }}
+
     html, body, [class*="css"], table, th, td, input, textarea, button, p, span, label {{
         font-family: "Noto Sans TC", sans-serif !important;
     }}
@@ -373,17 +392,18 @@ _NAV_ITEMS = [
     ("week8", "第八週"),
 ]
 
-nav_cols = st.columns(len(_NAV_ITEMS))
-for _col, (_pid, _label) in zip(nav_cols, _NAV_ITEMS):
-    with _col:
-        if st.button(
-            _label,
-            key=f"nav_{_pid}",
-            use_container_width=True,
-            type="primary" if st.session_state.page == _pid else "secondary",
-        ):
-            go_to_page(_pid)
-            st.rerun()
+with st.container(key="nav_bar_wrap"):
+    nav_cols = st.columns(len(_NAV_ITEMS))
+    for _col, (_pid, _label) in zip(nav_cols, _NAV_ITEMS):
+        with _col:
+            if st.button(
+                _label,
+                key=f"nav_{_pid}",
+                use_container_width=True,
+                type="primary" if st.session_state.page == _pid else "secondary",
+            ):
+                go_to_page(_pid)
+                st.rerun()
 
 st.markdown("<hr style='margin-top: 4px;'>", unsafe_allow_html=True)
 
