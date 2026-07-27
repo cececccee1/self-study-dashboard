@@ -84,7 +84,7 @@ h1, h2, h3 {{
     color: {MUTED} !important;
 }}
 .stTabs [aria-selected="true"] {{
-    color: #FBBF24 !important;
+    color: #FFD700 !important;
     font-weight: 700;
     border-bottom: 2px solid #3461C4 !important;
 }}
@@ -94,7 +94,7 @@ h1, h2, h3 {{
 .stTabs [aria-selected="true"]:hover p,
 .stTabs [aria-selected="true"]:focus,
 .stTabs [aria-selected="true"]:focus p {{
-    color: #FBBF24 !important;
+    color: #FFD700 !important;
 }}
 
 [data-testid="stMetricValue"] {{
