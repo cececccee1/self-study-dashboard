@@ -273,6 +273,22 @@ button[kind="primary"]:hover,
     border-color: #9aa8c8 !important;
     color: #ffffff !important;
 }}
+
+/* 首頁Logo：呼吸光暈動畫，持續有動態感但不是loading指示 */
+@keyframes logoBreathe {{
+    0%, 100% {{
+        box-shadow: 0 0 0 0 rgba(154, 160, 196, 0.55);
+        transform: scale(1);
+    }}
+    50% {{
+        box-shadow: 0 0 14px 6px rgba(154, 160, 196, 0.15);
+        transform: scale(1.04);
+    }}
+}}
+.logo-breathe {{
+    border-radius: 50%;
+    animation: logoBreathe 3.2s ease-in-out infinite;
+}}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -366,7 +382,7 @@ def make_gauge(title, value, target, suffix="%"):
 st.markdown(
     f"""
     <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.7rem;">
-        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
+        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" class="logo-breathe"
              style="width: 1.5em; height: 1.5em; border-radius: 50%; object-fit: cover;
                     border: 2px solid {GOLD}; flex-shrink: 0;" />
         Clarice的學習歷程：八週紀錄
