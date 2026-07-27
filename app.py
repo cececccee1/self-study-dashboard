@@ -122,14 +122,6 @@ hr::after {{
     font-size: 13px;
 }}
 
-@keyframes logoSpin {{
-    from {{ transform: rotate(0deg); }}
-    to {{ transform: rotate(360deg); }}
-}}
-.logo-spin {{
-    animation: logoSpin 12s linear infinite;
-}}
-
 .seal-stamp {{
     width: 84px;
     height: 84px;
@@ -250,6 +242,9 @@ label {{
 }}
 
 /* 隱藏標題旁自動產生的錨點連結圖示（🔗） */
+[data-testid="stHeaderActionElements"] {{
+    display: none !important;
+}}
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {{
     display: none !important;
 }}
@@ -371,7 +366,7 @@ def make_gauge(title, value, target, suffix="%"):
 st.markdown(
     f"""
     <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.7rem;">
-        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" class="logo-spin"
+        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
              style="width: 1.5em; height: 1.5em; border-radius: 50%; object-fit: cover;
                     border: 2px solid {GOLD}; flex-shrink: 0;" />
         Clarice的學習歷程：八週紀錄
