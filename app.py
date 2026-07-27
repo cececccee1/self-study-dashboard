@@ -546,8 +546,6 @@ if st.session_state.page == "home":
             st.rerun()
 
     st.divider()
-
-    st.divider()
     st.markdown(
         f"""<h3 style="font-size: 16px; margin-bottom: 4px; color: {GOLD}; text-align: center;">學習歷程時間軸・VMDA四角色串接</h3>""",
         unsafe_allow_html=True,
