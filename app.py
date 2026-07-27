@@ -611,7 +611,7 @@ if st.session_state.page == "home":
                 </div>
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
                     <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">AI模型健檢／debug顧問</div>
-                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，而不是砍掉重練。K-means、Apriori、決策樹三個任務都遇過同一種狀況：模型看起來在跑，邏輯卻早就出了問題——推薦結果一直卡在同一組，或是參數設太嚴讓模型提早停止學習，卻被誤診成過擬合</div>
+                    <div style="color: {MUTED}; font-size: 13px; line-height: 1.7;">幫已上線的模型抓邏輯漏洞，而不是砍掉重練。K-means曾經跑出畸形分群，Apriori曾經卡在同一組推薦結果，決策樹則是參數設太嚴讓模型提早停止學習，卻被誤診成過擬合，三個任務都證明，模型能跑不代表邏輯沒問題</div>
                 </div>
             </div>
         </div>
@@ -626,9 +626,9 @@ if st.session_state.page == "home":
             <div style="color: {GOLD}; font-size: 16px; font-weight: 700; letter-spacing: 0.15em; margin-bottom: 8px;">🎯 案例代表作</div>
             <h3 style="font-size: 18px; margin-bottom: 14px; color: {TEXT};">從資料洞察到AI決策：VMDA跨角色能力簡報</h3>
             <p style="color: {MUTED}; font-size: 14px; margin-bottom: 20px; max-width: 560px; margin-left: auto; margin-right: auto;">
-                從RFM分析看懂客戶，到用ABC分類、OTD分析理解現場限制，
-                再用決策樹、K-means、Prophet做預測，最後用LLM與OR-Tools讓AI直接參與決策——
-                把配送方案的違反數從4條降到0、成本省下3.3%
+                從RFM分析看懂客戶，到用ABC分類，OTD分析理解現場限制，
+                再用決策樹，K-means，Prophet做預測，最後用LLM與OR-Tools讓AI直接參與決策，
+                把配送方案的違反數從4條降到0，成本省下3.3%
             </p>
         </div>
         """,
@@ -701,13 +701,13 @@ if st.session_state.page == "home":
 
     st.divider()
     st.markdown(
-        f"""<h3 style="text-align: center; color: {TEXT}; font-size: 13px;">📇 聯絡資訊</h3>""",
+        f"""<h3 style="text-align: center; color: {TEXT}; font-size: 17px;">📇 聯絡資訊</h3>""",
         unsafe_allow_html=True,
     )
     st.markdown(
         f"""
-        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 12px; text-align: center;">
-            <p style="color: {MUTED}; font-size: 10px; margin: 0;">
+        <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 18px; text-align: center;">
+            <p style="color: {MUTED}; font-size: 15px; margin: 0;">
                 ✉️ <a href="mailto:cececccee1@gmail.com" style="color: {GOLD}; text-decoration: underline;">cececccee1@gmail.com</a>
             </p>
         </div>
