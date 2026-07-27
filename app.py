@@ -122,6 +122,14 @@ hr::after {{
     font-size: 13px;
 }}
 
+@keyframes logoSpin {{
+    from {{ transform: rotate(0deg); }}
+    to {{ transform: rotate(360deg); }}
+}}
+.logo-spin {{
+    animation: logoSpin 12s linear infinite;
+}}
+
 .seal-stamp {{
     width: 84px;
     height: 84px;
@@ -363,7 +371,7 @@ def make_gauge(title, value, target, suffix="%"):
 st.markdown(
     f"""
     <h1 style="white-space: nowrap; display: flex; align-items: center; gap: 0.35em; font-size: 2.7rem;">
-        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice"
+        <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" class="logo-spin"
              style="width: 1.5em; height: 1.5em; border-radius: 50%; object-fit: cover;
                     border: 2px solid {GOLD}; flex-shrink: 0;" />
         Clarice的學習歷程：八週紀錄
