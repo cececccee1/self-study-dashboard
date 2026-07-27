@@ -194,6 +194,16 @@ label {{
     }}
     h2 {{
         font-size: 19px !important;
+        white-space: normal !important;
+        line-height: 1.4;
+    }}
+    .hero-title {{
+        font-size: 18px !important;
+        white-space: normal !important;
+    }}
+    .hero-intro {{
+        font-size: 13px !important;
+        white-space: normal !important;
     }}
     [data-testid="stMetricValue"] {{
         font-size: 22px !important;
@@ -390,10 +400,10 @@ if st.session_state.page == "home":
             <div style="color: {GOLD}; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">
                 八週學習紀錄
             </div>
-            <h1 style="color: {TEXT}; margin: 0 0 16px 0; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; line-height: 1.4; white-space: nowrap;">
+            <h1 class="hero-title" style="color: {TEXT}; margin: 0 0 16px 0; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; line-height: 1.4; white-space: nowrap;">
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
-            <p style="color: {TEXT}; font-size: clamp(13px, 1.3vw, 17px); line-height: 1.8; margin-bottom: 0; white-space: nowrap; text-align: left;">
+            <p class="hero-intro" style="color: {TEXT}; font-size: clamp(13px, 1.3vw, 17px); line-height: 1.8; margin-bottom: 0; white-space: nowrap; text-align: left;">
                 嗨，我是 Clarice👋 從資料清洗到AI決策，這是我一路累積的足跡，最有興趣的，是用AI回應物流場域裡的客戶、預測與決策問題。
             </p>
         </div>
