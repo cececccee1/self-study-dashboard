@@ -603,7 +603,7 @@ if st.session_state.page == "home":
         f"""
         <div style="background: {PANEL}; border: 1px solid {BORDER}; border-radius: 4px;
                     padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 16px; margin-bottom: 16px; color: #FFFFFF; text-align: center;">銜接的題目方向</h3>
+            <h3 style="font-size: 16px; margin-bottom: 16px; color: #FFFFFF; text-align: center;">我想接的題目方向</h3>
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div style="background: {INK}; border: 1px solid {BORDER}; border-radius: 4px; padding: 16px 18px;">
                     <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; margin-bottom: 6px;">客訴根因分析＋派工自動化</div>
