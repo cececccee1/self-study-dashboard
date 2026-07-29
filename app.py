@@ -701,7 +701,7 @@ if st.session_state.page == "home":
 
     st.divider()
     st.markdown(
-        f"""<h3 style="text-align: center; color: {TEXT}; font-size: 17px;">📇 聯絡資訊</h3>""",
+        f"""<h3 style="text-align: center; color: {TEXT}; font-size: 17px;">聯絡資訊</h3>""",
         unsafe_allow_html=True,
     )
     st.markdown(
