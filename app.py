@@ -3899,6 +3899,6 @@ if st.session_state.page == "week4":
 
 st.divider()
 st.markdown(
-    f"""<div style="text-align: center; color: {MUTED}; font-size: 14px;">Clarice的學習歷程</div>""",
+    f"""<div style="text-align: center; color: {MUTED}; font-size: 14px;">Clarice的學習歷程 · 首頁持續更新中</div>""",
     unsafe_allow_html=True,
 )
