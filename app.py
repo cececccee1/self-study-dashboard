@@ -385,7 +385,7 @@ st.markdown(
         <img src="data:image/jpeg;base64,{LOGO_C_B64}" alt="Clarice" class="logo-breathe"
              style="width: 1.5em; height: 1.5em; border-radius: 50%; object-fit: cover;
                     border: 2px solid {GOLD}; flex-shrink: 0;" />
-        Clarice的學習歷程：八週紀錄
+        Clarice的學習歷程
     </h1>
     """,
     unsafe_allow_html=True,
@@ -429,9 +429,6 @@ if st.session_state.page == "home":
                     border: 1px solid {BORDER};
                     padding: 40px 24px; border-radius: 4px; margin-bottom: 24px;
                     overflow: hidden;">
-            <div style="color: {GOLD}; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">
-                八週學習紀錄
-            </div>
             <h1 class="hero-title" style="color: {TEXT}; margin: 0 0 16px 0; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; line-height: 1.4; white-space: nowrap;">
                 用AI串起資料、現場與決策，<span style="color: {JADE};">讓每一步投入都變成看得見的商業成果</span>
             </h1>
@@ -3902,6 +3899,6 @@ if st.session_state.page == "week4":
 
 st.divider()
 st.markdown(
-    f"""<div style="text-align: center; color: {MUTED}; font-size: 14px;">Clarice的學習歷程：八週學習紀錄</div>""",
+    f"""<div style="text-align: center; color: {MUTED}; font-size: 14px;">Clarice的學習歷程</div>""",
     unsafe_allow_html=True,
 )
