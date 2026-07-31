@@ -402,10 +402,6 @@ _NAV_ITEMS = [
     ("week2", "第二週"),
     ("week3", "第三週"),
     ("week4", "第四週"),
-    ("week5", "第五週"),
-    ("week6", "第六週"),
-    ("week7", "第七週"),
-    ("week8", "第八週"),
 ]
 
 with st.container(key="nav_bar_wrap"):
@@ -3903,26 +3899,6 @@ if st.session_state.page == "week4":
 
     back_to_home_button("week4")
 
-
-if st.session_state.page == "week5":
-    st.markdown("<h2>第五週</h2>", unsafe_allow_html=True)
-    week_placeholder(5)
-    back_to_home_button("week5")
-
-if st.session_state.page == "week6":
-    st.markdown("<h2>第六週</h2>", unsafe_allow_html=True)
-    week_placeholder(6)
-    back_to_home_button("week6")
-
-if st.session_state.page == "week7":
-    st.markdown("<h2>第七週</h2>", unsafe_allow_html=True)
-    week_placeholder(7)
-    back_to_home_button("week7")
-
-if st.session_state.page == "week8":
-    st.markdown("<h2>第八週</h2>", unsafe_allow_html=True)
-    week_placeholder(8)
-    back_to_home_button("week8")
 
 st.divider()
 st.markdown(
